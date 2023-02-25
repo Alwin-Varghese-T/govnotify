@@ -1,7 +1,9 @@
 from flask import Flask, render_template
+from database import load_links
 
 app = Flask(__name__)
 
+#showing data from db
 
 @app.route('/')
 @app.route('/pages-login.html')
@@ -11,24 +13,7 @@ def login():
 
 @app.route('/index.html')
 def home():
-
-  items = {
-    'name': 'Scheme name1',
-    'link': 'https://email.gov.in/'
-  }, {
-    'name': 'Scheme name2',
-    'link': 'https://email.gov.in/'
-  }, {
-    'name': 'Scheme name3',
-    'link': 'https://email.gov.in/'
-  }, {
-    'name': 'Scheme name4',
-    'link': 'https://email.gov.in/'
-  }, {
-    'name': 'Scheme name5',
-    'link': 'https://email.gov.in/'
-  }
-
+  items = load_links()
   return render_template('index.html', items=items)
 
 
@@ -43,4 +28,4 @@ def register():
 
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=81)
+  app.run(host='0.0.0.0', debug=True)

@@ -351,8 +351,8 @@
 
                         {% for item in items %}
                         <tr>
-                          <td>{{item.name }}</td>
-                          <td><a href="{{ item.link}}" class="text-primary">{{ item.link }}</a></td>
+                          <td>{{item['name']}}</td>
+                          <td><a href="{{ item['link']}}" class="text-primary">{{ item['link']}}</a></td>
                           <td><span class="badge bg-success">Viewed</span></td>
                         </tr>
                         {% endfor %}
