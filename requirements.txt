@@ -1,3 +1,6 @@
 Flask
 gunicorn
 sqlalchemy
+pymysql
+flask_wtf
+wtforms
