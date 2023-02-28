@@ -349,10 +349,10 @@
                     </thead>
                     <tbody>
 
-                        {% for item in items %}
+                        {% for row in items %}
                         <tr>
-                          <td>{{item['name']}}</td>
-                          <td><a href="{{ item['link']}}" class="text-primary">{{ item['link']}}</a></td>
+                          <td>{{row.name}}</td>
+                          <td><a href="{{ row.link}}" class="text-primary">{{ row.link}}</a></td>
                           <td><span class="badge bg-success">Viewed</span></td>
                         </tr>
                         {% endfor %}
