@@ -16,3 +16,6 @@ def load_links():
     for row in result:
       items.append(row._asdict())
     return items
+
+
+    
