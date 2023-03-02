@@ -54,21 +54,21 @@
 
                   <form action="{{ url_for('register') }}" method="post" class="row g-3 needs-validation" novalidate>
                     <div class="col-12">
-                      <label for="username" class="form-label">Your Name</label>
-                      <input type="text" name="username" class="form-control" id="username" required>
+                      <label for="yourname" class="form-label">Your Name</label>
+                      <input type="text" name="yourname" class="form-control" id="yourname" required>
                       <div class="invalid-feedback">Please, enter your name!</div>
                     </div>
 
                     <div class="col-12">
                       <label for="email" class="form-label">Your Email</label>
-                      <input type="text" name="email" class="form-control" id="email" required>
+                      <input type="email" name="email" class="form-control" id="email" required>
                       <div class="invalid-feedback">Please enter a valid Email adddress!</div>
                     </div>
 
                     <div class="col-12">
-                      <label for="yourUsername" class="form-label">Username</label>
+                      <label for="username" class="form-label">Username</label>
                       <div class="input-group has-validation">
-                        <input type="text" name="username" class="form-control" id="yourUsername" required>
+                        <input type="text" name="username" class="form-control" id="username" required>
                         <div class="invalid-feedback">Please choose a username.</div>
                       </div>
                     </div>
@@ -78,6 +78,12 @@
                       <input type="password" name="password" class="form-control" id="password" required>
                       <div class="invalid-feedback">Please enter your password!</div>
                     </div>
+                    {% if msg %}
+                      <div class="alert alert-danger" role="alert">
+                        {{ msg }}
+                      </div>
+                    {% endif %}
+                    
                     <div class="col-12">
                       <button class="btn btn-primary w-100" type="submit">Create Account</button>
                     </div>

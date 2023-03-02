@@ -71,23 +71,28 @@ def register():
         email = request.form['email']
         with mysql.cursor() as cursor:
             # Retrieving account details from the database if an account with the same username exists
-            cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
+            cursor.execute('SELECT * FROM log WHERE username = %s', (username,))
             account = cursor.fetchone()
             if account:  # If an account with the same username exists
                 msg = 'Account already exists!'
+                return render_template('pages-register.html',msg=msg)
             elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):  # If email is invalid
                 msg = 'Invalid email address!'
+                return render_template('pages-register.html',msg=msg)
             elif not re.match(r'[A-Za-z0-9]+', username):  # If username contains invalid characters
                 msg = 'Username must contain only characters and numbers!'
+                return render_template('pages-register.html',msg=msg)
             elif not username or not password or not email:  # If any of the fields are empty
                 msg = 'Please fill out the form!'
+                return render_template('pages-register.html',msg=msg)
             else:
-                cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s)', (username, password, email))
+                cursor.execute('INSERT INTO log VALUES (NULL, %s, %s, %s)', (username, password, email))
                 mysql.commit()
                 msg = 'You have successfully registered!'
+                return redirect(url_for('login'))
     elif request.method == 'POST':  # If request method is POST but fields are empty
         msg = 'Please fill out the form!'
-    return render_template('pages-register.html', msg=msg)  # Rendering the registration page with appropriate message.
+    return render_template('pages-register.html',msg=msg)  # Rendering the registration page with appropriate message.
 
 
 
