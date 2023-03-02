@@ -45,9 +45,11 @@ def login():
                 session['username'] = account['username']
                 msg = 'Logged in successfully!'
                 return redirect(url_for('home'))  # Redirecting to the index page with a success message
-            else:  # If the account does not exist
+            if not account :  # If the account does not exist
                 msg = 'Incorrect username / password!'
-    return render_template('pages-login.html', msg=msg)  # Rendering the login page with the message variable
+                return render_template('pages-login.html',msg=msg)
+                
+    return render_template('pages-login.html')  # Rendering the login page with the message variable
 
 # Logout route to allow users to log out of the web application
 @app.route('/logout')
@@ -91,12 +93,17 @@ def register():
 
 @app.route('/home')
 def home():
-
-  with mysql.cursor() as cursor:
-    cursor.execute("select * from sample")
-    items = cursor.fetchall()
-    return render_template('index.html',items=items)
-
+  # check if the user is logged in
+  if 'username' in session:
+     # if the user is logged in
+    with mysql.cursor() as cursor:
+      cursor.execute("select * from sample")
+      items = cursor.fetchall()
+      return render_template('index.html',items=items)
+  else:
+      # if the user is not logged in, redirect to the login page
+      return redirect(url_for('login'))
+  
 
 
 
