@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v1
         with:
-          python-version: '3.11'
+          python-version: '3.9'
 
       - name: Create and start virtual environment
         run: |
@@ -35,7 +35,7 @@ jobs:
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
         with:
-          name: python app
+          name: python-app
           path: |
             . 
             !venv/
@@ -51,7 +51,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: python app
+          name: python-app
           path: .
           
       - name: 'Deploy to Azure Web App'
@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'GovNotifications'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E880857FCCF54556AD48A1C603620A56 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D394A4F45A224C069375B47C09889617 }}
