@@ -24,9 +24,9 @@ jobs:
 
       - name: Create and start virtual environment
         run: |
-          python -m ensurepip
           /opt/hostedtoolcache/Python/3.9.16/x64/bin/python -m venv venv
           source venv/bin/activate
+          python -m ensurepip
       
       - name: Install dependencies
         run: pip install -r requirements.txt
