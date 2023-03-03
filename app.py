@@ -11,9 +11,9 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 def run_webscraper_py():
 
-  from webscraper import delete_dat, scraper
+  from webscraper import delete_data, scraper
 
-  delete_dat()
+  delete_data()
   scraper()
 
 # create a scheduler
