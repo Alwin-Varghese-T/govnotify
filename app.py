@@ -133,8 +133,8 @@ def home():
      # if the user is logged in
     with mysql.cursor() as cursor:
       cursor.execute("select * from sample")
-      cursor.execute("select * from latest_news")
       items = cursor.fetchall()
+      cursor.execute("select * from latest_news")
       news = cursor.fetchall()
       return render_template('index.html',items=items, news=news)
   else:
