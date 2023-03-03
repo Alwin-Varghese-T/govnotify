@@ -2,3 +2,7 @@ Flask
 gunicorn
 pymysql
 regex
+bs4
+requests
+apscheduler
+pytz

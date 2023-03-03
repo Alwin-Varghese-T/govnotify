@@ -2,18 +2,43 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import pymysql.cursors
 import re
+import os
+from pytz import timezone
+from apscheduler.schedulers.background import BackgroundScheduler
+
+
+#     block python file run sheduler
+
+def run_webscraper_py():
+
+  from webscraper import delete_dat, scraper
+
+  delete_dat()
+  scraper()
+
+# create a scheduler
+scheduler = BackgroundScheduler(timezone=timezone('Asia/Kolkata'))
+# add job to run run_webscraper_py every 2 hours
+scheduler.add_job(run_webscraper_py, 'interval', hours=1)
+#starts schedular
+scheduler.start()
+
+
+#    end of sheduler block
+
+
 
 # Creating a Flask web application
 app = Flask(__name__)
 
 # Setting a secret key to use sessions
-app.secret_key = 'your secret key'
+app.secret_key = 'os.getenv(your_secret_key)'
 
 # Configuring the MySQL database details
-app.config['MYSQL_HOST'] = 'ap-south.connect.psdb.cloud'
-app.config['MYSQL_USER'] = 'cc368utl7dt898dkdz23'
-app.config['MYSQL_PASSWORD'] = 'pscale_pw_rHmdaRZZR219HzQ8IFSutYoOqt5HrlUXdn7SX9go8oC'
-app.config['MYSQL_DB'] = 'govnotify'
+app.config['MYSQL_HOST'] = os.getenv('your_host')
+app.config['MYSQL_USER'] = os.getenv('your_username')
+app.config['MYSQL_PASSWORD'] = os.getenv('your_password')
+app.config['MYSQL_DB'] = os.getenv('your_database')
 
 # Creating a MySQL connection object using the above details
 mysql = pymysql.connect(
@@ -21,12 +46,18 @@ mysql = pymysql.connect(
     user=app.config['MYSQL_USER'],
     password=app.config['MYSQL_PASSWORD'],
     db=app.config['MYSQL_DB'],
-    ssl = {'ssl_ca':'/etc/ssl/cert.pem'},
+    ssl = {'ssl_ca':os.getenv('your_ssl_ca')},
     cursorclass=pymysql.cursors.DictCursor
 )
+#checks if is user in session
+@app.route('/')
+def check_session():
+  if 'username' in session:
+    return redirect(url_for('home'))
+  else:
+    return redirect(url_for('login'))
 
 # Login route to allow users to login to the web application
-@app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     msg = ''  # Initializing an empty message variable
@@ -43,7 +74,6 @@ def login():
                 session['loggedin'] = True
                 session['id'] = account['id']
                 session['username'] = account['username']
-                msg = 'Logged in successfully!'
                 return redirect(url_for('home'))  # Redirecting to the index page with a success message
             if not account :  # If the account does not exist
                 msg = 'Incorrect username / password!'
@@ -103,14 +133,18 @@ def home():
      # if the user is logged in
     with mysql.cursor() as cursor:
       cursor.execute("select * from sample")
+      cursor.execute("select * from latest_news")
       items = cursor.fetchall()
-      return render_template('index.html',items=items)
+      news = cursor.fetchall()
+      return render_template('index.html',items=items, news=news)
   else:
       # if the user is not logged in, redirect to the login page
       return redirect(url_for('login'))
   
 
-
+@app.route('/profile')
+def profile():
+  return render_template('users-profile.html') 
 
 
 if __name__ == '__main__':

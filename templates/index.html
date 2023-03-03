@@ -214,7 +214,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="{{url_for('profile')}}">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -244,7 +244,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="{{ url_for('logout') }}">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -264,7 +264,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="index.html">
+        <a class="nav-link " href="{{url_for('home')}}">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -273,21 +273,21 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
+        <a class="nav-link collapsed" href="{{url_for('profile')}}">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-register.html">
+        <a class="nav-link collapsed" href="{{url_for('register')}}">
           <i class="bi bi-card-list"></i>
           <span>Register</span>
         </a>
       </li><!-- End Register Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-login.html">
+        <a class="nav-link collapsed" href="{{url_for('login')}}">
           <i class="bi bi-box-arrow-in-right"></i>
           <span>Login</span>
         </a>
@@ -433,10 +433,12 @@
 
               <div class="news">
                 <div class="post-item clearfix">
-                  <h4><a href="#">News Heading</a></h4>
-                  <p>News content............................................</p>
+                  {% for new in news %}
+                  <h4><a href="{{new.link}}">{{new.title}}</a></h4>
+                  {% endfor %}
+                  <!-- <p>News content............................................</p> -->
                 </div>
-
+                <!--
                 <div class="post-item clearfix">
                   <h4><a href="#">News Heading</a></h4>
                   <p>News content.............................................</p>
@@ -455,8 +457,8 @@
                 <div class="post-item clearfix">
                   <h4><a href="#">News Heading</a></h4>
                   <p>News content..............................................</p>
-                </div>
-
+                </div>   
+                -->
               </div><!-- End sidebar recent posts-->
 
             </div>
