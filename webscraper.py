@@ -55,3 +55,4 @@ def scraper():
 
       # Close the MySQL connection
   mysql.close()
+delete_data()

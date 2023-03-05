@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Admin Page</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="static\img\Infoer bell.png" rel="icon">
+  <link href="static\img\Infoer bell.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+
+  <!-- Template Main CSS File -->
+  <link href="static/css/style.css" rel="stylesheet">
+
+<body>
+  {% if error %}
+        <p>{{ error }}</p>
+  {% endif %}
+  
+  <main>
+    <div class="container">
+
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+              <div class="d-flex justify-content-center py-4">
+                <a href="{{url_for('home')}}" class="logo d-flex align-items-center w-auto">
+                  <img src="static/img/logo.png" alt="">
+                  <span class="d-none d-lg-block">NoticeBoard</span>
+                </a>
+              </div><!-- End Logo -->
+
+              <div class="card mb-3">
+
+                <div class="card-body">
+
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">Admin Portal</h5>
+                    <p class="text-center small">Enter the credentials</p>
+                  </div>
+
+                  <form class="row g-3 needs-validation" action="{{ url_for('admin') }}" method="post">
+
+                    <div class="col-12">
+                      <label for="name" class="form-label">Name</label>
+                      <div class="input-group has-validation">
+                        <input type="text" name="name" class="form-control" id="name" required>
+                        <div class="invalid-feedback">Please enter name</div>
+                      </div>
+                    </div>
+                      <div class="col-12">
+                      <label for="link" class="form-label">Link</label>
+                      <div class="input-group has-validation">
+                        <input type="text" name="link" class="form-control" id="link" required>
+                        <div class="invalid-feedback">Please enter link</div>
+                      </div>
+                    </div>
+                      <div class="col-12">
+                      <label for="description" class="form-label">Description</label>
+                      <div class="input-group has-validation">
+                        <input type="text" name="description" class="form-control" id="desc" required>
+                        <div class="invalid-feedback">Please enter name</div>
+                      </div>
+                    </div>
+                    {% if msg %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ msg }}
+                    </div>
+                    {% endif %}
+                  
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100"  type="submit" >Add</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main><!-- End #main -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Template Main JS File -->
+  <script src="static/js/main.js"></script>
+
+</body>
+
+</html>

@@ -47,3 +47,28 @@
 
 
 })();
+
+//password_validation
+
+var password = document.getElementById("password")
+  , reTypePassword = document.getElementById("reTypePassword");
+
+function validatePassword(){
+  if(password.value != reTypePassword.value) {
+    reTypePassword.setCustomValidity("Passwords Don't Match");
+  } else {
+    reTypePassword.setCustomValidity('');
+  }
+}
+
+password.onchange = validatePassword;
+reTypePassword.onkeyup = validatePassword;
+
+//age
+
+$(function(){
+    var $select = $(".1-100");
+    for (i=1;i<=100;i++){
+        $select.append($('<option></option>').val(i).html(i))
+    }
+});

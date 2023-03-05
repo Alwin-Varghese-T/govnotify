@@ -24,6 +24,20 @@
   <!-- Template Main CSS File -->
   <link href="static/css/style.css" rel="stylesheet">
 
+  
+<!--age 1 to 100 -->
+  
+   <script type="text/javascript">
+        window.onload = function () {
+            var ddl = document.getElementById('mycontainer').getElementsByTagName("select")[0];
+            for (var i = 1; i <= 115; i++) {
+                var theOption = new Option;
+                theOption.text = i;
+                theOption.value = i;
+                ddl.options[i] = theOption;
+            }
+        };
+    </script>
 </head>
 
 <body>
@@ -55,7 +69,7 @@
                   <form action="{{ url_for('register') }}" method="post" class="row g-3 needs-validation" >
                     <div class="col-12">
                       <label for="yourname" class="form-label">Your Name</label>
-                      <input type="text" name="yourname" class="form-control" id="yourname" required>
+                      <input type="text" name="username" class="form-control" id="yourname" required>
                       <div class="invalid-feedback">Please, enter your name!</div>
                     </div>
 
@@ -66,15 +80,91 @@
                     </div>
 
                     <div class="col-12">
-                      <label for="username" class="form-label">Username</label>
-                        <input type="text" name="username" class="form-control" id="username" required>
-                        <div class="invalid-feedback">Please choose a username.</div>
+                      <label for="password" class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" id="password" required>
+                        <div class="invalid-feedback">Please type password.</div>
                     </div>
                     <div class="col-12">
-                      <label for="password" class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control" id="password" required>
-                      <div class="invalid-feedback">Please enter your password!</div>
+                      <label for="reTypeassword" class="form-label">Re-Type Password</label>
+                      <input type="password" name="reTypePassword" class="form-control" id="reTypePassword" required>
+                      <div class="invalid-feedback">Please enter correct password!</div>
                     </div>
+                    <div class="col-12">
+                      <div class="gender">Gender : &nbsp;&nbsp;
+                      <input type="radio" name="gender"  id="male" value="male" required>male &nbsp;&nbsp;
+                      <input type="radio" name="gender"  id="female" value="female" required>female &nbsp;&nbsp;
+                      <input type="radio" name="gender"  id="trans" value="trans" required>trans
+                      <div class="invalid-feedback">Please select any</div>
+                      </div>
+                    </div>
+                    <div class="col-12"  id="mycontainer">
+                      Age : &nbsp;
+            <select id="AgeDropdownId" name="AgeDropdown" class="AgeDropdown">
+                <option value="0"></option>
+            </select>
+                    </div>
+                    <div class="col-12">
+                      State : 
+                          <select id="state" name="state" class="state">
+                            <option value=""></option>
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+<option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+<option value="Arunachal Pradesh">Arunachal Pradesh</option>
+<option value="Assam">Assam</option>
+<option value="Bihar">Bihar</option>
+<option value="Chandigarh">Chandigarh</option>
+<option value="Chhattisgarh">Chhattisgarh</option>
+<option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
+<option value="Daman and Diu">Daman and Diu</option>
+<option value="Delhi">Delhi</option>
+<option value="Lakshadweep">Lakshadweep</option>
+<option value="Puducherry">Puducherry</option>
+<option value="Goa">Goa</option>
+<option value="Gujarat">Gujarat</option>
+<option value="Haryana">Haryana</option>
+<option value="Himachal Pradesh">Himachal Pradesh</option>
+<option value="Jammu and Kashmir">Jammu and Kashmir</option>
+<option value="Jharkhand">Jharkhand</option>
+<option value="Karnataka">Karnataka</option>
+<option value="Kerala">Kerala</option>
+<option value="Madhya Pradesh">Madhya Pradesh</option>
+<option value="Maharashtra">Maharashtra</option>
+<option value="Manipur">Manipur</option>
+<option value="Meghalaya">Meghalaya</option>
+<option value="Mizoram">Mizoram</option>
+<option value="Nagaland">Nagaland</option>
+<option value="Odisha">Odisha</option>
+<option value="Punjab">Punjab</option>
+<option value="Rajasthan">Rajasthan</option>
+<option value="Sikkim">Sikkim</option>
+<option value="Tamil Nadu">Tamil Nadu</option>
+<option value="Telangana">Telangana</option>
+<option value="Tripura">Tripura</option>
+<option value="Uttar Pradesh">Uttar Pradesh</option>
+<option value="Uttarakhand">Uttarakhand</option>
+<option value="West Bengal">West Bengal</option>
+            </select>
+                        
+                        <div class="invalid-feedback">Please select</div>
+                    </div>
+                  <div class="col-12">
+                      You belong to : 
+                          <select id="category" name="category" class="category">
+                            <option value="General">General</option>
+                            <option value="OBC">Other Backward Class (OBC)</option>
+                            <option value="SC">Scheduled Caste (SC)</option>
+                            <option value="ST">Scheduled Tribe (ST)</option>
+                          </select>
+                  </div>
+                     <div class="col-12">
+                      Marital Status : 
+                          <select id="marriage" name="marriage" class="marriage">
+                            <option value="Student">Student</option>
+                            <option value="Married">Married</option>
+                            <option value="Unmarried">Unmarried</option>
+                            <option value="Widow">Widow</option>
+                          </select>
+                  </div>
                     {% if msg %}
                       <div class="alert alert-danger" role="alert">
                         {{ msg }}

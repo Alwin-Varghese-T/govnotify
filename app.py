@@ -5,6 +5,7 @@ import re
 import os
 from pytz import timezone
 from apscheduler.schedulers.background import BackgroundScheduler
+from nlp import similarity
 
 
 #     block python file run sheduler
@@ -18,7 +19,7 @@ def run_webscraper_py():
 
 # create a scheduler
 scheduler = BackgroundScheduler(timezone=timezone('Asia/Kolkata'))
-# add job to run run_webscraper_py every 2 hours
+# add job to run run_webscraper_py every 1 hours
 scheduler.add_job(run_webscraper_py, 'interval', hours=1)
 #starts schedular
 scheduler.start()
@@ -61,18 +62,18 @@ def check_session():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     msg = ''  # Initializing an empty message variable
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+    if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
         # Retrieving username and password from the login form
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
         with mysql.cursor() as cursor:
             # Retrieving account details from the database if the username and password match
-            cursor.execute('SELECT * FROM log WHERE username = %s AND password = %s', (username, password))
+            cursor.execute('SELECT * FROM account WHERE email = %s AND password = %s', (email, password))
             account = cursor.fetchone()
             if account:  # If the account exists
                 # Creating session variables to track the user's login status
                 session['loggedin'] = True
-                session['id'] = account['id']
+                session['email'] = account['email']
                 session['username'] = account['username']
                 return redirect(url_for('home'))  # Redirecting to the index page with a success message
             if not account :  # If the account does not exist
@@ -86,7 +87,7 @@ def login():
 def logout():
     # Removing session variables to log the user out
     session.pop('loggedin', None)
-    session.pop('id', None)
+    session.pop('email', None)
     session.pop('username', None)
     return redirect(url_for('login'))  # Redirecting to the login page after logging out
 
@@ -99,9 +100,15 @@ def register():
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
+        gender = request.form['gender']
+        age = request.form['AgeDropdown']
+        state = request.form['state']
+        category = request.form['category']
+        marriage = request.form['marriage']
+        
         with mysql.cursor() as cursor:
             # Retrieving account details from the database if an account with the same username exists
-            cursor.execute('SELECT * FROM log WHERE username = %s', (username,))
+            cursor.execute('SELECT * FROM account WHERE email = %s', (email,))
             account = cursor.fetchone()
             if account:  # If an account with the same username exists
                 msg = 'Account already exists!'
@@ -116,7 +123,7 @@ def register():
                 msg = 'Please fill out the form!'
                 return render_template('pages-register.html',msg=msg)
             else:
-                cursor.execute('INSERT INTO log VALUES (NULL, %s, %s, %s)', (username, password, email))
+                cursor.execute('INSERT INTO account VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (email, username, password, gender, age, state, category, marriage))
                 mysql.commit()
                 msg = 'You have successfully registered!'
                 return redirect(url_for('login'))
@@ -129,11 +136,15 @@ def register():
 @app.route('/home')
 def home():
   # check if the user is logged in
-  if 'username' in session:
+  if 'email' in session:
      # if the user is logged in
     with mysql.cursor() as cursor:
-      cursor.execute("select * from sample")
-      items = cursor.fetchall()
+      email = session['email']
+      cursor.execute("select gender, age, state, category , marriage  from account  where email = %s", (email,))
+      user_profile = cursor.fetchone()
+      cursor.execute("select * from links")
+      links = cursor.fetchall()
+      items = similarity(user_profile,links)
       cursor.execute("select * from latest_news")
       news = cursor.fetchall()
       return render_template('index.html',items=items, news=news)
@@ -145,6 +156,19 @@ def home():
 @app.route('/profile')
 def profile():
   return render_template('users-profile.html') 
+
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
+  if request.method == 'POST' and 'name' in request.form and 'link' in request.form and 'description' in request.form:
+    name = request.form['name']
+    link = request.form['link']
+    description = request.form['description']
+
+    with mysql.cursor() as cursor:
+      cursor.execute('INSERT INTO links values(%s, %s, %s)', ( name, link, description))
+      mysql.commit()
+    
+  return render_template('admin.html')
 
 
 if __name__ == '__main__':
