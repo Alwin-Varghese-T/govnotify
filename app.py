@@ -140,13 +140,17 @@ def home():
      # if the user is logged in
     with mysql.cursor() as cursor:
       email = session['email']
+      id ='admin'
+      cursor.execute("select gender, age, state, category , marriage from priority where id= %s ",(id))
+      priority_weightage = cursor.fetchone()
       cursor.execute("select gender, age, state, category , marriage  from account  where email = %s", (email,))
       user_profile = cursor.fetchone()
       cursor.execute("select * from links")
       links = cursor.fetchall()
-      items = similarity(user_profile,links)
+      items = similarity(user_profile,links,priority_weightage)
       cursor.execute("select * from latest_news")
       news = cursor.fetchall()
+  
       return render_template('index.html',items=items, news=news)
   else:
       # if the user is not logged in, redirect to the login page
@@ -169,6 +173,24 @@ def admin():
       mysql.commit()
     
   return render_template('admin.html')
+
+@app.route('/priority' , methods=['GET', 'POST'])
+def priority():
+    
+    if request.method == 'POST' and 'genderpriority' in request.form and 'AgeDropdown' in request.form and 'state' in request.form and 'caste' in request.form and 'marriage' in request.form:
+      
+        gender = request.form['genderpriority']
+        age = request.form['AgeDropdown']
+        state = request.form['state']
+        caste = request.form['caste']
+        marriage = request.form['marriage']
+
+        with mysql.cursor() as cursor:
+          id = 'admin'
+          cursor.execute('UPDATE priority SET gender = %s, age = %s, state = %s, category = %s, marriage = %s WHERE id = %s ', (gender, age, state, caste, marriage,id))
+          mysql.commit()
+          
+    return render_template('user-priority.html')    
 
 
 if __name__ == '__main__':
