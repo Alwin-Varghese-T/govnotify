@@ -48,11 +48,11 @@ def expand_query(query):
 
 def similarity(user_profile, links):
   priority_weightage = {
-      'gender': 10,
+      'gender': 25,
       'age': 20,
       'state': 5,
       'category': 15,
-      'marriage':25
+      'marriage':15
       
   }
   user_profile_with_weightage = {user_profile [key]: priority_weightage[key] for key in user_profile}

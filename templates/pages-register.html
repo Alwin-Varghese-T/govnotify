@@ -99,13 +99,14 @@
                     </div>
                     <div class="col-12"  id="mycontainer">
                       Age : &nbsp;
-            <select id="AgeDropdownId" name="AgeDropdown" class="AgeDropdown">
+            <select id="AgeDropdownId" name="AgeDropdown" class="AgeDropdown" required>
                 <option value="0"></option>
             </select>
+                      <div class="invalid-feedback">Please select</div>
                     </div>
                     <div class="col-12">
                       State : 
-                          <select id="state" name="state" class="state">
+                          <select id="state" name="state" class="state" required>
                             <option value=""></option>
                 <option value="Andhra Pradesh">Andhra Pradesh</option>
 <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
@@ -149,21 +150,23 @@
                     </div>
                   <div class="col-12">
                       You belong to : 
-                          <select id="category" name="category" class="category">
+                          <select id="category" name="category" class="category" required>
                             <option value="General">General</option>
                             <option value="OBC">Other Backward Class (OBC)</option>
                             <option value="SC">Scheduled Caste (SC)</option>
                             <option value="ST">Scheduled Tribe (ST)</option>
                           </select>
+                    <div class="invalid-feedback">Please select</div>
                   </div>
                      <div class="col-12">
                       Marital Status : 
-                          <select id="marriage" name="marriage" class="marriage">
+                          <select id="marriage" name="marriage" class="marriage" required>
                             <option value="Student">Student</option>
                             <option value="Married">Married</option>
                             <option value="Unmarried">Unmarried</option>
                             <option value="Widow">Widow</option>
                           </select>
+                       <div class="invalid-feedback">Please select</div>
                   </div>
                     {% if msg %}
                       <div class="alert alert-danger" role="alert">
