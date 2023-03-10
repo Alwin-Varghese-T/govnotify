@@ -19,11 +19,11 @@ from webscraper import scraper
   #scraper()
 
 # create a scheduler
-scheduler = BackgroundScheduler(timezone=timezone('Asia/Kolkata'))
+#scheduler = BackgroundScheduler(timezone=timezone('Asia/Kolkata'))
 # add job to run run_webscraper_py every 1 hours
-scheduler.add_job(run_webscraper_py, 'interval', hours=1)
+#scheduler.add_job(run_webscraper_py, 'interval', hours=1)
 #starts schedular
-scheduler.start()
+#scheduler.start()
 
 
 #    end of sheduler block
