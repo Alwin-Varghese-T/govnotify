@@ -55,4 +55,5 @@ def scraper():
 
       # Close the MySQL connection
   mysql.close()
+  return(data)
 
