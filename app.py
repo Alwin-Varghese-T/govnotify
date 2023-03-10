@@ -6,16 +6,17 @@ import os
 from pytz import timezone
 from apscheduler.schedulers.background import BackgroundScheduler
 from nlp import similarity
+from webscraper import scraper
 
 
 #     block python file run sheduler
 
-def run_webscraper_py():
+#def run_webscraper_py():
 
-  from webscraper import delete_data, scraper
+  #from webscraper import delete_data, scraper
 
-  delete_data()
-  scraper()
+  #delete_data()
+  #scraper()
 
 # create a scheduler
 scheduler = BackgroundScheduler(timezone=timezone('Asia/Kolkata'))
@@ -149,7 +150,7 @@ def home():
       links = cursor.fetchall()
       items = similarity(user_profile,links,priority_weightage)
       cursor.execute("select * from latest_news")
-      news = cursor.fetchall()
+      news = scraper()
   
       return render_template('index.html',items=items, news=news)
   else:
