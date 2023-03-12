@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Signup Form</title>
+  </head>
+  <body>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('signup') }}">
+      <label for="name">Name:</label>
+      <input type="text" name="name" id="name" value="{{ name }}" required>
+
+      <br><br>
+
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" value="{{ email }}" required>
+
+      {% if email_verified %}
+        <img src="https://img.icons8.com/color/24/000000/checkmark.png" alt="verified" width="24" height="24">
+      {% else %}
+        <button type="submit" name="verify">Verify Email</button>
+        {% if otp %}
+          <br><br>
+          <label for="input_otp">Enter OTP:</label>
+          <input type="text" name="input_otp" id="input_otp" value="{{ input_otp }}" required>
+          <button type="submit" name="verify_otp">Verify OTP</button>
+        {% endif %}
+      {% endif %}
+
+      <br><br>
+
+      <label for="address">Address:</label>
+      <textarea name="address" id="address">{{ address }}</textarea>
+
+      <br><br>
+
+      <label for="phone">Phone:</label>
+      <input type="text" name="phone" id="phone" value="{{ phone }}">
+
+      <br><br>
+
+      <button type="submit" name="submit">Submit</button>
+    </form>
+  </body>
+</html>

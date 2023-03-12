@@ -9,27 +9,40 @@ from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import pymysql.cursors
+import os
 
+
+#mysql connection
+mysql = pymysql.connect(
+    host=os.getenv('your_host'),
+    user=os.getenv('your_username'),
+    password=os.getenv('your_password'),
+    db=os.getenv('your_database'),
+    ssl = {'ssl_ca':os.getenv('your_ssl_ca')},
+    cursorclass=pymysql.cursors.DictCursor
+)
+
+#implicit morphological analysis using WordNetLemmatizer
 def get_wordnet_pos(word):
-    """Map POS tag to first character used by WordNetLemmatizer"""
     tag = nltk.pos_tag([word])[0][1][0].upper()
     tag_dict = {"J": wordnet.ADJ,
                 "N": wordnet.NOUN,
                 "V": wordnet.VERB,
                 "R": wordnet.ADV}
     return tag_dict.get(tag, wordnet.NOUN)
-
+  
+#Preprocess text by tokenizing, lemmatizing, and removing stopwords
 def preprocess_text(text):
-    """Preprocess text by tokenizing, lemmatizing, and removing stopwords"""
     tokens = nltk.word_tokenize(text.lower())
     lemmatizer = WordNetLemmatizer()
     lem_tokens = [lemmatizer.lemmatize(token, get_wordnet_pos(token)) for token in tokens]
     stop_words = set(nltk.corpus.stopwords.words('english'))
     filtered_tokens = [token for token in lem_tokens if token not in stop_words]
     return " ".join(filtered_tokens)
-
+  
+#synonyms of a word using WordNet
 def get_synonyms(word):
-    """Get synonyms of a word using WordNet"""
     synonyms = set()
     for synset in wordnet.synsets(word):
         for lemma in synset.lemmas():
@@ -45,7 +58,20 @@ def expand_query(query):
         expanded_query.update(synonyms)
     return " ".join(expanded_query)
 
-def similarity(user_profile, links, priority_weightage):
+def similarity(email):
+
+  with mysql.cursor() as cursor:
+    #retrieving priority weightage from database 
+    id = 'admin'
+    cursor.execute("select gender, age, state, category , marriage from priority where id= %s ",(id))
+    priority_weightage = cursor.fetchone()
+    #retrieving user details
+    cursor.execute("select gender, age, state, category , marriage  from account  where email = %s",(email))
+    user_profile = cursor.fetchone()
+    #retrieving schemas
+    cursor.execute("select * from links")
+    links = cursor.fetchall()
+  
     # create a dictionary mapping each profile attribute to its corresponding weightage
     user_profile_with_weightage = {user_profile [key]: int(priority_weightage[key]) for key in user_profile}
     
@@ -74,7 +100,7 @@ def similarity(user_profile, links, priority_weightage):
     
   
     # select relevant links based on cosine similarity score
-    relevant_links = [{'name': link['name'], 'link': link['link'], 'score': score} for link, score in zip(links, cosine_similarities) if score > -1]
+    relevant_links = [{'name': link['name'], 'link': link['link'],'desc':link['descriptions'], 'score': score} for link, score in zip(links, cosine_similarities) if score > -1]
     #sort the relevant links based on their cosine similarity score in descending order
     relevant_links = sorted(relevant_links, key=lambda x: x['score'], reverse=True)
     #return the list of relevant links with their names, links and cosine similarity scores
