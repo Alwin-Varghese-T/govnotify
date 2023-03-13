@@ -8,3 +8,4 @@ apscheduler
 pytz
 nltk
 scikit-learn
+jellyfish

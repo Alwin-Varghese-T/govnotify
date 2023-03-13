@@ -11,6 +11,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pymysql.cursors
 import os
+import jellyfish
 
 
 #mysql connection
@@ -100,8 +101,29 @@ def similarity(email):
     
   
     # select relevant links based on cosine similarity score
-    relevant_links = [{'name': link['name'], 'link': link['link'],'desc':link['descriptions'], 'score': score} for link, score in zip(links, cosine_similarities) if score > -1]
+    relevant_links = [{'name': link['name'], 'link': link['link'],'desc':link['descriptions'], 'score': score} for link, score in zip(links, cosine_similarities) if score > 0]
     #sort the relevant links based on their cosine similarity score in descending order
     relevant_links = sorted(relevant_links, key=lambda x: x['score'], reverse=True)
     #return the list of relevant links with their names, links and cosine similarity scores
     return relevant_links
+
+
+
+def search_nlp(search_element):
+
+  with mysql.cursor() as cursor:
+    cursor.execute("select * from links")
+    links = cursor.fetchall()
+
+    matches = []
+    for link in links:
+        inp = search_element.lower()
+        lnk = link['name'].lower()
+        similarity = jellyfish.jaro_winkler(inp,lnk)
+        if similarity > 0.625: 
+            link['similarity'] = similarity
+            matches.append(link)
+    matches.sort(key=lambda x: x['similarity'], reverse=True)
+  return matches
+    
+    

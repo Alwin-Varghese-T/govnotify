@@ -72,3 +72,14 @@ $(function(){
         $select.append($('<option></option>').val(i).html(i))
     }
 });
+
+//age another demoregistration.html
+window.onload = function () {
+  var ddl = document.getElementById('mycontainer').getElementsByTagName("select")[0];
+  for (var i = 1; i <= 115; i++) {
+      var theOption = new Option;
+      theOption.text = i;
+      theOption.value = i;
+      ddl.options[i] = theOption;
+  }
+}

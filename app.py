@@ -6,7 +6,7 @@ import pymysql.cursors
 import re
 import os
 
-from nlp import similarity
+from nlp import similarity, search_nlp
 
 # Creating a Flask web application
 app = Flask(__name__)
@@ -160,13 +160,14 @@ def profile():
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
   if request.method == 'POST' and 'name' in request.form and 'link' in request.form and 'description' in request.form:
-    name = request.form['name']
-    link = request.form['link']
-    description = request.form['description']
-
+    sname = request.form['name']
+    links = request.form['link']
+    descripton = request.form['description']
+    keywords = request.form['Keywords']
+    category = request.form['category']
     with mysql.cursor() as cursor:
-      cursor.execute('INSERT INTO links values(%s, %s, %s)',
-                     (name, link, description))
+      cursor.execute('INSERT INTO schemes values(%s, %s, %s, %s, %s)',
+                     (sname, descripton, keywords, links, category))
       mysql.commit()
 
   return render_template('admin.html')
@@ -191,6 +192,18 @@ def priority():
       mysql.commit()
 
   return render_template('user-priority.html')
+
+
+@app.route('/home/search', methods=['GET', 'POST'])
+def search():
+  if 'email' in session:
+    if request.method and 'search_element' in request.form:
+      search_element = request.form['search_element']
+      sh = search_nlp(search_element)
+      return render_template('search.html',sh=sh)
+    else:
+      return redirect(url_for('login'))
+    
 
 
 if __name__ == '__main__':
