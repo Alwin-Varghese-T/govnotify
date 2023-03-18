@@ -83,3 +83,12 @@ window.onload = function () {
       ddl.options[i] = theOption;
   }
 }
+
+//dropdown list new text field
+function yesnoCheck(that) {
+    if (that.value == "Student") {
+        document.getElementById("ifStudent").style.display = "block";
+    } else {
+        document.getElementById("ifStudent").style.display = "none";
+    }
+}

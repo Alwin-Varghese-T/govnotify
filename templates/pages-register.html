@@ -160,13 +160,23 @@
                   </div>
                      <div class="col-12">
                       Marital Status : 
-                          <select id="marriage" name="marriage" class="marriage" required>
+                          <select id="marriage" name="marriage" class="marriage" onchange="yesnoCheck(this);" required>
+                          <option value="N/A"></option>
                             <option value="Student">Student</option>
                             <option value="Married">Married</option>
                             <option value="Unmarried">Unmarried</option>
                             <option value="Widow">Widow</option>
+                          </select><br>
+                       <div class="invalid-feedback">Please select</div><br>
+                       
+<div id="ifStudent" style="display: none;">
+    <label for="cat1">select one : </label> <select id="cat1" name="cat1" class="cat1" required>
+                            <option value="School">High School</option>
+                            <option value="HSE">HSE</option>
+                            <option value="UG">UG</option>
+                            <option value="PG">PG</option>
                           </select>
-                       <div class="invalid-feedback">Please select</div>
+</div></<br>
                   </div>
                     {% if msg %}
                       <div class="alert alert-danger" role="alert">
