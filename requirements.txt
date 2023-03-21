@@ -9,4 +9,3 @@ pytz
 nltk
 scikit-learn
 jellyfish
-smtplib

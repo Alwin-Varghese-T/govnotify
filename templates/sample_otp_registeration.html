@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OTP Verification</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <script>
+        $(document).ready(function(){
+
+        $('#hide_otp').hide();
+          
+            $('#send-otp').click(function(){
+                $.ajax({
+                    url: '/send_otp',
+                    type: 'POST',
+                    data: $('#otp-form').serialize(),
+                    success: function(response){
+                        if(response.status === 'success'){
+                            $('#hide_otp').show();
+                            $('#message').html(response.message);
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            });
+            $('#otp-form').submit(function(e){
+                e.preventDefault();
+                $.ajax({
+                    url: '/verify',
+                    type: 'POST',
+                    data: $('#otp-form').serialize(),
+                    success: function(response){
+                        if(response.status === 'success'){
+                            $('#hide_otp').hide();
+                            $('#message').html(response.message);
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+  
+</head>
+<body>
+    <h1>OTP Verification</h1>
+    <form id="otp-form">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <input type="button" id="send-otp" value="Send OTP">
+        <br>
+      <div id="hide_otp">
+        <label for="otp">OTP:</label>
+        <input type="text" id="otp" name="otp" required>
+        <br>
+        <input type="submit" id="verify-otp" value="Verify OTP">
+      </div>  
+    </form>
+    <div id="message"></div>
+
+</body>
+</html>

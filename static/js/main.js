@@ -92,3 +92,10 @@ function yesnoCheck(that) {
         document.getElementById("ifStudent").style.display = "none";
     }
 }
+
+//otp verification box
+
+function verify(that) {
+   
+        document.getElementById("ifVerify").style.display = "block";
+}

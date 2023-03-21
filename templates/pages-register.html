@@ -73,9 +73,20 @@
                       <div class="invalid-feedback">Please, enter your name!</div>
                     </div>
 
+
+                    
+                    
                     <div class="col-12">
                       <label for="email" class="form-label">Your Email</label>
-                      <input type="email" name="email" class="form-control" id="email" required>
+                      <input type="email" name="email" class="form-control" id="email" required><input type="button" value="verify" onclick="verify(this);">
+<div id="ifVerify" style="display: none;">
+    <label for="otp">enter otp :</label> 
+<input type="text" name="otp"><input type="button" value="submit">           </div>
+
+
+
+
+                      
                       <div class="invalid-feedback">Please enter a valid Email adddress!</div>
                     </div>
 

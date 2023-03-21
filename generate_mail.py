@@ -39,3 +39,28 @@ def bulkmail():
         for recipient in receiver:
             msg['To'] = recipient
             server.sendmail(sender, recipient, msg.as_string())
+
+
+def generate(email):
+
+    otp = secrets.randbelow(10**6)
+  
+    # Define email contents
+    sender = os.getenv('email')
+    receiver = email
+    subject = 'OTP Verification'
+    body = f'Your OTP is: {otp}'
+
+    # Create message object
+    msg = MIMEText(body)
+    msg['From'] = sender
+    msg['To'] = receiver
+    msg['Subject'] = subject
+
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+        server.sendmail(sender, receiver, msg.as_string())
+
+    print(otp)
+    return otp

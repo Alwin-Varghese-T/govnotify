@@ -1,7 +1,8 @@
 
 # Importing required modules
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from webscraper import scraper
+from generate_mail import generate
 import pymysql.cursors
 import re
 import os
@@ -10,6 +11,8 @@ from nlp import similarity, search_nlp
 
 # Creating a Flask web application
 app = Flask(__name__)
+# global dictionary to store the OTPs
+otp_store = {}
 
 # Setting a secret key to use sessions
 app.secret_key = 'os.getenv(your_secret_key)'
@@ -204,6 +207,42 @@ def search():
     else:
       return redirect(url_for('login'))
     
+
+
+
+#code for email verification
+
+
+
+
+
+@app.route('/sampleotp')
+def sampleotp():
+  return render_template('sample_otp_registeration.html')
+
+  
+@app.route('/send_otp', methods=['POST'])
+def send_otp():
+    email = request.form['email']
+    otp = generate(email)
+    otp_store[email] = otp
+    # send email here
+    message = f'Your OTP is {otp}'
+    print(message)
+    return jsonify({'status': 'success', 'message': 'OTP sent successfully'})
+
+@app.route('/verify', methods=['POST'])
+def verify_otp():
+    email = request.form['email']
+    user_otp = request.form['otp']
+    stored_otp = otp_store.get(email)
+    print(f'user OTP is {user_otp}')
+    print(f'stored OTP is {stored_otp}')
+    if stored_otp and int(stored_otp) == int(user_otp):
+        return jsonify({'status': 'success', 'message': 'OTP verified successfully'})
+    else:
+        return jsonify({'status': 'error', 'message': 'Invalid OTP'})
+
 
 
 if __name__ == '__main__':
