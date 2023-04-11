@@ -25,10 +25,11 @@
   <!-- Template Main CSS File -->
   <link href="static/css/style.css" rel="stylesheet">
 
+  <!-- Ajax -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+  
 <body>
-  {% if error %}
-        <p>{{ error }}</p>
-  {% endif %}
   
   <main>
     <div class="container">
@@ -54,6 +55,8 @@
                     <p class="text-center small">Enter the credentials</p>
                   </div>
 
+                  
+
                   <form class="row g-3 needs-validation" action="{{ url_for('admin') }}" method="post">
 
                     <div class="col-12">
@@ -63,6 +66,7 @@
                         <div class="invalid-feedback">Please enter name</div>
                       </div>
                     </div>
+                    
                       <div class="col-12">
                       <label for="link" class="form-label">Link</label>
                       <div class="input-group has-validation">
@@ -70,6 +74,7 @@
                         <div class="invalid-feedback">Please enter link</div>
                       </div>
                     </div>
+                    
                       <div class="col-12">
                       <label for="description" class="form-label">Description</label>
                       <div class="input-group has-validation">
@@ -77,6 +82,7 @@
                         <div class="invalid-feedback">Please enter description</div>
                       </div>
                     </div>
+                    
                     <div class="col-12">
                       <label for="Keywords" class="form-label">Keywords</label>
                       <div class="input-group has-validation">
@@ -84,6 +90,12 @@
                         <div class="invalid-feedback">Please enter Keywords</div>
                       </div>
                     </div>
+
+                    
+                  <div class="col-12">
+                      <button class="btn btn-primary w-100" id="predict_button" type="button" >Check</button>
+                    </div>
+                    
                      <div class="col-12">
                       Category :  
                           <select id="category" name="category" class="category" required>
@@ -95,16 +107,34 @@
                           </select>
                     <div class="invalid-feedback">Please select</div>
                   </div>
-                    {% if msg %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ msg }}
-                    </div>
-                    {% endif %}
-                  
-                    <div class="col-12">
-                      <button class="btn btn-primary w-100"  type="submit" >Add</button>
+                    
+                  <div class="col-12">
+                      <button class="btn btn-primary w-100" type="submit" >Add</button>
                     </div>
                   </form>
+
+                  <script>
+                    
+                        // Listen for predict button click
+                        $('#predict_button').click(function() {
+                            // Get the input data from the form
+                            var input_data = $('#Keywords').val();
+                            
+                            // Send an AJAX request to the Flask route to predict the output
+                            $.ajax({
+                                type: 'POST',
+                                url: '/admin',
+                                data: {input_data: input_data, button_id: 'predict_button'},
+                                success: function(response) {
+                                    // Update the dropdown box with the predicted output
+                                      $('#category').val(response.predicted_output);
+                                }
+                            });
+                        });
+        
+                  </script>
+
+                  
                 </div>
               </div>
 
@@ -125,5 +155,5 @@
   <script src="static/js/main.js"></script>
 
 </body>
-
+  
 </html>

@@ -7,7 +7,8 @@ import pymysql.cursors
 import re
 import os
 
-from nlp import similarity, search_nlp
+from nlp_cluster import similarity, search_nlp
+from nlp_classifier import predict
 
 # Creating a Flask web application
 app = Flask(__name__)
@@ -162,12 +163,21 @@ def profile():
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
-  if request.method == 'POST' and 'name' in request.form and 'link' in request.form and 'description' in request.form:
+  # to get id of button of a ajax request
+  button_id = request.form.get('button_id')
+  # to check the id and run the prediction function
+  if request.method == 'POST' and button_id == 'predict_button':
+    data1 = request.form.get('input_data')
+    predicted_output = predict(data1)
+    return jsonify({'predicted_output': predicted_output})
+  # to submit the form to the database
+  if request.method == 'POST' and 'name' in request.form and 'link' in request.form and 'description' in request.form and 'category'in request.form :
     sname = request.form['name']
     links = request.form['link']
     descripton = request.form['description']
     keywords = request.form['Keywords']
     category = request.form['category']
+    
     with mysql.cursor() as cursor:
       cursor.execute('INSERT INTO schemes values(%s, %s, %s, %s, %s)',
                      (sname, descripton, keywords, links, category))
@@ -206,7 +216,20 @@ def search():
       return render_template('search.html',sh=sh)
     else:
       return redirect(url_for('login'))
+
+
+@app.route('/image_edit')
+def image_edit():
+  if 'email' in session:
+    email = session['email']
+    with mysql.cursor() as cursor:
+      cursor.execute("select * from account  where email = %s",(email))
+      user=cursor.fetchone()
     
+    return render_template('image-edit.html',user=user)
+  else:
+    return redirect(url_for('login'))
+
 
 
 
@@ -247,3 +270,5 @@ def verify_otp():
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', debug=True)
+
+
