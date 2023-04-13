@@ -9,7 +9,7 @@ import os
 
 from nlp_cluster import similarity, search_nlp
 from nlp_classifier import predict
-from datetime import datetime, timedelta
+from datetime import timedelta
 # Creating a Flask web application
 app = Flask(__name__)
 # global dictionary to store the OTPs
@@ -79,6 +79,8 @@ def login():
         #the code below will work only if user checked checkbox
         if remember:
             session.permanent = True
+        else:
+            session.permanent = False  
         
         return redirect(url_for('home'))  # Redirecting to the index page with a success message
       if not account:  # If the account does not exist
