@@ -10,19 +10,76 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="static/img/favicon.png" rel="icon">
+  <link href="static/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="static/css/style.css" rel="stylesheet">
+
+<!--age 1 to 100 -->
+  
+   <script type="text/javascript">
+        window.onload = function () {
+            var ddl = document.getElementById('mycontainer').getElementsByTagName("select")[0];
+            for (var i = 1; i <= 115; i++) {
+                var theOption = new Option;
+                theOption.text = i;
+                theOption.value = i;
+                ddl.options[i] = theOption;
+            }
+        };
+    </script>
+
+  <!--otp check -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <script>
+        $(document).ready(function(){
+
+        $('#hide_otp').hide();
+          
+            $('#send-otp').click(function(){
+                $.ajax({
+                    url: '/send_otp',
+                    type: 'POST',
+                    data: $('#otp-form').serialize(),
+                    success: function(response){
+                        if(response.status === 'success'){
+                            $('#hide_otp').show();
+                            $('#message').html(response.message);
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            });
+            $('#otp-form').submit(function(e){
+                e.preventDefault();
+                $.ajax({
+                    url: '/verify',
+                    type: 'POST',
+                    data: $('#otp-form').serialize(),
+                    success: function(response){
+                        if(response.status === 'success'){
+                            $('#hide_otp').hide();
+                            $('#message').html(response.message);
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
 
   
 </head>
@@ -64,8 +121,20 @@
                     <br>
 
                     <div class="col-12">
+                      <div id="otp-form">
                       <label for="email" class="form-label">Your Email</label>
                       <input type="email" name="email" class="form-control" id="email" required>
+        <br>
+        <input type="button" id="send-otp" value="Send OTP">
+        <br>
+      <div id="hide_otp">
+        <label for="otp">OTP:</label>
+        <input type="text" id="otp" name="otp" required>
+        <br>
+        <input type="submit" id="verify-otp" value="Verify OTP">
+      </div>  
+    </div>
+    <div id="message"></div>
                       <div class="invalid-feedback">Please enter a valid Email adddress!</div>
                     </div>
                     <br>
@@ -162,15 +231,23 @@
                   <br>
                      <div class="col-12">
                       Marital Status : 
-                          <select id="marriage" name="marriage" class="marriage"  required>
-                            <option value=""></option>
+                          <select id="marriage" name="marriage" class="marriage" onchange="yesnoCheck(this);" required>
+                          <option value="N/A"></option>
                             <option value="Student">Student</option>
                             <option value="Married">Married</option>
                             <option value="Unmarried">Unmarried</option>
                             <option value="Widow">Widow</option>
+                          </select><br>
+                       <div class="invalid-feedback">Please select</div><br>
+                       
+<div id="ifStudent" style="display: none;">
+    <label for="cat1">select one : </label> <select id="cat1" name="cat1" class="cat1" required>
+                            <option value="School">High School</option>
+                            <option value="HSE">HSE</option>
+                            <option value="UG">UG</option>
+                            <option value="PG">PG</option>
                           </select>
-                       <div class="invalid-feedback">Please select</div>
-                  </div>
+</div></<br>
                   <button type="button" class="previous-btn">Prev</button>
       
    <!--               {% if msg %}
@@ -243,10 +320,10 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script src="static/js/main.js"></script>
 
 </body>
 

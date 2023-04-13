@@ -9,7 +9,7 @@ import os
 
 from nlp_cluster import similarity, search_nlp
 from nlp_classifier import predict
-
+from datetime import datetime, timedelta
 # Creating a Flask web application
 app = Flask(__name__)
 # global dictionary to store the OTPs
@@ -17,6 +17,17 @@ otp_store = {}
 
 # Setting a secret key to use sessions
 app.secret_key = 'os.getenv(your_secret_key)'
+ # Set the default session lifetime to 7 days if user checked the checkbox
+app.permanent_session_lifetime = timedelta(days=7)
+#it will clear all cache when user logout
+@app.after_request
+def add_cache_control(response):
+    if not session.get('user_id'):
+        # If the user is not logged in, set the cache-control header to no-cache
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Expires'] = 0
+        response.headers['Pragma'] = 'no-cache'
+    return response
 
 # Configuring the MySQL database details
 app.config['MYSQL_HOST'] = os.getenv('your_host')
@@ -53,6 +64,7 @@ def login():
     # Retrieving username and password from the login form
     email = request.form['email']
     password = request.form['password']
+    remember = request.form.get('remember')
     with mysql.cursor() as cursor:
       # Retrieving account details from the database if the username and password match
       cursor.execute(
@@ -64,8 +76,11 @@ def login():
         session['loggedin'] = True
         session['email'] = account['email']
         session['username'] = account['username']
-        return redirect(url_for(
-          'home'))  # Redirecting to the index page with a success message
+        #the code below will work only if user checked checkbox
+        if remember:
+            session.permanent = True
+        
+        return redirect(url_for('home'))  # Redirecting to the index page with a success message
       if not account:  # If the account does not exist
         msg = 'Incorrect username / password!'
         return render_template('pages-login.html', msg=msg)
@@ -266,6 +281,12 @@ def verify_otp():
     else:
         return jsonify({'status': 'error', 'message': 'Invalid OTP'})
 
+#u can create a link like this and render a page by typing 
+#the name of route(demo)  insted of login in the url of webpage
+# u can use the desired page u want for testing purpose
+@app.route('/demo', methods = ['POST','GET'])
+def reg():
+  return render_template('demoregistration.html')
 
 
 if __name__ == '__main__':
