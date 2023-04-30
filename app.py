@@ -91,7 +91,7 @@ def login():
     'pages-login.html')  # Rendering the login page with the message variable
 
 
-# Logout route to allow users to log out of the web application
+# Logout route to allow users to log out of the web application!
 @app.route('/logout')
 def logout():
   # Removing session variables to log the user out
