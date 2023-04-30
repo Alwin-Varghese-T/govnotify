@@ -64,25 +64,6 @@ function validatePassword(){
 password.onchange = validatePassword;
 reTypePassword.onkeyup = validatePassword;
 
-//age
-
-$(function(){
-    var $select = $(".1-100");
-    for (i=1;i<=100;i++){
-        $select.append($('<option></option>').val(i).html(i))
-    }
-});
-
-//age another demoregistration.html
-window.onload = function () {
-  var ddl = document.getElementById('mycontainer').getElementsByTagName("select")[0];
-  for (var i = 1; i <= 115; i++) {
-      var theOption = new Option;
-      theOption.text = i;
-      theOption.value = i;
-      ddl.options[i] = theOption;
-  }
-}
 
 //dropdown list new text field
 function yesnoCheck(that) {
@@ -99,3 +80,42 @@ function verify(that) {
    
         document.getElementById("ifVerify").style.display = "block";
 }
+
+//dropdown list new text field for category
+function categoryCheck(that) {
+  // Get all elements with class "category-block"
+  var categoryBlocks = document.getElementsByClassName("category-block");
+  
+  // Hide all category blocks
+  for (var i = 0; i < categoryBlocks.length; i++) {
+    categoryBlocks[i].style.display = "none";
+  }
+  
+  // Show the selected category block
+  if (that.value == "agriculture") {
+    document.getElementById("ifagriculture").style.display = "block";
+  } else if (that.value == "education") {
+    document.getElementById("ifeducation").style.display = "block";
+  }
+  else if (that.value == "health") {
+    document.getElementById("ifhealth").style.display = "block";
+  }
+  else if (that.value == "socialwelfare") {
+    document.getElementById("ifsocialwelfare").style.display = "block";
+  }
+}
+
+
+
+
+
+
+  /**
+   * Search bar toggle
+   */
+$('input.single-checkbox').on('change', function(evt) {
+   if($(this).siblings(':checked').length >= 5) {
+       this.checked = false;
+   }
+});
+

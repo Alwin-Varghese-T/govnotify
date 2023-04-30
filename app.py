@@ -1,4 +1,3 @@
-
 # Importing required modules
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from webscraper import scraper
@@ -17,17 +16,20 @@ otp_store = {}
 
 # Setting a secret key to use sessions
 app.secret_key = 'os.getenv(your_secret_key)'
- # Set the default session lifetime to 7 days if user checked the checkbox
+# Set the default session lifetime to 7 days if user checked the checkbox
 app.permanent_session_lifetime = timedelta(days=7)
+
+
 #it will clear all cache when user logout
 @app.after_request
 def add_cache_control(response):
-    if not session.get('user_id'):
-        # If the user is not logged in, set the cache-control header to no-cache
-        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-        response.headers['Expires'] = 0
-        response.headers['Pragma'] = 'no-cache'
-    return response
+  if not session.get('user_id'):
+    # If the user is not logged in, set the cache-control header to no-cache
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Expires'] = 0
+    response.headers['Pragma'] = 'no-cache'
+  return response
+
 
 # Configuring the MySQL database details
 app.config['MYSQL_HOST'] = os.getenv('your_host')
@@ -42,9 +44,6 @@ mysql = pymysql.connect(host=app.config['MYSQL_HOST'],
                         db=app.config['MYSQL_DB'],
                         ssl={'ssl_ca': os.getenv('your_ssl_ca')},
                         cursorclass=pymysql.cursors.DictCursor)
-
-
-
 
 
 #checks if is user in session
@@ -78,11 +77,12 @@ def login():
         session['username'] = account['username']
         #the code below will work only if user checked checkbox
         if remember:
-            session.permanent = True
+          session.permanent = True
         else:
-            session.permanent = False  
-        
-        return redirect(url_for('home'))  # Redirecting to the index page with a success message
+          session.permanent = False
+
+        return redirect(url_for(
+          'home'))  # Redirecting to the index page with a success message
       if not account:  # If the account does not exist
         msg = 'Incorrect username / password!'
         return render_template('pages-login.html', msg=msg)
@@ -156,10 +156,10 @@ def home():
     # if the user is logged in
     items = similarity(email)
     with mysql.cursor() as cursor:
-      cursor.execute("select * from account  where email = %s",(email))
-      user=cursor.fetchone()
+      cursor.execute("select * from account  where email = %s", (email))
+      user = cursor.fetchone()
       news = scraper()
-      return render_template('index.html',items=items,news=news,user=user)
+      return render_template('index.html', items=items, news=news, user=user)
   else:
     # if the user is not logged in, redirect to the login page
     return redirect(url_for('login'))
@@ -170,10 +170,10 @@ def profile():
   if 'email' in session:
     email = session['email']
     with mysql.cursor() as cursor:
-      cursor.execute("select * from account  where email = %s",(email))
-      user=cursor.fetchone()
-    
-    return render_template('users-profile.html',user=user)
+      cursor.execute("select * from account  where email = %s", (email))
+      user = cursor.fetchone()
+
+    return render_template('users-profile.html', user=user)
   else:
     return redirect(url_for('login'))
 
@@ -188,13 +188,13 @@ def admin():
     predicted_output = predict(data1)
     return jsonify({'predicted_output': predicted_output})
   # to submit the form to the database
-  if request.method == 'POST' and 'name' in request.form and 'link' in request.form and 'description' in request.form and 'category'in request.form :
+  if request.method == 'POST' and 'name' in request.form and 'link' in request.form and 'description' in request.form and 'category' in request.form:
     sname = request.form['name']
     links = request.form['link']
     descripton = request.form['description']
     keywords = request.form['Keywords']
     category = request.form['category']
-    
+
     with mysql.cursor() as cursor:
       cursor.execute('INSERT INTO schemes values(%s, %s, %s, %s, %s)',
                      (sname, descripton, keywords, links, category))
@@ -230,7 +230,7 @@ def search():
     if request.method and 'search_element' in request.form:
       search_element = request.form['search_element']
       sh = search_nlp(search_element)
-      return render_template('search.html',sh=sh)
+      return render_template('search.html', sh=sh)
     else:
       return redirect(url_for('login'))
 
@@ -240,58 +240,61 @@ def image_edit():
   if 'email' in session:
     email = session['email']
     with mysql.cursor() as cursor:
-      cursor.execute("select * from account  where email = %s",(email))
-      user=cursor.fetchone()
-    
-    return render_template('image-edit.html',user=user)
+      cursor.execute("select * from account  where email = %s", (email))
+      user = cursor.fetchone()
+
+    return render_template('image-edit.html', user=user)
   else:
     return redirect(url_for('login'))
 
 
-
-
 #code for email verification
-
-
-
 
 
 @app.route('/sampleotp')
 def sampleotp():
   return render_template('sample_otp_registeration.html')
 
-  
+
 @app.route('/send_otp', methods=['POST'])
 def send_otp():
-    email = request.form['email']
-    otp = generate(email)
-    otp_store[email] = otp
-    # send email here
-    message = f'Your OTP is {otp}'
-    print(message)
-    return jsonify({'status': 'success', 'message': 'OTP sent successfully'})
+  email = request.form['email']
+  otp = generate(email)
+  otp_store[email] = otp
+  # send email here
+  message = f'Your OTP is {otp}'
+  print(message)
+  return jsonify({'status': 'success', 'message': 'OTP sent successfully'})
+
 
 @app.route('/verify', methods=['POST'])
 def verify_otp():
-    email = request.form['email']
-    user_otp = request.form['otp']
-    stored_otp = otp_store.get(email)
-    print(f'user OTP is {user_otp}')
-    print(f'stored OTP is {stored_otp}')
-    if stored_otp and int(stored_otp) == int(user_otp):
-        return jsonify({'status': 'success', 'message': 'OTP verified successfully'})
-    else:
-        return jsonify({'status': 'error', 'message': 'Invalid OTP'})
+  email = request.form['email']
+  user_otp = request.form['otp']
+  stored_otp = otp_store.get(email)
+  print(f'user OTP is {user_otp}')
+  print(f'stored OTP is {stored_otp}')
+  if stored_otp and int(stored_otp) == int(user_otp):
+    return jsonify({
+      'status': 'success',
+      'message': 'OTP verified successfully'
+    })
+  else:
+    return jsonify({'status': 'error', 'message': 'Invalid OTP'})
 
-#u can create a link like this and render a page by typing 
+
+#u can create a link like this and render a page by typing
 #the name of route(demo)  insted of login in the url of webpage
 # u can use the desired page u want for testing purpose
-@app.route('/demo', methods = ['POST','GET'])
+@app.route('/demo', methods=['POST', 'GET'])
 def reg():
   return render_template('demoregistration.html')
 
 
+@app.route('/demo1', methods=['POST', 'GET'])
+def demo1():
+  return render_template('demoreg.html')
+
+
 if __name__ == '__main__':
   app.run(host='0.0.0.0', debug=True)
-
-

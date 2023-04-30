@@ -24,20 +24,6 @@
   <!-- Template Main CSS File -->
   <link href="static/css/style.css" rel="stylesheet">
 
-  
-<!--age 1 to 100 -->
-  
-   <script type="text/javascript">
-        window.onload = function () {
-            var ddl = document.getElementById('mycontainer').getElementsByTagName("select")[0];
-            for (var i = 1; i <= 115; i++) {
-                var theOption = new Option;
-                theOption.text = i;
-                theOption.value = i;
-                ddl.options[i] = theOption;
-            }
-        };
-    </script>
 </head>
 
 <body>
@@ -111,64 +97,15 @@
                     <div class="col-12"  id="mycontainer">
                       Age : &nbsp;
             <select id="AgeDropdownId" name="AgeDropdown" class="AgeDropdown" required>
-                <option value="0"></option>
+                <option value="0-6">0 - 6</option>
+              <option value="7-12">7 - 12</option>
+              <option value="13-20">13 - 20</option>
+              <option value="21-30">21 - 30</option>
+              <option value="31-58">31 - 58</option>
+              <option value="59">59 and above</option>
             </select>
                       <div class="invalid-feedback">Please select</div>
                     </div>
-                    <div class="col-12">
-                      State : 
-                          <select id="state" name="state" class="state" required>
-                            <option value=""></option>
-                <option value="Andhra Pradesh">Andhra Pradesh</option>
-<option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-<option value="Arunachal Pradesh">Arunachal Pradesh</option>
-<option value="Assam">Assam</option>
-<option value="Bihar">Bihar</option>
-<option value="Chandigarh">Chandigarh</option>
-<option value="Chhattisgarh">Chhattisgarh</option>
-<option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
-<option value="Daman and Diu">Daman and Diu</option>
-<option value="Delhi">Delhi</option>
-<option value="Lakshadweep">Lakshadweep</option>
-<option value="Puducherry">Puducherry</option>
-<option value="Goa">Goa</option>
-<option value="Gujarat">Gujarat</option>
-<option value="Haryana">Haryana</option>
-<option value="Himachal Pradesh">Himachal Pradesh</option>
-<option value="Jammu and Kashmir">Jammu and Kashmir</option>
-<option value="Jharkhand">Jharkhand</option>
-<option value="Karnataka">Karnataka</option>
-<option value="Kerala">Kerala</option>
-<option value="Madhya Pradesh">Madhya Pradesh</option>
-<option value="Maharashtra">Maharashtra</option>
-<option value="Manipur">Manipur</option>
-<option value="Meghalaya">Meghalaya</option>
-<option value="Mizoram">Mizoram</option>
-<option value="Nagaland">Nagaland</option>
-<option value="Odisha">Odisha</option>
-<option value="Punjab">Punjab</option>
-<option value="Rajasthan">Rajasthan</option>
-<option value="Sikkim">Sikkim</option>
-<option value="Tamil Nadu">Tamil Nadu</option>
-<option value="Telangana">Telangana</option>
-<option value="Tripura">Tripura</option>
-<option value="Uttar Pradesh">Uttar Pradesh</option>
-<option value="Uttarakhand">Uttarakhand</option>
-<option value="West Bengal">West Bengal</option>
-            </select>
-                        
-                        <div class="invalid-feedback">Please select</div>
-                    </div>
-                  <div class="col-12">
-                      Caste : 
-                          <select id="category" name="category" class="category" required>
-                            <option value="General">General</option>
-                            <option value="OBC">Other Backward Class (OBC)</option>
-                            <option value="SC">Scheduled Caste (SC)</option>
-                            <option value="ST">Scheduled Tribe (ST)</option>
-                          </select>
-                    <div class="invalid-feedback">Please select</div>
-                  </div>
                      <div class="col-12">
                       Marital Status : 
                           <select id="marriage" name="marriage" class="marriage" onchange="yesnoCheck(this);" required>
@@ -177,6 +114,9 @@
                             <option value="Married">Married</option>
                             <option value="Unmarried">Unmarried</option>
                             <option value="Widow">Widow</option>
+                             <option value="Divorced">Divorced</option>
+                             <option value="Seperated">Seperated</option>
+                            
                           </select><br>
                        <div class="invalid-feedback">Please select</div><br>
                        
@@ -189,6 +129,133 @@
                           </select>
 </div></<br>
                   </div>
+                     <div class="col-12">
+                      <div class="seniority">Are you a senior citizen : &nbsp;&nbsp;
+                      <input type="radio" name="seniority"  id="yes" value="yes" required>Yes &nbsp;&nbsp;
+                      <input type="radio" name="seniority"  id="no" value="no" required>No
+                      <div class="invalid-feedback">Please select any</div>
+                      </div>
+                    </div>
+                        <div class="col-12">
+                      You belong to : &nbsp;
+            <select id="belong" name="belong" class="belong" required>
+                <option value="general">General</option>
+              <option value="sc">SC</option>
+              <option value="st">ST</option>
+              <option value="obc">OBC</option>
+            </select>
+                      <div class="invalid-feedback">Please select</div>
+                    </div>
+                    <div class="col-12">
+                      <div class="differentlyabled">Are you differently abled : &nbsp;&nbsp;
+                      <input type="radio" name="differentlyabled"  id="yes" value="yes" required>Yes &nbsp;&nbsp;
+                      <input type="radio" name="differentlyabled"  id="no" value="no" required>No
+                      <div class="invalid-feedback">Please select any</div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="bpl">Do you belong to BPL community : &nbsp;&nbsp;
+                      <input type="radio" name="bpl"  id="yes" value="yes" required>Yes &nbsp;&nbsp;
+                      <input type="radio" name="bpl"  id="no" value="no" required>No
+                      <div class="invalid-feedback">Please select any</div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="income">Your family income : &nbsp;&nbsp;
+                      <input type="radio" name="income"  id="1lakh" value="1lakh" required>less than 1 lakh &nbsp;&nbsp;
+                      <input type="radio" name="income"  id="2.5lakh" value="2.5lakh" required>1 - 2.5 lakh
+                        &nbsp;&nbsp;
+                      <input type="radio" name="income"  id="5lakh" value="5lakh" required>2.5 - 5 lakh
+                        &nbsp;&nbsp;
+                      <input type="radio" name="income"  id="above5" value="above5" required>above 5
+                      <div class="invalid-feedback">Please select any</div>
+                      </div>
+                    </div>
+                      <div class="col-12">
+                      select category : 
+                          <select id="category" name="category" class="category" onchange="categoryCheck(this);"  required>
+                          <option value="N/A"></option>
+                            <option value="agriculture">AGRICULTURE</option>
+                            <option value="education">EDUCATION</option>
+                            <option value="health">HEALTH</option>
+                            <option value="socialwelfare">SOCIAL WELFARE</option>                            
+                          </select><br>
+                       <div class="invalid-feedback">Please select</div><br>
+                       <div id="ifagriculture" class="category-block" style="display: none;">
+    select : <input class="single-checkbox"type="checkbox" name="farmer"  id="farmer" value="farmer">FARMER &nbsp;
+             <input class="single-checkbox"type="checkbox" name="farmer-group"  id="farmer-group" value="farmer-group">FARMER GROUP &nbsp;
+             <input class="single-checkbox"type="checkbox" name="financial-assistance"  id="financial-assistance" value="financial-assistance">FINANCIAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="crop-insurance"  id="crop-insurance" value="crop-insurance">CROP INSURANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="fruits"  id="fruits" value="fruits">FRUITS &nbsp;
+             <input class="single-checkbox"type="checkbox" name="vegetables"  id="vegetables" value="vegetables">VEGETABLES &nbsp;
+             <input class="single-checkbox"type="checkbox" name="compensation"  id="compensation" value="compensation">COMPENSATION &nbsp;
+             <input class="single-checkbox"type="checkbox" name="damage"  id="damage" value="damage">DAMAGE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="farm"  id="farm" value="farm">FARM &nbsp;
+             <input class="single-checkbox"type="checkbox" name="soil"  id="soil" value="soil">SOIL &nbsp;
+             <input class="single-checkbox"type="checkbox" name="land"  id="land" value="land">LAND &nbsp;
+             <input class="single-checkbox"type="checkbox" name="landholder"  id="landholder" value="landholder">LANDHOLDER &nbsp;
+             <input class="single-checkbox"type="checkbox" name="cultivable"  id="cultivable" value="cultivable">CULTIVABLE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="fertilizer"  id="fertilizer" value="fertilizer">FERTILIZER &nbsp;
+             <input class="single-checkbox"type="checkbox" name="pesticides"  id="pesticides" value="pesticides">PESTICIDES &nbsp;
+</div></<br>
+                         <div id="ifeducation" class="category-block" style="display: none;">
+    select : <input class="single-checkbox"type="checkbox" name="college"  id="college" value="college">COLLEGE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="school"  id="school" value="school">SCHOOL &nbsp;
+             <input class="single-checkbox"type="checkbox" name="student"  id="student" value="student">STUDENT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="financial-assistance"  id="financial-assistance" value="financial-assistance">FINANCIAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="scholarship"  id="scholarship" value="scholarship">SCHOLARSHIP &nbsp;
+             <input class="single-checkbox"type="checkbox" name="educational-assistance"  id="educational-assistance" value="educational-assistance">EDUCATIONAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="blind"  id="blind" value="blind">BLIND &nbsp;
+             <input class="single-checkbox"type="checkbox" name="deaf"  id="deaf" value="deaf">DEAF &nbsp;
+             <input class="single-checkbox"type="checkbox" name="high-school"  id="high-school" value="high-school">HIGH SCHOOL &nbsp;
+             <input class="single-checkbox"type="checkbox" name="hs"  id="hs" value="hs">HIGHER SECONDARY &nbsp;
+             <input class="single-checkbox"type="checkbox" name="ug"  id="ug" value="ug">UG &nbsp;
+             <input class="single-checkbox"type="checkbox" name="pg"  id="pg" value="pg">PG &nbsp;
+             <input class="single-checkbox"type="checkbox" name="degree"  id="degree" value="degree">DEGREE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="diploma"  id="diploma" value="diploma">DIPLOMA &nbsp;
+             <input class="single-checkbox"type="checkbox" name="professional-course"  id="professional-course" value="professional-course">PROFFESIONAL COURSE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="abroad"  id="abroad" value="abroad">ABROAD &nbsp;
+             <input class="single-checkbox"type="checkbox" name="govt"  id="govt" value="govt">GOVT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="aided"  id="aided" value="aided">AIDED &nbsp;
+             <input class="single-checkbox"type="checkbox" name="self"  id="self" value="self">SELF FINANCING SCHOOL &nbsp;
+             <input class="single-checkbox"type="checkbox" name="sebc"  id="sebc" value="sebc">SEBC &nbsp;
+             <input class="single-checkbox"type="checkbox" name="competitive-exam"  id="competitive-exam" value="competitive-exam">COMPETITIVE EXAM &nbsp;
+</div></<br>
+                        <div id="ifhealth" class="category-block" style="display: none;">
+    select : <input class="single-checkbox"type="checkbox" name="children"  id="children" value="children">CHILDREN &nbsp;
+             <input class="single-checkbox"type="checkbox" name="orphan"  id="orphan" value="orphan">ORPHAN &nbsp;
+             <input class="single-checkbox"type="checkbox" name="financial-assistance"  id="financial-assistance" value="financial-assistance">FINANCIAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="senior-citizen"  id="senior-citizen" value="senior-citizen">SENIOR CITIZEN &nbsp;
+             <input class="single-checkbox"type="checkbox" name="mentally-challenged"  id="mentally-challenged" value="mentally-challenged">MENTALLY CHALLENGED &nbsp;
+             <input class="single-checkbox"type="checkbox" name="care-givers"  id="care-givers" value="care-givers">CARE GIVERS &nbsp;
+             <input class="single-checkbox"type="checkbox" name="patient"  id="patient" value="patient">PATIENT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="mother"  id="mother" value="mother">MOTHER &nbsp;
+             <input class="single-checkbox"type="checkbox" name="child"  id="child" value="child">CHILD &nbsp;
+             <input class="single-checkbox"type="checkbox" name="pregnant"  id="pregnant" value="pregnant">PREGNANT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="dental-treatment"  id="dental-treatment" value="dental-treatment">DENTAL TREATMENT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="medical-treatment"  id="medical-treatment" value="medical-treatment">MEDICAL TREATMENT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="handicapped"  id="handicapped" value="handicapped">HANDICAPPED &nbsp;
+             <input class="single-checkbox"type="checkbox" name="health-insurance"  id="health-insurance" value="health-insurance">HEALTH INSURANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="maternal-disability"  id="maternal-disability" value="maternal-disability">MATERNAL DISABILITY &nbsp;
+             <input class="single-checkbox"type="checkbox" name="unwed-mother"  id="unwed-mother" value="unwed-mother">UNWED MOTHER &nbsp;
+</div></<br>
+
+<div id="ifsocialwelfare" class="category-block" style="display: none;">
+    select : <input class="single-checkbox"type="checkbox" name="destitute"  id="destitute" value="destitute">DESTITUTE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="financial-assistance"  id="financial-assistance" value="financial-assistance">FINANCIAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="women"  id="women" value="women">WOMEN &nbsp;
+             <input class="single-checkbox"type="checkbox" name="legal-aid"  id="legal-aid" value="legal-aid">LEGAL AID &nbsp;
+             <input class="single-checkbox"type="checkbox" name="loan"  id="loan" value="loan">LOAN &nbsp;
+             <input class="single-checkbox"type="checkbox" name="entrepreneur"  id="entrepreneur" value="entrepreneur">ENTREPRENEUR &nbsp;
+             <input class="single-checkbox"type="checkbox" name="self-employment"  id="self-employment" value="self-employment">SELF EMPLOYMENT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="self-help-group"  id="self-help-group" value="self-help-group">SELF HELP GROUP &nbsp;
+             <input class="single-checkbox"type="checkbox" name="marriage-assistance"  id="marriage-assistance" value="marriage-assistance">MARRIAGE ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="srs"  id="srs" value="srs">SRS &nbsp;
+             <input class="single-checkbox"type="checkbox" name="housing"  id="housing" value="housing">HOUSING &nbsp;
+             <input class="single-checkbox"type="checkbox" name="house-renovation"  id="house-renovation" value="house-renovation">HOUSE RENOVATION &nbsp;
+             <input class="single-checkbox"type="checkbox" name="tribal"  id="tribal" value="tribal">TRIBAL &nbsp;
+</div></<br>
+                    </div>
                     {% if msg %}
                       <div class="alert alert-danger" role="alert">
                         {{ msg }}
@@ -221,6 +288,41 @@
 
   <!-- Template Main JS File -->
   <script src="static/js/main.js"></script>
+  <!-- Example HTML for checkbox group -->
+
+<script>
+  // Add event listener to each checkbox
+  var checkboxes = document.querySelectorAll('input[type=checkbox]');
+  checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+      checkLimit(checkboxes);
+    });
+  });
+  
+  // Function to check number of ticked checkboxes
+  function checkLimit(checkboxes) {
+    var checkedCount = 0;
+    checkboxes.forEach(function(checkbox) {
+      if (checkbox.checked) {
+        checkedCount++;
+      }
+    });
+    
+    // Disable remaining unchecked checkboxes if limit is reached
+    if (checkedCount == 5) {
+      checkboxes.forEach(function(checkbox) {
+        if (!checkbox.checked) {
+          checkbox.disabled = true;
+        }
+      });
+    } else {
+      checkboxes.forEach(function(checkbox) {
+        checkbox.disabled = false;
+      });
+    }
+  }
+</script>
+
 
 </body>
 
