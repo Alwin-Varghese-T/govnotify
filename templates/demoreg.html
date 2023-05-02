@@ -1,192 +1,335 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-  .error {
-  border-color: red;
-}
-</style>
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Pages / Register NoticeBoard Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="static/img/favicon.png" rel="icon">
+  <link href="static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="static/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <main>
+    <div class="container">
+
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+              <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                  <img src="static/img/logo.png" alt="">
+                  <span class="d-none d-lg-block">NoticeBoard</span>
+                </a>
+              </div><!-- End Logo -->
+
+              <div class="card mb-3">
+
+                <div class="card-body">
+
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
+                    <p class="text-center small">Enter your personal details to create account</p>
+                  </div>
+
+                  <!-- Form beign -->
+                  
+                  <form action="{{ url_for('demo1') }}" method="post" class="row g-3 needs-validation" >
+                    <div class="col-12">
+                      <label for="yourname" class="form-label">Your Name</label>
+                      <input type="text" name="username" class="form-control" id="yourname" required>
+                      <div class="invalid-feedback">Please, enter your name!</div>
+                    </div>
+
+
+                    
+                    
+                    <div class="col-12">
+                      <label for="email" class="form-label">Your Email</label>
+                      <input type="email" name="email" class="form-control" id="email" required>
+                      <!--
+                      <input type="button" value="verify" onclick="verify(this);">
+                  <div id="ifVerify" style="display: none;">
+                  <label for="otp">enter otp :</label> 
+            <input type="text" name="otp"><input type="button" value="submit">   
+                    -->
+                    </div>
+
+
+
+
+                      
+                      <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="password" class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" id="password" required>
+                        <div class="invalid-feedback">Please type password.</div>
+                    </div>
+                    <div class="col-12">
+                      <label for="reTypeassword" class="form-label">Re-Type Password</label>
+                      <input type="password" name="reTypePassword" class="form-control" id="reTypePassword" required>
+                      <div class="invalid-feedback">Please enter correct password!</div>
+                    </div>
+                    <div class="col-12">
+                      <div class="gender">Gender : &nbsp;&nbsp;
+                      <input type="radio" name="gender"  id="male" value="male" required>male &nbsp;&nbsp;
+                      <input type="radio" name="gender"  id="female" value="female" required>female &nbsp;&nbsp;
+                      <input type="radio" name="gender"  id="trans" value="trans" required>trans
+                      <div class="invalid-feedback">Please select any</div>
+                      </div>
+                    </div>
+                    <div class="col-12"  id="mycontainer">
+                      Age : &nbsp;
+            <select id="AgeDropdownId" name="AgeDropdown" class="AgeDropdown" required>
+                <option value="0-6">0 - 6</option>
+              <option value="7-12">7 - 12</option>
+              <option value="13-20">13 - 20</option>
+              <option value="21-30">21 - 30</option>
+              <option value="31-58">31 - 58</option>
+              <option value="59">59 and above</option>
+            </select>
+                      <div class="invalid-feedback">Please select</div>
+                    </div>
+                     <div class="col-12">
+                      Marital Status : 
+                          <select id="marriage" name="marriage" class="marriage" onchange="yesnoCheck(this);" required>
+                          <option value="N/A"></option>
+                            <option value="Student">Student</option>
+                            <option value="Married">Married</option>
+                            <option value="Unmarried">Unmarried</option>
+                            <option value="Widow">Widow</option>
+                             <option value="Divorced">Divorced</option>
+                             <option value="Seperated">Seperated</option>
+                            
+                          </select><br>
+                       <div class="invalid-feedback">Please select</div><br>
+                       
+<div id="ifStudent" style="display: none;">
+    <label for="cat1">select one : </label> <select id="cat1" name="cat1" class="cat1" required>
+                            <option value="School">High School</option>
+                            <option value="HSE">HSE</option>
+                            <option value="UG">UG</option>
+                            <option value="PG">PG</option>
+                          </select>
+</div></<br>
+                  </div>
+                     <div class="col-12">
+                      <div class="seniority">Are you a senior citizen : &nbsp;&nbsp;
+                      <input type="radio" name="seniority"  id="yes" value="yes" required>Yes &nbsp;&nbsp;
+                      <input type="radio" name="seniority"  id="no" value="no" required>No
+                      <div class="invalid-feedback">Please select any</div>
+                      </div>
+                    </div>
+                        <div class="col-12">
+                      You belong to : &nbsp;
+            <select id="belong" name="belong" class="belong" required>
+                <option value="general">General</option>
+              <option value="sc">SC</option>
+              <option value="st">ST</option>
+              <option value="obc">OBC</option>
+            </select>
+                      <div class="invalid-feedback">Please select</div>
+                    </div>
+                    <div class="col-12">
+                      <div class="differentlyabled">Are you differently abled : &nbsp;&nbsp;
+                      <input type="radio" name="differentlyabled"  id="yes" value="yes" required>Yes &nbsp;&nbsp;
+                      <input type="radio" name="differentlyabled"  id="no" value="no" required>No
+                      <div class="invalid-feedback">Please select any</div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="bpl">Do you belong to BPL community : &nbsp;&nbsp;
+                      <input type="radio" name="bpl"  id="yes" value="yes" required>Yes &nbsp;&nbsp;
+                      <input type="radio" name="bpl"  id="no" value="no" required>No
+                      <div class="invalid-feedback">Please select any</div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="income">Your family income : &nbsp;&nbsp;
+                      <input type="radio" name="income"  id="1lakh" value="1lakh" required>less than 1 lakh &nbsp;&nbsp;
+                      <input type="radio" name="income"  id="2.5lakh" value="2.5lakh" required>1 - 2.5 lakh
+                        &nbsp;&nbsp;
+                      <input type="radio" name="income"  id="5lakh" value="5lakh" required>2.5 - 5 lakh
+                        &nbsp;&nbsp;
+                      <input type="radio" name="income"  id="above5" value="above5" required>above 5
+                      <div class="invalid-feedback">Please select any</div>
+                      </div>
+                    </div>
+                      <div class="col-12">
+                      select category : 
+                          <select id="category" name="category" class="category" onchange="categoryCheck(this);"  required>
+                          <option value="N/A"></option>
+                            <option value="agriculture">AGRICULTURE</option>
+                            <option value="education">EDUCATION</option>
+                            <option value="health">HEALTH</option>
+                            <option value="socialwelfare">SOCIAL WELFARE</option>                            
+                          </select><br>
+                       <div class="invalid-feedback">Please select</div><br>
+                       <div id="ifagriculture" class="category-block" style="display: none;">
+    select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="farmer" value="farmer">FARMER &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="farmer-group" value="farmer-group">FARMER GROUP &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial-assistance">FINANCIAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="crop-insurance" value="crop-insurance">CROP INSURANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="fruits" value="fruits">FRUITS &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="vegetables" value="vegetables">VEGETABLES &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="compensation" value="compensation">COMPENSATION &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="damage" value="damage">DAMAGE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="farm" value="farm">FARM &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="soil" value="soil">SOIL &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="land" value="land">LAND &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="landholder" value="landholder">LANDHOLDER &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="cultivable" value="cultivable">CULTIVABLE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="fertilizer" value="fertilizer">FERTILIZER &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="pesticides" value="pesticides">PESTICIDES &nbsp;
+</div></<br>
+                         <div id="ifeducation" class="category-block" style="display: none;">
+    select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="college" value="college">COLLEGE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="school" value="school">SCHOOL &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="student" value="student">STUDENT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial-assistance">FINANCIAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="scholarship" value="scholarship">SCHOLARSHIP &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="educational-assistance" value="educational-assistance">EDUCATIONAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="blind" value="blind">BLIND &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="deaf" value="deaf">DEAF &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="high-school" value="high-school">HIGH SCHOOL &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="hs" value="hs">HIGHER SECONDARY &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="ug" value="ug">UG &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="pg" value="pg">PG &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="degree" value="degree">DEGREE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="diploma" value="diploma">DIPLOMA &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="professional-course" value="professional-course">PROFFESIONAL COURSE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="abroad" value="abroad">ABROAD &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="govt" value="govt">GOVT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="aided" value="aided">AIDED &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="self" value="self">SELF FINANCING SCHOOL &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="sebc" value="sebc">SEBC &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="competitive-exam" value="competitive-exam">COMPETITIVE EXAM &nbsp;
+</div></<br>
+                        <div id="ifhealth" class="category-block" style="display: none;">
+    select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="children" value="children">CHILDREN &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="orphan" value="orphan">ORPHAN &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial-assistance">FINANCIAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="senior-citizen" value="senior-citizen">SENIOR CITIZEN &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="mentally-challenged" value="mentally-challenged">MENTALLY CHALLENGED &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="care-givers" value="care-givers">CARE GIVERS &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="patient" value="patient">PATIENT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="mother" value="mother">MOTHER &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="child" value="child">CHILD &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="pregnant" value="pregnant">PREGNANT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="dental-treatment" value="dental-treatment">DENTAL TREATMENT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="medical-treatment" value="medical-treatment">MEDICAL TREATMENT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="handicapped" value="handicapped">HANDICAPPED &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="health-insurance" value="health-insurance">HEALTH INSURANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="maternal-disability" value="maternal-disability">MATERNAL DISABILITY &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="unwed-mother" value="unwed-mother">UNWED MOTHER &nbsp;
+</div></<br>
+
+<div id="ifsocialwelfare" class="category-block" style="display: none;">
+    select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="destitute" value="destitute">DESTITUTE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial-assistance">FINANCIAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="women" value="women">WOMEN &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="legal-aid" value="legal-aid">LEGAL AID &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="loan" value="loan">LOAN &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="entrepreneur" value="entrepreneur">ENTREPRENEUR &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="self-employment" value="self-employment">SELF EMPLOYMENT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="self-help-group" value="self-help-group">SELF HELP GROUP &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="marriage-assistance" value="marriage-assistance">MARRIAGE ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="srs" value="srs">SRS &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="housing" value="housing">HOUSING &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="house-renovation" value="house-renovation">HOUSE RENOVATION &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="tribal" value="tribal">TRIBAL &nbsp;
+</div></<br>
+                    </div>
+                    {% if msg %}
+                      <div class="alert alert-danger" role="alert">
+                        {{ msg }}
+                      </div>
+                    {% endif %}
+                    
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                    </div>
+                    <div class="col-12">
+                      <p class="small mb-0">Already have an account? <a href="{{url_for('login')}}">Log in</a></p>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main><!-- End #main -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="static/js/main.js"></script>
+  <!-- Example HTML for checkbox group -->
+
 <script>
-$(document).ready(function() {
-  // Hide all form blocks except the first one
-  $('.form-block:not(:first)').hide();
-  $('#hide_otp').hide();
-  // Function to send otp
-  $('#send-otp').click(function(){
-    var currentBlock = $(this).closest('.form-block');
-    var requiredField_email = currentBlock.find(':input[data-name="email"][required]');
-  
-    if(requiredField_email=='')
-    {
-      
-    }
-    else
-    {
-        $.ajax({
-            url: '/send_otp',
-            type: 'POST',
-            data: $('#register-form').serialize(),
-            success: function(response){
-                if(response.status === 'success'){
-                    $('#hide_otp').show();
-                    $('#message').html(response.message);
-                } else {
-                    alert(response.message);
-                }
-            }
-          });
-      }
-  });
-  //funtion to verify otp
-  $('#verify-otp').click(function(){
-    
-    $.ajax({
-      url: '/verify',
-      type: 'POST',
-      data: $('#register-form').serialize(),
-      success: function(response){
-        if(response.status === 'success'){
-          $('#hide_otp').hide();
-          $('#message').html(response.message);
-        } else {
-          alert(response.message);
-        }
-      }
+  // Add event listener to each checkbox
+  var checkboxes = document.querySelectorAll('input[type=checkbox]');
+  checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+      checkLimit(checkboxes);
     });
   });
-  // Handle the "Next" button clicks
-  $('.next').click(function() {
-    // Get the current form block
-    var currentBlock = $(this).closest('.form-block');
+  
+  // Function to check number of ticked checkboxes
+  function checkLimit(checkboxes) {
+    var checkedCount = 0;
+    checkboxes.forEach(function(checkbox) {
+      if (checkbox.checked) {
+        checkedCount++;
+      }
+    });
     
-    // Check if all the required fields are filled
-    var requiredFields = currentBlock.find(':input[required]');
-    if (requiredFields.filter(function() { return this.value == ''; }).length == 0) {
-      // Remove any existing error styles
-      requiredFields.removeClass('error');
-      
-      // Hide the current form block and show the next one
-      currentBlock.hide().next('.form-block').fadeIn();
-    } else {
-      // Highlight the missing required fields in red
-      requiredFields.removeClass('error');
-      requiredFields.filter(function() { return this.value == ''; }).addClass('error');
-      
-      // Scroll to the first missing required field
-      $('html, body').animate({
-        scrollTop: requiredFields.filter(function() { return this.value == ''; }).first().offset().top - 50
-      }, 500);
-      
-      // Prevent the form from navigating to the next block
-      return false;
-    }
-  });
-  
-  // Handle the "Prev" button clicks
-  $('.prev').click(function() {
-    // Hide the current form block and show the previous one
-    $(this).closest('.form-block').hide().prev('.form-block').fadeIn();
-  });
-  
-  // Handle the form submission
-  $('#register-form').submit(function(event) {
-    // Check if all the required fields are filled
-    var requiredFields = $(this).find(':input[required]');
-    if (requiredFields.filter(function() { return this.value == ''; }).length == 0) {
-      // Remove any existing error styles
-      requiredFields.removeClass('error');
-      
-      // Submit the form data using AJAX
-      $.ajax({
-        url: $(this).attr('action'),
-        type: $(this).attr('method'),
-        data: $(this).serialize(),
-        success: function() {
-          // Show a success message
-          alert('Form submitted successfully!');
-        },
-        error: function() {
-          // Show an error message
-          alert('Error submitting form!');
+    // Disable remaining unchecked checkboxes if limit is reached
+    if (checkedCount == 5) {
+      checkboxes.forEach(function(checkbox) {
+        if (!checkbox.checked) {
+          checkbox.disabled = true;
         }
       });
     } else {
-      // Highlight the missing required fields in red
-      requiredFields.filter(function() { return this.value == ''; }).addClass('error');
-      
-      // Scroll to the first missing required field
-      $('html, body').animate({
-        scrollTop: requiredFields.filter(function() { return this.value == ''; }).first().offset().top - 50
-      }, 500);
-      
-      // Prevent the form from submitting
-      return false;
+      checkboxes.forEach(function(checkbox) {
+        checkbox.disabled = false;
+      });
     }
-  });
-});
-
-
+  }
 </script>
 
-<form id="register-form">
 
-  
-  <!-- 1st form block -->
-  <div class="form-block" id="block1">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required >
-    <br>
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required data-name="email">
-    <input type="button" id="send-otp" value="Send OTP">
-    <br>
-     <!-- otp block -->
-      <div id="hide_otp">
-        <label for="otp">OTP:</label>
-        <input type="text" id="otp" name="otp" required data-name="otp">
-        <br>
-        <input type="button" id="verify-otp" value="Verify OTP">
-      </div>  
-    
-    <button type="button" class="next">Next</button>
-  </div>
+</body>
 
-
-
-  
-  <!--2nd form block -->
-  <div class="form-block" id="block2">
-    <label for="age">Age:</label>
-    <input type="number" id="age" name="age" required>
-    <br>
-    <label for="address">Address:</label>
-    <input type="text" id="address" name="address" required>
-    <br>
-    <button type="button" class="prev">Prev</button>
-    <button type="button" class="next">Next</button>
-  </div>
-
-
-  
-  <!-- 3rd form block -->
-  <div class="form-block" id="block3">
-    <label for="phone">Phone:</label>
-    <input type="text" id="phone" name="phone" required>
-    <br>
-    <label for="message">Message:</label>
-    <textarea id="message" name="message" required></textarea>
-    <br>
-    <button type="button" class="prev">Prev</button>
-    <button type="button" class="next">Next</button>
-  </div>
-
-
-  
-  <!-- 4th form block -->
-  <div class="form-block" id="block4">
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
-    <br>
-    <button type="button" class="prev">Prev</button>
-    <button type="submit">Submit</button>
-  </div>
-</form>
+</html>

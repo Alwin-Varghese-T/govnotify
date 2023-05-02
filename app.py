@@ -3,22 +3,23 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from webscraper import scraper
 from generate_mail import generate
 import pymysql.cursors
-import re
 import os
 
 from nlp_cluster import similarity, search_nlp
 from nlp_classifier import predict
 from datetime import timedelta
+
 # Creating a Flask web application
 app = Flask(__name__)
+
 # global dictionary to store the OTPs
 otp_store = {}
 
 # Setting a secret key to use sessions
 app.secret_key = 'os.getenv(your_secret_key)'
+
 # Set the default session lifetime to 7 days if user checked the checkbox
 app.permanent_session_lifetime = timedelta(days=7)
-
 
 #it will clear all cache when user logout
 @app.after_request
@@ -30,21 +31,15 @@ def add_cache_control(response):
     response.headers['Pragma'] = 'no-cache'
   return response
 
-
-# Configuring the MySQL database details
-app.config['MYSQL_HOST'] = os.getenv('your_host')
-app.config['MYSQL_USER'] = os.getenv('your_username')
-app.config['MYSQL_PASSWORD'] = os.getenv('your_password')
-app.config['MYSQL_DB'] = os.getenv('your_database')
-
-# Creating a MySQL connection object using the above details
-mysql = pymysql.connect(host=app.config['MYSQL_HOST'],
-                        user=app.config['MYSQL_USER'],
-                        password=app.config['MYSQL_PASSWORD'],
-                        db=app.config['MYSQL_DB'],
-                        ssl={'ssl_ca': os.getenv('your_ssl_ca')},
-                        cursorclass=pymysql.cursors.DictCursor)
-
+#mysql connection
+mysql = pymysql.connect(
+    host=os.getenv('your_host'),
+    user=os.getenv('your_username'),
+    password=os.getenv('your_password'),
+    db=os.getenv('your_database'),
+    ssl = {'ssl_ca':os.getenv('your_ssl_ca')},
+    cursorclass=pymysql.cursors.DictCursor
+)
 
 #checks if is user in session
 @app.route('/')
@@ -67,7 +62,7 @@ def login():
     with mysql.cursor() as cursor:
       # Retrieving account details from the database if the username and password match
       cursor.execute(
-        'SELECT * FROM account WHERE email = %s AND password = %s ',
+        'SELECT * FROM accounts WHERE email = %s AND password = %s ',
         (email, password))
       account = cursor.fetchone()
       if account:  # If the account exists
@@ -113,31 +108,30 @@ def register():
     email = request.form['email']
     gender = request.form['gender']
     age = request.form['AgeDropdown']
-    state = request.form['state']
-    category = request.form['category']
+
     marriage = request.form['marriage']
+    seniorty = request.form['seniority']
+    belong = request.form['belong']
+    diff = request.form['differentlyabled']
+    ration = request.form['bpl']
+    income = request.form['income']
+    notify=request.form['notifications']
+    category = request.form['category']
+
+    checkbox_values_list = request.form.getlist('checkboxes')
+    checkbox = ",".join(checkbox_values_list)
 
     with mysql.cursor() as cursor:
       # Retrieving account details from the database if an account with the same username exists
-      cursor.execute('SELECT * FROM account WHERE email = %s', (email, ))
+      cursor.execute('SELECT * FROM accounts WHERE email = %s', (email, ))
       account = cursor.fetchone()
       if account:  # If an account with the same username exists
         msg = 'Account already exists!'
         return render_template('pages-register.html', msg=msg)
-      elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):  # If email is invalid
-        msg = 'Invalid email address!'
-        return render_template('pages-register.html', msg=msg)
-      elif not re.match(r'[A-Za-z0-9]+',
-                        username):  # If username contains invalid characters
-        msg = 'Username must contain only characters and numbers!'
-        return render_template('pages-register.html', msg=msg)
-      elif not username or not password or not email:  # If any of the fields are empty
-        msg = 'Please fill out the form!'
-        return render_template('pages-register.html', msg=msg)
       else:
         cursor.execute(
-          'INSERT INTO account VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
-          (email, username, password, gender, age, state, category, marriage))
+          'INSERT INTO accounts VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
+          (username,email, password, gender, age, marriage, seniorty, belong, diff, ration, income, category, checkbox, notify))
         mysql.commit()
         msg = 'You have successfully registered!'
         return redirect(url_for('login'))
@@ -154,12 +148,12 @@ def home():
   if 'email' in session:
     email = session['email']
     # if the user is logged in
-    items = similarity(email)
+    cat_links ,other_links = similarity(email)
     with mysql.cursor() as cursor:
-      cursor.execute("select * from account  where email = %s", (email))
+      cursor.execute("select * from accounts  where email = %s", (email))
       user = cursor.fetchone()
       news = scraper()
-      return render_template('index.html', items=items, news=news, user=user)
+      return render_template('index.html',cat_links=cat_links,other_links=other_links,news=news,user=user)
   else:
     # if the user is not logged in, redirect to the login page
     return redirect(url_for('login'))
@@ -170,7 +164,7 @@ def profile():
   if 'email' in session:
     email = session['email']
     with mysql.cursor() as cursor:
-      cursor.execute("select * from account  where email = %s", (email))
+      cursor.execute("select * from accounts  where email = %s", (email))
       user = cursor.fetchone()
 
     return render_template('users-profile.html', user=user)
@@ -230,7 +224,11 @@ def search():
     if request.method and 'search_element' in request.form:
       search_element = request.form['search_element']
       sh = search_nlp(search_element)
-      return render_template('search.html', sh=sh)
+      with mysql.cursor() as cursor:
+        email = session['email']
+        cursor.execute("select * from accounts  where email = %s", (email))
+        user = cursor.fetchone()
+        return render_template('search.html', sh=sh,user=user)
     else:
       return redirect(url_for('login'))
 
@@ -240,7 +238,7 @@ def image_edit():
   if 'email' in session:
     email = session['email']
     with mysql.cursor() as cursor:
-      cursor.execute("select * from account  where email = %s", (email))
+      cursor.execute("select * from accounts  where email = %s", (email))
       user = cursor.fetchone()
 
     return render_template('image-edit.html', user=user)
@@ -283,17 +281,12 @@ def verify_otp():
     return jsonify({'status': 'error', 'message': 'Invalid OTP'})
 
 
-#u can create a link like this and render a page by typing
-#the name of route(demo)  insted of login in the url of webpage
-# u can use the desired page u want for testing purpose
-@app.route('/demo', methods=['POST', 'GET'])
-def reg():
-  return render_template('demoregistration.html')
 
 
-@app.route('/demo1', methods=['POST', 'GET'])
-def demo1():
-  return render_template('demoreg.html')
+@app.route('/pdf')
+def pdf():
+  user = ""
+  return render_template('pdf.html', user=user)
 
 
 if __name__ == '__main__':

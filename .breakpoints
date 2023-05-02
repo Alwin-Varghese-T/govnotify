@@ -8,19 +8,11 @@
         "index": 485
       }
     ],
-    "static/js/main.js": [
-      {
-        "id": "094a2bde-e717-4d0c-bfb3-bfa604f9f18e",
-        "line": 42,
-        "version": 794,
-        "index": 847
-      }
-    ],
     "templates/pages-login.html": [
       {
         "id": "38653dd1-e8fd-462d-97df-dfdd12c46202",
         "line": 73,
-        "version": 570,
+        "version": 573,
         "index": 3155
       }
     ]

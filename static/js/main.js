@@ -66,6 +66,7 @@ reTypePassword.onkeyup = validatePassword;
 
 
 //dropdown list new text field
+/*
 function yesnoCheck(that) {
     if (that.value == "Student") {
         document.getElementById("ifStudent").style.display = "block";
@@ -73,6 +74,7 @@ function yesnoCheck(that) {
         document.getElementById("ifStudent").style.display = "none";
     }
 }
+*/
 
 //otp verification box
 
