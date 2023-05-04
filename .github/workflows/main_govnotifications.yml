@@ -28,8 +28,6 @@ jobs:
        #   source /path/to/new/venv/bin/activate
       - name: upgrade pip
         run: pip install --upgrade pip
-             pip install pymysql
-             pip install pymysqlpool
         
       - name: Install dependencies
         run: pip install -r requirements.txt
