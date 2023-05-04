@@ -1,0 +1,88 @@
+
+
+
+                    DATA FLOW DIAGRAM
+                  ---------------------
+
+      +-------------------------+
+      |         search_nlp      |
+      +-------------------------+
+                | Input: search_element
+                v
+      +-------------------------+
+      |     Fetch all schemes    |
+      +-------------------------+
+                | Output: results
+                v
+      +-------------------------+
+      |    Initialize thresholds |
+      +-------------------------+
+                | Output: title_threshold, desc_threshold
+                v
+      +-------------------------+
+      |    Perform fuzzy search  |
+      +-------------------------+
+                | Output: matching_schemes
+                v
+      +-------------------------+
+      |    Remove duplicates     |
+      +-------------------------+
+                | Output: unique_matching_schemes
+                v
+      +-------------------------+
+      |   Sort matching schemes  |
+      +-------------------------+
+                | Output: unique_matching_schemes
+                v
+      +-------------------------+
+      |   Return search results  |
+      +-------------------------+
+                | Output: unique_matching_schemes
+                v
+
+
+
+                         FLOW CHART
+                      ----------------
+
+          Start
+          |
+          v
+          Query database for all schemes
+          |
+          v
+          Initialize search term, title threshold, and description threshold
+          |
+          v
+          Loop through each scheme in the database
+          |-----v
+          |     Calculate title score using fuzzy string matching
+          |     |
+          |     v
+          |     If title score is above title threshold
+          |     |-----v
+          |     |     Add scheme to matching_schemes list with title score
+          |     |-----|
+          |     |
+          |     v
+          |     Calculate description score using fuzzy string matching
+          |     |
+          |     v
+          |     If description score is above description threshold
+          |     |-----v
+          |     |     Add scheme to matching_schemes list with description score
+          |     |-----|
+          |     |
+          |-----|
+          |
+          v
+          Remove duplicates from matching_schemes using a set
+          |
+          v
+          Sort matching_schemes by score in descending order
+          |
+          v
+          Return unique_matching_schemes list
+          |
+          v
+          End

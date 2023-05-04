@@ -102,7 +102,7 @@ function categoryCheck(that) {
   else if (that.value == "health") {
     document.getElementById("ifhealth").style.display = "block";
   }
-  else if (that.value == "socialwelfare") {
+  else if (that.value == "social welfare") {
     document.getElementById("ifsocialwelfare").style.display = "block";
   }
 }

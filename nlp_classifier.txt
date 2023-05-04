@@ -1,0 +1,83 @@
+
+                        DATA FLOW DIAGRAM
+                      ----------------------
+
+       +---------------+                   +---------------------+
+       |               |                   |                     |
+       |    Database   +------------------->      Python Code     |
+       |               |                   |                     |
+       +---------------+                   +---------------------+
+                                                 |
+                                                 | Fetch data from database
+                                                 |
+                                                 v
+       +---------------+                   +---------------------+
+       |               |                   |                     |
+       |  Pre-Process  +-------------------> Convert to Feature   |
+       |               |                   |     Vectors         |
+       +---------------+                   +---------------------+
+                                                 |
+                                                 | Split data into training
+                                                 | and testing sets
+                                                 |
+                                                 v
+       +---------------+                   +---------------------+
+       |               |                   |                     |
+       |   Train SVM   +------------------->  Evaluate Performance|
+       |               |                   |                     |
+       +---------------+                   +---------------------+
+                                                 |
+                                                 | Use trained SVM to
+                                                 | predict category of new data
+                                                 |
+                                                 v
+       +---------------+                   +---------------------+
+       |               |                   |                     |
+       |    Input      +------------------->      Output         |
+       |    Data       |                   |                     |
+       +---------------+                   +---------------------+
+
+
+
+
+
+                            FLOW CHART
+                          --------------
+
+        Start
+        |
+        |__ Connect to MySQL database
+        |   |
+        |   |__ Check if connection successful
+        |       |
+        |       |__ If connection successful:
+        |               Fetch data from the database
+        |               |
+        |               |__ Preprocess the data
+        |               |   |
+        |               |   |__ Loop through data:
+        |               |           Remove commas and add spaces
+        |               |
+        |               |__ Convert the data into feature vectors
+        |               |__ Split the data into training and testing sets
+        |               |
+        |               |__ Train the SVM classifier
+        |               |
+        |               |__ Evaluate the performance of the classifier on the testing set
+        |               |
+        |               |__ Take input data
+        |               |   |
+        |               |   |__ Preprocess the input data
+        |               |   |__ Convert the input data into feature vectors
+        |               |   |
+        |               |   |__ Use the trained SVM classifier to predict the category of the input data
+        |               |   |
+        |               |   |__ Display the predicted category
+        |               |
+        |               |__ End
+        |
+        |__ If connection unsuccessful:
+        |       Display error message
+        |
+        |__ End
+        
