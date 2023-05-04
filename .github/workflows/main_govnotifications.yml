@@ -20,15 +20,20 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v1
         with:
-          python-version: '3.9.16'
+          python-version: '3.10.8'
 
       #- name: Create and start virtual environment
       #  run: |
       #    /opt/hostedtoolcache/Python/3.9.16/x64/bin/python -m venv /path/to/new/venv
        #   source /path/to/new/venv/bin/activate
-      
+      - name: upgrade pip
+        run: pip install --upgrade pip
+             pip install pymysql
+             pip install pymysqlpool
+        
       - name: Install dependencies
         run: pip install -r requirements.txt
+        
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       
