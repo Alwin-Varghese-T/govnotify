@@ -1,13 +1,16 @@
 # Importing required modules
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from webscraper import scraper
-from generate_mail import generate
+from generate_mail import generate,bulkmail
+from pymysqlpool import ConnectionPool
 import pymysql.cursors
 import os
+import threading
 
 from nlp_cluster import similarity, search_nlp
 from nlp_classifier import predict
-from datetime import timedelta
+from datetime import datetime, timedelta
+import time
 
 # Creating a Flask web application
 app = Flask(__name__)
@@ -31,15 +34,19 @@ def add_cache_control(response):
     response.headers['Pragma'] = 'no-cache'
   return response
 
-#mysql connection
-mysql = pymysql.connect(
+#mysql pool connection
+pool =ConnectionPool(
+    size=5,
+    name='flask_pool',
     host=os.getenv('your_host'),
     user=os.getenv('your_username'),
     password=os.getenv('your_password'),
     db=os.getenv('your_database'),
     ssl = {'ssl_ca':os.getenv('your_ssl_ca')},
-    cursorclass=pymysql.cursors.DictCursor
+    cursorclass=pymysql.cursors.DictCursor,
+    autocommit=True
 )
+mysql = pool.get_connection()
 
 #checks if is user in session
 @app.route('/')
@@ -59,6 +66,7 @@ def login():
     email = request.form['email']
     password = request.form['password']
     remember = request.form.get('remember')
+    
     with mysql.cursor() as cursor:
       # Retrieving account details from the database if the username and password match
       cursor.execute(
@@ -132,7 +140,7 @@ def register():
         cursor.execute(
           'INSERT INTO accounts VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
           (username,email, password, gender, age, marriage, seniorty, belong, diff, ration, income, category, checkbox, notify))
-        mysql.commit()
+      
         msg = 'You have successfully registered!'
         return redirect(url_for('login'))
   elif request.method == 'POST':  # If request method is POST but fields are empty
@@ -152,8 +160,12 @@ def home():
     with mysql.cursor() as cursor:
       cursor.execute("select * from accounts  where email = %s", (email))
       user = cursor.fetchone()
+      one_week_ago = datetime.now() - timedelta(days=7)
+      query = f"SELECT * FROM latest_links WHERE created_at >= '{one_week_ago}' ORDER BY created_at DESC"
+      cursor.execute(query)
+      latest_links =cursor.fetchall()
       news = scraper()
-      return render_template('index.html',cat_links=cat_links,other_links=other_links,news=news,user=user)
+      return render_template('index.html',cat_links=cat_links,other_links=other_links,news=news,user=user,latest_links=latest_links)
   else:
     # if the user is not logged in, redirect to the login page
     return redirect(url_for('login'))
@@ -192,7 +204,9 @@ def admin():
     with mysql.cursor() as cursor:
       cursor.execute('INSERT INTO schemes values(%s, %s, %s, %s, %s)',
                      (sname, descripton, keywords, links, category))
-      mysql.commit()
+      cursor.execute("select email from accounts where notify = yes and category =%s",(category))
+      mail_address = cursor.fetchall()
+      bulkmail(mail_address)
 
   return render_template('admin.html')
 
@@ -213,12 +227,12 @@ def priority():
       cursor.execute(
         'UPDATE priority SET gender = %s, age = %s, state = %s, category = %s, marriage = %s WHERE id = %s ',
         (gender, age, state, caste, marriage, id))
-      mysql.commit()
+    
 
   return render_template('user-priority.html')
 
 
-@app.route('/home/search', methods=['GET', 'POST'])
+@app.route('/search', methods=['GET', 'POST'])
 def search():
   if 'email' in session:
     if request.method and 'search_element' in request.form:
@@ -288,6 +302,32 @@ def pdf():
   user = ""
   return render_template('pdf.html', user=user)
 
+#delete the links from latest_links table
+def delete_expired_links():
+    conn = pool.get_connection()
+    while True:
+        try:
+            # delete rows that were created more than a week ago
+            one_week_ago = datetime.now() - timedelta(days=7)
+            with conn.cursor() as cursor:
+                query = f"DELETE FROM latest_links WHERE created_at < '{one_week_ago}'"
+                cursor.execute(query)
+        except Exception as e:
+            # handle any exceptions that may occur
+            print(f"Error deleting expired links: {e}")
+
+        # sleep until midnight
+        now = datetime.now()
+        tomorrow = datetime.combine(now.date() + timedelta(days=1), datetime.min.time())
+        time_to_sleep = (tomorrow - now).total_seconds()
+        time.sleep(time_to_sleep)
+    conn.close()
+
+
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', debug=True)
+  # start the deletion thread
+    deletion_thread = threading.Thread(target=delete_expired_links)
+    deletion_thread.start()
+  # run the Flask app
+    app.run(host='0.0.0.0', debug=True)

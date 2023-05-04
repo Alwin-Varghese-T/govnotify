@@ -6,8 +6,9 @@ from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pymysql.cursors
+from pymysqlpool import ConnectionPool
 import os
-import jellyfish
+from rapidfuzz import process, fuzz
 
 # Download necessary NLTK resources
 nltk.download('punkt')
@@ -17,15 +18,19 @@ nltk.download('wordnet')
 nltk.download('stopwords')
 
 
-#mysql connection
-mysql = pymysql.connect(
+#mysql pool connection
+pool =ConnectionPool(
+    size=5,
+    name='flask_pool',
     host=os.getenv('your_host'),
     user=os.getenv('your_username'),
     password=os.getenv('your_password'),
     db=os.getenv('your_database'),
     ssl = {'ssl_ca':os.getenv('your_ssl_ca')},
-    cursorclass=pymysql.cursors.DictCursor
+    cursorclass=pymysql.cursors.DictCursor,
+    autocommit=True
 )
+mysql = pool.get_connection()
 
 
 # Define the preprocess_text function to tokenize, lemmatize, and remove stopwords
@@ -103,19 +108,37 @@ def similarity(email):
        
         return links_on_selected_category, other_links
 
+
 def search_nlp(search_element):
 
   with mysql.cursor() as cursor:
     cursor.execute("select * from schemes")
-    links = cursor.fetchall()
+    results = cursor.fetchall()
 
-    matches = []
-    for link in links:
-        inp = search_element.lower()
-        lnk = link['sname'].lower() + link['descripton'].lower()
-        similarity = jellyfish.jaro_winkler(inp,lnk)
-        if similarity > 0.4: 
-            link['similarity'] = similarity
-            matches.append(link)
-    matches.sort(key=lambda x: x['similarity'], reverse=True)
-  return matches   
+    search_term = search_element
+    title_threshold = 10
+    desc_threshold = 60
+
+    # Use rapidfuzz to match search term with title and description columns
+    matching_schemes = []
+    for r in results:
+        title_score = fuzz.token_sort_ratio(search_term, r['sname'])
+        if title_score >= title_threshold:
+            matching_schemes.append({'title': r['sname'], 'description': r['descripton'], 'link': r['links'], 'score': title_score})
+        else:
+            desc_score = fuzz.token_sort_ratio(search_term, r['descripton'])
+            if desc_score >= desc_threshold:
+                matching_schemes.append({'title': r['sname'], 'description': r['descripton'], 'link': r['links'], 'score': desc_score})
+    
+    # Remove duplicates by using a set to store matching scheme names
+    matching_schemes_set = set()
+    unique_matching_schemes = []
+    for scheme in matching_schemes:
+        if scheme['title'] not in matching_schemes_set:
+            matching_schemes_set.add(scheme['title'])
+            unique_matching_schemes.append(scheme)
+    
+    # Sort matching schemes by score in descending order
+    unique_matching_schemes = sorted(unique_matching_schemes, key=lambda x: x['score'], reverse=True)
+    
+  return unique_matching_schemes

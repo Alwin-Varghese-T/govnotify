@@ -90,19 +90,19 @@
                       <div class="gender">Gender : &nbsp;&nbsp;
                       <input type="radio" name="gender"  id="male" value="male" required>male &nbsp;&nbsp;
                       <input type="radio" name="gender"  id="female" value="female" required>female &nbsp;&nbsp;
-                      <input type="radio" name="gender"  id="trans" value="trans" required>trans
+                      <input type="radio" name="gender"  id="trans" value="transgender" required>trans
                       <div class="invalid-feedback">Please select any</div>
                       </div>
                     </div>
                     <div class="col-12"  id="mycontainer">
                       Age : &nbsp;
             <select id="AgeDropdownId" name="AgeDropdown" class="AgeDropdown" required>
-                <option value="0-6">0 - 6</option>
-              <option value="7-12">7 - 12</option>
-              <option value="13-20">13 - 20</option>
-              <option value="21-30">21 - 30</option>
-              <option value="31-58">31 - 58</option>
-              <option value="59">59 and above</option>
+                <option value="age below 5">0 - 5</option>
+              <option value="age below 15">6 - 15</option>
+              <option value="age below 30">15 - 30</option>
+              <option value="age below 50">31 - 50</option>
+			  <option value="age under 65">51 - 65</option>
+              <option value="65 and above">65 and above</option>
             </select>
                       <div class="invalid-feedback">Please select</div>
                     </div>
@@ -121,7 +121,7 @@
                   </div>
                      <div class="col-12">
                       <div class="seniority">Are you a senior citizen : &nbsp;&nbsp;
-                      <input type="radio" name="seniority"  id="yes" value="yes" required>Yes &nbsp;&nbsp;
+                      <input type="radio" name="seniority"  id="yes" value="senior citizen" required>Yes &nbsp;&nbsp;
                       <input type="radio" name="seniority"  id="no" value="no" required>No
                       <div class="invalid-feedback">Please select any</div>
                       </div>
@@ -130,14 +130,16 @@
                       You belong to : &nbsp;
             <select id="belong" name="belong" class="belong" required>
                 <option value="general">General</option>
-              <option value="sc-st">SC/ST</option>
-              <option value="obc-oec">OBC/OEC</option>
+              <option value="sc">SC</option>
+			  <option value="st">ST</option>
+              <option value="obc">OBC</option>
+			  <option value="oec">OEC</option>
             </select>
                       <div class="invalid-feedback">Please select</div>
                     </div>
                     <div class="col-12">
                       <div class="differentlyabled">Are you differently abled : &nbsp;&nbsp;
-                      <input type="radio" name="differentlyabled"  id="yes" value="yes" required>Yes &nbsp;&nbsp;
+                      <input type="radio" name="differentlyabled"  id="yes" value="differently abled" required>Yes &nbsp;&nbsp;
                       <input type="radio" name="differentlyabled"  id="no" value="no" required>No
                       <div class="invalid-feedback">Please select any</div>
                       </div>
@@ -145,13 +147,13 @@
                     <div class="col-12">
                       <div class="bpl">Do you belong to BPL community : &nbsp;&nbsp;
                       <input type="radio" name="bpl"  id="yes" value="bpl" required>Yes &nbsp;&nbsp;
-                      <input type="radio" name="bpl"  id="no" value="apl" required>No
+                      <input type="radio" name="bpl"  id="no" value="no" required>No
                       <div class="invalid-feedback">Please select any</div>
                       </div>
                     </div>
                     <div class="col-12">
                       <div class="income">Your family income : &nbsp;&nbsp;
-                      <input type="radio" name="income"  id="1lakh" value="1lakh" required>less than 1 lakh &nbsp;&nbsp;
+                      <input type="radio" name="income"  id="1lakh" value="financial assistance" required>less than 1 lakh &nbsp;&nbsp;
                       <input type="radio" name="income"  id="2.5lakh" value="2.5lakh" required>1 - 2.5 lakh
                         &nbsp;&nbsp;
                       <input type="radio" name="income"  id="5lakh" value="5lakh" required>2.5 - 5 lakh
@@ -192,57 +194,57 @@
     select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="college" value="college">COLLEGE &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="school" value="school">SCHOOL &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="student" value="student">STUDENT &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial-assistance">FINANCIAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial assistance">FINANCIAL ASSISTANCE &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="scholarship" value="scholarship">SCHOLARSHIP &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="educational-assistance" value="educational-assistance">EDUCATIONAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="educational-assistance" value="educational assistance">EDUCATIONAL ASSISTANCE &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="blind" value="blind">BLIND &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="deaf" value="deaf">DEAF &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="high-school" value="high-school">HIGH SCHOOL &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="hs" value="hs">HIGHER SECONDARY &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="high-school" value="high school">HIGH SCHOOL &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="hs" value="higher secondary">HIGHER SECONDARY &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="ug" value="ug">UG &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="pg" value="pg">PG &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="degree" value="degree">DEGREE &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="diploma" value="diploma">DIPLOMA &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="professional-course" value="professional-course">PROFFESIONAL COURSE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="professional-course" value="professional course">PROFFESIONAL COURSE &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="abroad" value="abroad">ABROAD &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="govt" value="govt">GOVT &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="aided" value="aided">AIDED &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="self" value="self">SELF FINANCING SCHOOL &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="sebc" value="sebc">SEBC &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="competitive-exam" value="competitive-exam">COMPETITIVE EXAM &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="competitive-exam" value="competitive exam">COMPETITIVE EXAM &nbsp;
 </div></<br>
                         <div id="ifhealth" class="category-block" style="display: none;">
     select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="children" value="children">CHILDREN &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="orphan" value="orphan">ORPHAN &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial-assistance">FINANCIAL ASSISTANCE &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="senior-citizen" value="senior-citizen">SENIOR CITIZEN &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="mentally-challenged" value="mentally-challenged">MENTALLY CHALLENGED &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="care-givers" value="care-givers">CARE GIVERS &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial assistance">FINANCIAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="senior-citizen" value="senior citizen">SENIOR CITIZEN &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="mentally-challenged" value="mentally challenged">MENTALLY CHALLENGED &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="care-givers" value="care givers">CARE GIVERS &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="patient" value="patient">PATIENT &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="mother" value="mother">MOTHER &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="child" value="child">CHILD &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="pregnant" value="pregnant">PREGNANT &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="dental-treatment" value="dental-treatment">DENTAL TREATMENT &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="medical-treatment" value="medical-treatment">MEDICAL TREATMENT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="dental-treatment" value="dental treatment">DENTAL TREATMENT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="medical-treatment" value="medical treatment">MEDICAL TREATMENT &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="handicapped" value="handicapped">HANDICAPPED &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="health-insurance" value="health-insurance">HEALTH INSURANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="health-insurance" value="health insurance">HEALTH INSURANCE &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="maternal-disability" value="maternal-disability">MATERNAL DISABILITY &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="unwed-mother" value="unwed-mother">UNWED MOTHER &nbsp;
 </div></<br>
 
 <div id="ifsocialwelfare" class="category-block" style="display: none;">
     select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="destitute" value="destitute">DESTITUTE &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial-assistance">FINANCIAL ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial assistance">FINANCIAL ASSISTANCE &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="women" value="women">WOMEN &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="legal-aid" value="legal-aid">LEGAL AID &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="legal-aid" value="legal aid">LEGAL AID &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="loan" value="loan">LOAN &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="entrepreneur" value="entrepreneur">ENTREPRENEUR &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="self-employment" value="self-employment">SELF EMPLOYMENT &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="self-help-group" value="self-help-group">SELF HELP GROUP &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="marriage-assistance" value="marriage-assistance">MARRIAGE ASSISTANCE &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="self-employment" value="self employment">SELF EMPLOYMENT &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="self-help-group" value="self help group">SELF HELP GROUP &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="marriage-assistance" value="marriage assistance">MARRIAGE ASSISTANCE &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="srs" value="srs">SRS &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="housing" value="housing">HOUSING &nbsp;
-             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="house-renovation" value="house-renovation">HOUSE RENOVATION &nbsp;
+             <input class="single-checkbox"type="checkbox" name="checkboxes"  id="house-renovation" value="house renovation">HOUSE RENOVATION &nbsp;
              <input class="single-checkbox"type="checkbox" name="checkboxes"  id="tribal" value="tribal">TRIBAL &nbsp;
 </div></<br>
                           <!-- Example HTML for checkbox group -->

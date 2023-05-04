@@ -13,13 +13,14 @@ smtp_password = os.getenv('epsd')
 
 
 
-def bulkmail():
+def bulkmail(mail_adress):
     # Define email contents
     sender = os.getenv('email')
-    receiver = ['noticeboard@mystc.tech','noticeboard@mystc.tech']
+    receiver = [email['email'] for email in mail_adress]
     subject = 'Subject of the email'
     body = 'Body of the email'
-    body_html = '<html><body><h1>Body of the email in HTML</h1></body></html>'
+    
+    body_html = '<html><body><h1>HI</h1></body></html>'
     
     # Create message object
     msg = MIMEMultipart()

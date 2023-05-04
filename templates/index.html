@@ -24,7 +24,7 @@
 
   <!-- Template Main CSS File -->
   <link href="static/css/style.css" rel="stylesheet">
-
+  <script src="static/js/anime.min.js"></script>
 </head>
 
 <body>
@@ -41,7 +41,7 @@
     </div><!-- End Logo -->
 
     <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="/home/search">
+      <form class="search-form d-flex align-items-center" method="POST" action="{{ url_for('search') }}">
         <input type="text" name="search_element" placeholder="Search Schemes" title="Enter search keyword">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
@@ -131,70 +131,14 @@
 
         </li><!-- End Notification Nav -->
 
-        <li class="nav-item dropdown">
+        <li class="nav-item">
 
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">3</span>
+          <a class="nav-icon">
+             <svg id="darkMode" width="35" height="35" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="circle" d="M55 27.5C55 42.6878 42.6878 55 27.5 55C12.3122 55 0 42.6878 0 27.5C0 12.3122 12.3122 0 27.5 0C42.6878 0 55 12.3122 55 27.5Z" fill="#FFC700" />
+            </svg>
+            <script src="static/js/darkmode.js"></script>
           </a><!-- End Messages Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-            <li class="dropdown-header">
-              You have 3 new messages
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="static/img/messages-1.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>John</h4>
-                  <p>check out this new Scholarship</p>
-                  <p>4 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="static/img/messages-2.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Anson Nelson</h4>
-                  <p>hello.......enthan ppd.....</p>
-                  <p>6 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="static/img/messages-3.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Irin</h4>
-                  <p>Da puthiya vella scheme indel entelkye forward ako....</p>
-                  <p>8 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="dropdown-footer">
-              <a href="#">Show all messages</a>
-            </li>
-
-          </ul><!-- End Messages Dropdown Items -->
-
         </li><!-- End Messages Nav -->
 
         <li class="nav-item dropdown pe-3">
@@ -349,7 +293,29 @@
               <div class="card">
 
                 <div class="card-body">
-                  <h5 class="card-title">Noticeboard <span>/Today</span></h5>
+                  <h5 class="card-title">Noticeboard <span>/Latest Added</span></h5>
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">Scheme detail</th>
+                        <th scope="col">Link</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for row in latest_links %}
+                        <tr>
+                          <td><a href="{{ row.url}}" class="text-primary">{{row.title}}</a></td>
+                          <td>{{ row.des}}</td>
+                          <td><span class="badge bg-success">Viewed</span></td>
+                        </tr>
+                        {% endfor %}
+
+
+
+                    </tbody>
+                  </table>
 
                 </div>
 
@@ -360,7 +326,7 @@
             <div class="col-12">
               <div class="card recent-sales overflow-auto">
                 <div class="card-body">
-                  <h5 class="card-title">Schemes <span>| Today</span></h5>
+                  <h5 class="card-title">Schemes For You<span>| Today</span></h5>
 
                   <table class="table table-borderless datatable">
                     <thead>
@@ -408,7 +374,7 @@
                 </div>
 
                 <div class="card-body pb-0">
-                  <h5 class="card-title">Important <span>| Today</span></h5>
+                  <h5 class="card-title">Other Schemes<span>| Today</span></h5>
 
                   <table class="table table-borderless datatable">
                     <thead>
