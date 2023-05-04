@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from webscraper import scraper
 from generate_mail import generate,bulkmail
-from pymysqlpool import ConnectionPool
+from dbutils.pooled_db import PooledDB
 import pymysql.cursors
 import os
 import threading
@@ -35,18 +35,18 @@ def add_cache_control(response):
   return response
 
 #mysql pool connection
-pool =ConnectionPool(
-    size=5,
-    name='flask_pool',
+pool = PooledDB(
+    creator=pymysql,
+    maxconnections=5,
     host=os.getenv('your_host'),
     user=os.getenv('your_username'),
     password=os.getenv('your_password'),
-    db=os.getenv('your_database'),
-    ssl = {'ssl_ca':os.getenv('your_ssl_ca')},
+    database=os.getenv('your_database'),
     cursorclass=pymysql.cursors.DictCursor,
-    autocommit=True
+    autocommit=True,
+    ssl={'ssl_ca': os.getenv('your_ssl_ca')}
 )
-mysql = pool.get_connection()
+mysql = pool.connection()
 
 #checks if is user in session
 @app.route('/')
@@ -304,7 +304,7 @@ def pdf():
 
 #delete the links from latest_links table
 def delete_expired_links():
-    conn = pool.get_connection()
+    conn = pool.connection()
     while True:
         try:
             # delete rows that were created more than a week ago

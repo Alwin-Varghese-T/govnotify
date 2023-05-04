@@ -6,9 +6,9 @@ from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pymysql.cursors
-from pymysqlpool import ConnectionPool
+from dbutils.pooled_db import PooledDB
 import os
-from rapidfuzz import process, fuzz
+from rapidfuzz import fuzz
 
 # Download necessary NLTK resources
 nltk.download('punkt')
@@ -18,19 +18,18 @@ nltk.download('wordnet')
 nltk.download('stopwords')
 
 
-#mysql pool connection
-pool =ConnectionPool(
-    size=5,
-    name='flask_pool',
+pool = PooledDB(
+    creator=pymysql,
+    maxconnections=5,
     host=os.getenv('your_host'),
     user=os.getenv('your_username'),
     password=os.getenv('your_password'),
-    db=os.getenv('your_database'),
-    ssl = {'ssl_ca':os.getenv('your_ssl_ca')},
+    database=os.getenv('your_database'),
     cursorclass=pymysql.cursors.DictCursor,
-    autocommit=True
+    autocommit=True,
+    ssl={'ssl_ca': os.getenv('your_ssl_ca')}
 )
-mysql = pool.get_connection()
+mysql = pool.connection()
 
 
 # Define the preprocess_text function to tokenize, lemmatize, and remove stopwords

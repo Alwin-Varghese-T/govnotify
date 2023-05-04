@@ -1,7 +1,6 @@
 Flask
 gunicorn
-DBUtils
-pymysqlpool
+dbutils
 pymysql
 regex
 bs4
