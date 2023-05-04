@@ -2,10 +2,10 @@ Flask
 gunicorn
 pymysql
 pymysqlpool
+mysql
 regex
 bs4
 requests
-pytz
 nltk
 scikit-learn
 rapidfuzz
