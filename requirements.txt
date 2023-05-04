@@ -2,13 +2,9 @@ Flask
 gunicorn
 pymysql
 pymysqlpool
-threading
-datetime
-time
 regex
 bs4
 requests
-apscheduler
 pytz
 nltk
 scikit-learn
