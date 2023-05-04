@@ -15,7 +15,7 @@ nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('omw-1.4')
 nltk.download('wordnet')
-nltk.download('stopwords')
+
 
 
 pool = PooledDB(
@@ -36,9 +36,6 @@ mysql = pool.connection()
 def preprocess_text(text):
     # Tokenize the text into words
     tokens = word_tokenize(text)
-    # Remove stopwords
-    stop_words = set(stopwords.words('english'))
-    tokens = [token for token in tokens if token.lower() not in stop_words]
     # Lemmatize the remaining words
     lemmatizer = WordNetLemmatizer()
     lem_tokens = [lemmatizer.lemmatize(token, get_wordnet_pos(token)) for token in tokens]
@@ -67,6 +64,10 @@ def get_relevant_links(links, profile_text):
     for link in links:
         preprocessed_desc = preprocess_text(link['keywords'])
         preprocessed_descs.append(preprocessed_desc)
+
+    # Check if preprocessed_descs is empty, return an empty list if it is
+    if len(preprocessed_descs) == 0:
+        return []
 
     # Calculate the TF-IDF matrix for the preprocessed descriptions
     tfidf_vectorizer = TfidfVectorizer()
