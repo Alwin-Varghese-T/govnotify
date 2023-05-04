@@ -1,8 +1,7 @@
 Flask
 gunicorn
-pymysql
 pymysqlpool
-mysql
+pymysql
 regex
 bs4
 requests
