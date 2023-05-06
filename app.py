@@ -1,7 +1,7 @@
 # Importing required modules
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from webscraper import scraper
-from generate_mail import generate,bulkmail
+from generate_mail import generate, bulkmail
 from dbutils.pooled_db import PooledDB
 import pymysql.cursors
 import os
@@ -24,6 +24,7 @@ app.secret_key = 'os.getenv(your_secret_key)'
 # Set the default session lifetime to 7 days if user checked the checkbox
 app.permanent_session_lifetime = timedelta(days=7)
 
+
 #it will clear all cache when user logout
 @app.after_request
 def add_cache_control(response):
@@ -34,19 +35,19 @@ def add_cache_control(response):
     response.headers['Pragma'] = 'no-cache'
   return response
 
+
 #mysql pool connection
-pool = PooledDB(
-    creator=pymysql,
-    maxconnections=5,
-    host=os.getenv('your_host'),
-    user=os.getenv('your_username'),
-    password=os.getenv('your_password'),
-    database=os.getenv('your_database'),
-    cursorclass=pymysql.cursors.DictCursor,
-    autocommit=True,
-    ssl={'ssl_ca': os.getenv('your_ssl_ca')}
-)
+pool = PooledDB(creator=pymysql,
+                maxconnections=5,
+                host=os.getenv('your_host'),
+                user=os.getenv('your_username'),
+                password=os.getenv('your_password'),
+                database=os.getenv('your_database'),
+                cursorclass=pymysql.cursors.DictCursor,
+                autocommit=True,
+                ssl={'ssl_ca': os.getenv('your_ssl_ca')})
 mysql = pool.connection()
+
 
 #checks if is user in session
 @app.route('/')
@@ -66,7 +67,7 @@ def login():
     email = request.form['email']
     password = request.form['password']
     remember = request.form.get('remember')
-    
+
     with mysql.cursor() as cursor:
       # Retrieving account details from the database if the username and password match
       cursor.execute(
@@ -89,9 +90,7 @@ def login():
       if not account:  # If the account does not exist
         msg = 'Incorrect username / password!'
         return render_template('pages-login.html', msg=msg)
-
-  return render_template(
-    'pages-login.html')  # Rendering the login page with the message variable
+  return render_template('pages-login.html')  # Rendering the login page with the message variable
 
 
 # Logout route to allow users to log out of the web application!
@@ -123,11 +122,19 @@ def register():
     diff = request.form['differentlyabled']
     ration = request.form['bpl']
     income = request.form['income']
-    notify=request.form['notifications']
+    
     category = request.form['category']
-
+    
     checkbox_values_list = request.form.getlist('checkboxes')
-    checkbox = ",".join(checkbox_values_list)
+    if checkbox_values_list:
+        checkbox_values_list = list(set(checkbox_values_list))
+        checkbox = ",".join(checkbox_values_list)
+    else:
+        checkbox="All"
+    if 'notifications' in request.form:
+        notify = request.form['notifications']
+    else:
+        notify = "No"
 
     with mysql.cursor() as cursor:
       # Retrieving account details from the database if an account with the same username exists
@@ -139,10 +146,11 @@ def register():
       else:
         cursor.execute(
           'INSERT INTO accounts VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
-          (username,email, password, gender, age, marriage, seniorty, belong, diff, ration, income, category, checkbox, notify))
-      
-        msg = 'You have successfully registered!'
-        return redirect(url_for('login'))
+          (username, email, password, gender, age, marriage, seniorty, belong,
+           diff, ration, income, category, checkbox, notify))
+
+        registered = True
+        return render_template('pages-login.html',registered=registered)
   elif request.method == 'POST':  # If request method is POST but fields are empty
     msg = 'Please fill out the form!'
   return render_template(
@@ -156,30 +164,76 @@ def home():
   if 'email' in session:
     email = session['email']
     # if the user is logged in
-    cat_links ,other_links = similarity(email)
+    cat_links, other_links = similarity(email)
     with mysql.cursor() as cursor:
       cursor.execute("select * from accounts  where email = %s", (email))
       user = cursor.fetchone()
       one_week_ago = datetime.now() - timedelta(days=7)
       query = f"SELECT * FROM latest_links WHERE created_at >= '{one_week_ago}' ORDER BY created_at DESC"
       cursor.execute(query)
-      latest_links =cursor.fetchall()
+      latest_links = cursor.fetchall()
       news = scraper()
-      return render_template('index.html',cat_links=cat_links,other_links=other_links,news=news,user=user,latest_links=latest_links)
+      return render_template('index.html',
+                             cat_links=cat_links,
+                             other_links=other_links,
+                             news=news,
+                             user=user,
+                             latest_links=latest_links)
   else:
     # if the user is not logged in, redirect to the login page
     return redirect(url_for('login'))
 
 
-@app.route('/profile')
+#edit profile
+
+
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
+
   if 'email' in session:
     email = session['email']
     with mysql.cursor() as cursor:
+      #edit notification status
+      form_id = request.form.get('form_id')
+      if request.method == 'POST' and form_id == 'form1' :
+        if 'notify' in request.form:
+            notify = request.form['notify']
+        else:
+            notify="No"
+        cursor.execute("UPDATE accounts SET notify = %s where email = %s",(notify,email))  
+        
+      #edit profile
+      if request.method == 'POST' and 'username' in request.form:
+       
+        username = request.form['username']
+        gender = request.form['gender']
+        age = request.form['AgeDropdown']
+        marriage = request.form['marriage']
+        seniorty = request.form['seniority']
+        belong = request.form['belong']
+        diff = request.form['diff']
+        ration = request.form['ration']
+        income = request.form['income']
+        category = request.form['category']
+
+        checkbox_values_list = request.form.getlist('checkboxes')
+        if checkbox_values_list:
+          checkbox_values_list = list(set(checkbox_values_list))
+          checkbox = ",".join(checkbox_values_list)
+        else:
+          checkbox = "All"
+        qurey = "UPDATE accounts SET username= %s, gender = %s, age = %s, marriage = %s, seniorty = %s, belong = %s, diff = %s, ration = %s, income = %s, category = %s, checkbox = %s WHERE email = %s"
+        cursor.execute(qurey,
+                       (username, gender, age, marriage, seniorty, belong,
+                        diff, ration, income, category, checkbox, email))
+
       cursor.execute("select * from accounts  where email = %s", (email))
       user = cursor.fetchone()
+      checklist = user["checkbox"].split(",")
 
-    return render_template('users-profile.html', user=user)
+    return render_template('users-profile.html',
+                           user=user,
+                           checklist=checklist)
   else:
     return redirect(url_for('login'))
 
@@ -198,38 +252,21 @@ def admin():
     sname = request.form['name']
     links = request.form['link']
     descripton = request.form['description']
-    keywords = request.form['Keywords']
+    keywords = request.form['Keywords'] 
     category = request.form['category']
 
     with mysql.cursor() as cursor:
       cursor.execute('INSERT INTO schemes values(%s, %s, %s, %s, %s)',
                      (sname, descripton, keywords, links, category))
-      cursor.execute("select email from accounts where notify = yes and category =%s",(category))
+      cursor.execute(
+        "select email from accounts where notify = yes and category =%s",
+        (category))
       mail_address = cursor.fetchall()
       bulkmail(mail_address)
-
+      cursor.execute('insert into latest_links(title,url,des,category) values(%s,%s,%s,%s)',(sname,links,descripton,category)) 
   return render_template('admin.html')
 
 
-@app.route('/priority', methods=['GET', 'POST'])
-def priority():
-
-  if request.method == 'POST' and 'genderpriority' in request.form and 'AgeDropdown' in request.form and 'state' in request.form and 'caste' in request.form and 'marriage' in request.form:
-
-    gender = request.form['genderpriority']
-    age = request.form['AgeDropdown']
-    state = request.form['state']
-    caste = request.form['caste']
-    marriage = request.form['marriage']
-
-    with mysql.cursor() as cursor:
-      id = 'admin'
-      cursor.execute(
-        'UPDATE priority SET gender = %s, age = %s, state = %s, category = %s, marriage = %s WHERE id = %s ',
-        (gender, age, state, caste, marriage, id))
-    
-
-  return render_template('user-priority.html')
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -242,7 +279,7 @@ def search():
         email = session['email']
         cursor.execute("select * from accounts  where email = %s", (email))
         user = cursor.fetchone()
-        return render_template('search.html', sh=sh,user=user)
+        return render_template('search.html', sh=sh, user=user)
     else:
       return redirect(url_for('login'))
 
@@ -268,33 +305,29 @@ def sampleotp():
   return render_template('sample_otp_registeration.html')
 
 
-@app.route('/send_otp', methods=['POST'])
-def send_otp():
-  email = request.form['email']
+@app.route('/generate_otp', methods=['POST'])
+def generate_otp():
+
+  email = request.json.get('email')
   otp = generate(email)
   otp_store[email] = otp
   # send email here
   message = f'Your OTP is {otp}'
   print(message)
-  return jsonify({'status': 'success', 'message': 'OTP sent successfully'})
+  return jsonify({'otp': otp})
 
 
-@app.route('/verify', methods=['POST'])
+@app.route('/verify_otp', methods=['POST'])
 def verify_otp():
-  email = request.form['email']
-  user_otp = request.form['otp']
+  otp = request.json.get('otp')
+  email = request.json.get('email')
   stored_otp = otp_store.get(email)
-  print(f'user OTP is {user_otp}')
+  print(f'user OTP is {otp}')
   print(f'stored OTP is {stored_otp}')
-  if stored_otp and int(stored_otp) == int(user_otp):
-    return jsonify({
-      'status': 'success',
-      'message': 'OTP verified successfully'
-    })
+  if stored_otp and int(stored_otp) == int(otp):
+    return jsonify({'isValid': 'True'})
   else:
-    return jsonify({'status': 'error', 'message': 'Invalid OTP'})
-
-
+    return jsonify({'isValid': 'False'})
 
 
 @app.route('/pdf')
@@ -302,32 +335,46 @@ def pdf():
   user = ""
   return render_template('pdf.html', user=user)
 
+
 #delete the links from latest_links table
 def delete_expired_links():
-    conn = pool.connection()
-    while True:
-        try:
-            # delete rows that were created more than a week ago
-            one_week_ago = datetime.now() - timedelta(days=7)
-            with conn.cursor() as cursor:
-                query = f"DELETE FROM latest_links WHERE created_at < '{one_week_ago}'"
-                cursor.execute(query)
-        except Exception as e:
-            # handle any exceptions that may occur
-            print(f"Error deleting expired links: {e}")
+  conn = pool.connection()
+  while True: 
+    try:
+      # delete rows that were created more than a week ago
+      one_week_ago = datetime.now() - timedelta(days=3)
+      with conn.cursor() as cursor:
+        query = f"DELETE FROM latest_links WHERE created_at < '{one_week_ago}'"
+        cursor.execute(query)
+    except Exception as e:
+      # handle any exceptions that may occur
+      print(f"Error deleting expired links: {e}")
 
-        # sleep until midnight
-        now = datetime.now()
-        tomorrow = datetime.combine(now.date() + timedelta(days=1), datetime.min.time())
-        time_to_sleep = (tomorrow - now).total_seconds()
-        time.sleep(time_to_sleep)
-    conn.close()
-
+    # sleep until midnight
+    now = datetime.now()
+    tomorrow = datetime.combine(now.date() + timedelta(days=1),
+                                datetime.min.time())
+    time_to_sleep = (tomorrow - now).total_seconds()
+    time.sleep(time_to_sleep)
+  conn.close()
 
 
 if __name__ == '__main__':
   # start the deletion thread
-    deletion_thread = threading.Thread(target=delete_expired_links)
-    deletion_thread.start()
+  deletion_thread = threading.Thread(target=delete_expired_links)
+  deletion_thread.start()
   # run the Flask app
-    app.run(host='0.0.0.0', debug=True)
+  app.run(host='0.0.0.0', debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+

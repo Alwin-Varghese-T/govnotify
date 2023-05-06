@@ -23,6 +23,7 @@
 
   <!-- Template Main CSS File -->
   <link href="static/css/style.css" rel="stylesheet">
+  <script src="static/js/anime.min.js"></script>
 </head>
 
 <body>
@@ -32,7 +33,7 @@
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
-        <img src="static/img/logo.png" alt="">
+        <img src="static/img/bird.png" alt="">
         <span class="d-none d-lg-block">NoticeBoard</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -129,70 +130,14 @@
 
         </li><!-- End Notification Nav -->
 
-        <li class="nav-item dropdown">
+        <li class="nav-item">
 
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">3</span>
+          <a class="nav-icon">
+             <svg id="darkMode" width="35" height="35" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="circle" d="M55 27.5C55 42.6878 42.6878 55 27.5 55C12.3122 55 0 42.6878 0 27.5C0 12.3122 12.3122 0 27.5 0C42.6878 0 55 12.3122 55 27.5Z" fill="#FFC700" />
+            </svg>
+            <script src="static/js/darkmode.js"></script>
           </a><!-- End Messages Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-            <li class="dropdown-header">
-              You have 3 new messages
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="static/img/messages-1.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>John</h4>
-                  <p>check out this new Scholarship</p>
-                  <p>4 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="static/img/messages-2.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Anson Nelson</h4>
-                  <p>hello.......enthan ppd.....</p>
-                  <p>6 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="static/img/messages-3.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Irin</h4>
-                  <p>Da puthiya vella scheme indel entelkye forward ako....</p>
-                  <p>8 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="dropdown-footer">
-              <a href="#">Show all messages</a>
-            </li>
-
-          </ul><!-- End Messages Dropdown Items -->
-
         </li><!-- End Messages Nav -->
 
         <li class="nav-item dropdown pe-3">
@@ -403,102 +348,227 @@
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                   <!-- Profile Edit Form -->
-                  <form>
+                  <form action="{{ url_for('profile') }}" method="post">
+
                     <div class="row mb-3">
-                      <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                      <label for="Name" class="col-md-4 col-lg-3 col-form-label">Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <img src="static/img/profile-img.jpg" alt="Profile">
-                        <div class="pt-2">
-                          <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
-                          <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
-                        </div>
+                        <input name="username" type="text" class="form-control" id="fullName" value="{{ user.username }}" required>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                      <label for="gender" class="col-md-4 col-lg-3 col-form-label">Gender</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="fullName" type="text" class="form-control" id="fullName" value="{{ user.username }}">
+                        <input type="radio" name="gender"  id="male" value="male" {% if user.gender == 'male' %}checked{% endif %} required>male &nbsp;&nbsp;
+                        <input type="radio" name="gender"  id="female" value="female" {% if user.gender == 'female' %}checked{% endif %} required>female &nbsp;&nbsp;
+                        <input type="radio" name="gender"  id="trans" value="transgender" {% if user.gender == 'transgender' %}checked{% endif %} required>trans
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
+                       <label for="AgeDropdown" class="col-md-4 col-lg-3 col-form-label">Age</label>
                       <div class="col-md-8 col-lg-9">
-                        <textarea name="about" class="form-control" id="about" style="height: 100px">Studying at St Thomas College (Autonomous) , Thrissur                          BSc Computer Science </textarea>
+                        <select id="AgeDropdownId" name="AgeDropdown" class="AgeDropdown" required>
+                          <option value="age below 5" {% if user.age == 'age below 5' %}selected{% endif %}>0 - 5</option>
+                          <option value="age below 15" {% if user.age == 'age below 15' %}selected{% endif %}>6 - 15</option>
+                          <option value="age below 30" {% if user.age == 'age below 30' %}selected{% endif %}>15 - 30</option>
+                          <option value="age below 50" {% if user.age == 'age below 50' %}selected{% endif %}>31 - 50</option>
+                          <option value="age under 65" {% if user.age == 'age under 65' %}selected{% endif %}>51 - 65</option>
+                          <option value="65 and above" {% if user.age == '65 and above' %}selected{% endif %}>65 and above</option>
+                      </select>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="company" class="col-md-4 col-lg-3 col-form-label">Account Type</label>
+                      <label for="marriage" class="col-md-4 col-lg-3 col-form-label">Marital Status</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="Account Type" type="radio" id="Account_Type" value="student">Student &nbsp; &nbsp;
-                        <input name="Account Type" type="radio" id="Account_Type" value="Mother">Mother
+                       <select id="marriage" name="marriage" class="marriage" required>
+                          <option value="N/A"></option>
+                            <option value="Married" {% if user.marriage == 'Married' %}selected{% endif %}>Married</option>
+                            <option value="Unmarried" {% if user.marriage == 'Unmarried' %}selected{% endif %}>Unmarried</option>
+                            <option value="Widow" {% if user.marriage == 'widow' %}selected{% endif %}>Widow</option>
+                             <option value="Divorced" {% if user.marriage == 'Divorced' %}selected{% endif %}>Divorced</option>
+                             <option value="Seperated" {% if user.marriage == 'Seperated' %}selected{% endif %}>Seperated</option>
+                            
+                          </select><br>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Job" class="col-md-4 col-lg-3 col-form-label">Education</label>
+                       <label for="seniority" class="col-md-4 col-lg-3 col-form-label">Senior Citizen</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="Education" type="text" class="form-control" id="Education" value="BSc Computer Science">
+                       <input type="radio" name="seniority"  id="yes" value="senior citizen" {% if user.seniorty== 'senior citizen' %}checked{% endif %} required>Yes &nbsp;&nbsp;
+                      <input type="radio" name="seniority"  id="no" value="no" {% if user.seniorty == 'no' %}checked{% endif %} required>No
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
+                      <label for="belong" class="col-md-4 col-lg-3 col-form-label">You belong to</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="country" type="text" class="form-control" id="Country" value="India">
+                        <select id="belong" name="belong" class="belong" required>
+                          <option value="general" {% if user.belong == 'general' %}selected{% endif %}>General</option>
+                          <option value="sc" {% if user.belong == 'sc' %}selected{% endif %}>SC</option>
+                          <option value="st" {% if user.belong == 'st' %}selected{% endif %}>ST</option>
+                          <option value="obc" {% if user.belong == 'obc' %}selected{% endif %}>OBC</option>
+                          <option value="oec" {% if user.belong == 'oec' %}selected{% endif %}>OEC</option>
+                      </select>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+                     <label for="Differentlyabled" class="col-md-4 col-lg-3 col-form-label">Differently abled</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="address" type="text" class="form-control" id="Address" value="Kuriachira , Thrissur">
+                        <input type="radio" name="diff"  id="yes" value="differently abled" {% if user.diff == 'differently abled' %}checked{% endif %} required>Yes &nbsp;&nbsp;
+                        <input type="radio" name="diff"  id="no" value="no" {% if user.diff == 'no' %}checked{% endif %} required>No
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                     <label for="bpl" class="col-md-4 col-lg-3 col-form-label">Do you belong to BPL community</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="phone" type="text" class="form-control" id="Phone" value="(+91) 8301872664">
+                        <input type="radio" name="ration"  id="yes" value="bpl" {% if user.ration == 'bpl' %}checked{% endif %} required>Yes &nbsp;&nbsp;
+                        <input type="radio" name="ration"  id="no" value="no" {% if user.ration == 'no' %}checked{% endif %} required>No
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                      <label for="income" class="col-md-4 col-lg-3 col-form-label">Family income</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="email" type="email" class="form-control" id="Email" value="amaljoshy700@gmail.com">
+                        <input type="radio" name="income"  id="1lakh" value="financial assistance" {% if user.income == 'financial assistance' %}checked{% endif %} required>less than 1 lakh &nbsp;&nbsp;
+                        <input type="radio" name="income"  id="2.5lakh" value="2.5lakh" {% if user.income == '2.5lakh' %}checked{% endif %} required>1 - 2.5 lakh
+                          &nbsp;&nbsp;
+                        <input type="radio" name="income"  id="5lakh" value="5lakh" {% if user.income == '5lakh' %}checked{% endif %} required>2.5 - 5 lakh
+                          &nbsp;&nbsp;
+                        <input type="radio" name="income"  id="above5" value="above5" {% if user.income == 'above5' %}checked{% endif %} required>above 5
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="category" class="col-md-4 col-lg-3 col-form-label">Select Category</label>
+                      <div class="col-md-8 col-lg-9">
+                         <select id="category" name="category" class="category" onchange="categoryCheck(this);"  required>
+                          <option value="N/A"></option>
+                            <option value="agriculture" {% if user.category == 'agriculture' %}selected{% endif %}>AGRICULTURE</option>
+                            <option value="education" {% if user.category == 'education' %}selected{% endif %}>EDUCATION</option>
+                            <option value="health" {% if user.category == 'health' %}selected{% endif %}>HEALTH</option>
+                            <option value="social welfare" {% if user.category == 'social welfare' %}selected{% endif %}>SOCIAL WELFARE</option>                            
+                          </select><br>
+                       <div class="invalid-feedback">Please select</div><br>
+                       <div id="ifagriculture" class="category-block" style="display: none;">
+select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="farmer" value="farmer" {% if 'farmer' in checklist %}checked{% endif %}>FARMER &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="farmer-group" value="farmer group" {% if 'farmer group' in checklist %}checked{% endif %}>FARMER GROUP &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial assistance" {% if 'financial assistance' in checklist %}checked{% endif %}>FINANCIAL ASSISTANCE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="crop-insurance" value="crop insurance" {% if 'crop insurance' in checklist %}checked{% endif %}>CROP INSURANCE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="fruits" value="fruits" {% if 'fruits' in checklist %}checked{% endif %}>FRUITS &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="vegetables" value="vegetables" {% if 'vegetables' in checklist %}checked{% endif %}>VEGETABLES &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="compensation" value="compensation" {% if 'compensation' in checklist %}checked{% endif %}>COMPENSATION &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="damage" value="damage" {% if 'damage' in checklist %}checked{% endif %}>DAMAGE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="farm" value="farm" {% if 'farm' in checklist %}checked{% endif %}>FARM &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="soil" value="soil" {% if 'soil' in checklist %}checked{% endif %}>SOIL &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="land" value="land" {% if 'land' in checklist %}checked{% endif %}>LAND &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="landholder" value="landholder" {% if 'landholder' in checklist %}checked{% endif %}>LANDHOLDER &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="cultivable" value="cultivable" {% if 'cultivable' in checklist %}checked{% endif %}>CULTIVABLE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="fertilizer" value="fertilizer" {% if 'fertilizer' in checklist %}checked{% endif %}>FERTILIZER &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="pesticides" value="pesticides" {% if 'pesticides' in checklist %}checked{% endif %}>PESTICIDES &nbsp;
+               
+</div>
+                         <div id="ifeducation" class="category-block" style="display: none;">
+select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="college" value="college" {% if 'college' in checklist %}checked{% endif %}>COLLEGE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="school" value="school" {% if 'school' in checklist %}checked{% endif %}>SCHOOL &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="student" value="student" {% if 'student' in checklist %}checked{% endif %}>STUDENT &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial assistance" {% if 'financial assistance' in checklist %}checked{% endif %}>FINANCIAL ASSISTANCE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="scholarship" value="scholarship" {% if 'scholarship' in checklist %}checked{% endif %}>SCHOLARSHIP &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="educational-assistance" value="educational assistance" {% if 'educational assistance' in checklist %}checked{% endif %}>EDUCATIONAL ASSISTANCE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="blind" value="blind" {% if 'blind' in checklist %}checked{% endif %}>BLIND &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="deaf" value="deaf" {% if 'deaf' in checklist %}checked{% endif %}>DEAF &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="high-school" value="high school" {% if 'high school' in checklist %}checked{% endif %}>HIGH SCHOOL &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="hs" value="higher secondary" {% if 'higher secondary' in checklist %}checked{% endif %}>HIGHER SECONDARY &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="ug" value="ug" {% if 'ug' in checklist %}checked{% endif %}>UG &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="pg" value="pg" {% if 'pg' in checklist %}checked{% endif %}>PG &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="degree" value="degree" {% if 'degree' in checklist %}checked{% endif %}>DEGREE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="diploma" value="diploma" {% if 'diploma' in checklist %}checked{% endif %}>DIPLOMA &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="professional-course" value="professional course" {% if 'professional course' in checklist %}checked{% endif %}>PROFFESIONAL COURSE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="abroad" value="abroad" {% if 'abroad' in checklist %}checked{% endif %}>ABROAD &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="govt" value="govt" {% if 'govt' in checklist %}checked{% endif %}>GOVT &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="aided" value="aided" {% if 'aided' in checklist %}checked{% endif %}>AIDED &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="self" value="self" {% if 'self' in checklist %}checked{% endif %}>SELF FINANCING SCHOOL &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="sebc" value="sebc" {% if 'sebc' in checklist %}checked{% endif %}>SEBC &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="competitive-exam" value="competitive exam" {% if 'competitive exam' in checklist %}checked{% endif %}>COMPETITIVE EXAM &nbsp;
+</div>
+                        <div id="ifhealth" class="category-block" style="display: none;">
+select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="children" value="children" {% if 'children' in checklist %}checked{% endif %}>CHILDREN &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="orphan" value="orphan" {% if 'orphan' in checklist %}checked{% endif %}>ORPHAN &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial assistance" {% if 'financial assistance' in checklist %}checked{% endif %}>FINANCIAL ASSISTANCE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="senior-citizen" value="senior citizen" {% if 'senior citizen' in checklist %}checked{% endif %}>SENIOR CITIZEN &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="mentally-challenged" value="mentally challenged" {% if 'mentally challenged' in checklist %}checked{% endif %}>MENTALLY CHALLENGED &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="care-givers" value="care givers" {% if 'care givers' in checklist %}checked{% endif %}>CARE GIVERS &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="patient" value="patient" {% if 'patient' in checklist %}checked{% endif %}>PATIENT &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="mother" value="mother" {% if 'mother' in checklist %}checked{% endif %}>MOTHER &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="child" value="child" {% if 'child' in checklist %}checked{% endif %}>CHILD &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="pregnant" value="pregnant" {% if 'pregnant' in checklist %}checked{% endif %}>PREGNANT &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="dental-treatment" value="dental treatment" {% if 'dental treatment' in checklist %}checked{% endif %}>DENTAL TREATMENT &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="medical-treatment" value="medical treatment" {% if 'medical treatment' in checklist %}checked{% endif %}>MEDICAL TREATMENT &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="handicapped" value="handicapped" {% if 'handicapped' in checklist %}checked{% endif %}>HANDICAPPED &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="health-insurance" value="health insurance" {% if 'health insurance' in checklist %}checked{% endif %}>HEALTH INSURANCE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="maternal-disability" value="maternal-disability" {% if 'maternal-disability' in checklist %}checked{% endif %}>MATERNAL DISABILITY &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="unwed-mother" value="unwed-mother" {% if 'unwed-mother' in checklist %}checked{% endif %}>UNWED MOTHER &nbsp;
+</div>
+
+<div id="ifsocialwelfare" class="category-block" style="display: none;">
+select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="destitute" value="destitute" {% if 'destitute' in checklist %}checked{% endif %}>DESTITUTE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="financial-assistance" value="financial assistance" {% if 'financial assistance' in checklist %}checked{% endif %}>FINANCIAL ASSISTANCE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="women" value="women" {% if 'women' in checklist %}checked{% endif %}>WOMEN &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="legal-aid" value="legal aid" {% if 'legal aid' in checklist %}checked{% endif %}>LEGAL AID &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="loan" value="loan" {% if 'loan' in checklist %}checked{% endif %}>LOAN &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="entrepreneur" value="entrepreneur" {% if 'entrepreneur' in checklist %}checked{% endif %}>ENTREPRENEUR &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="self-employment" value="self employment" {% if 'self employment' in checklist %}checked{% endif %}>SELF EMPLOYMENT &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="self-help-group" value="self help group" {% if 'self help group' in checklist %}checked{% endif %}>SELF HELP GROUP &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="marriage-assistance" value="marriage assistance" {% if 'marriage assistance' in checklist %}checked{% endif %}>MARRIAGE ASSISTANCE &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="srs" value="srs" {% if 'srs' in checklist %}checked{% endif %}>SRS &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="housing" value="housing" {% if 'housing' in checklist %}checked{% endif %}>HOUSING &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="house-renovation" value="house renovation" {% if 'house renovation' in checklist %}checked{% endif %}>HOUSE RENOVATION &nbsp;
+   <input class="single-checkbox"type="checkbox" name="checkboxes"  id="tribal" value="tribal" {% if 'tribal' in checklist %}checked{% endif %}>TRIBAL &nbsp;
+</div>
+                          <!-- Example HTML for checkbox group -->
+
+<script>
+  // Add event listener to each checkbox
+  var checkboxes = document.querySelectorAll('input[type=checkbox]');
+  checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+      checkLimit(checkboxes);
+    });
+  });
+  
+  // Function to check number of ticked checkboxes
+  function checkLimit(checkboxes) {
+    var checkedCount = 0;
+    checkboxes.forEach(function(checkbox) {
+      if (checkbox.checked) {
+        checkedCount++;
+      }
+    });
+    
+    // Disable remaining unchecked checkboxes if limit is reached
+    if (checkedCount == 5) {
+      checkboxes.forEach(function(checkbox) {
+        if (!checkbox.checked) {
+          checkbox.disabled = true;
+        }
+      });
+    } else {
+      checkboxes.forEach(function(checkbox) {
+        checkbox.disabled = false;
+      });
+    }
+  }
+</script>
+
+
+
                       </div>
                     </div>
 
-                    <div class="row mb-3">
-                      <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="facebook" type="text" class="form-control" id="Facebook" value="https://facebook.com/#">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="linkedin" type="text" class="form-control" id="Linkedin" value="https://linkedin.com/#">
-                      </div>
-                    </div>
 
                     <div class="text-center">
                       <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -510,33 +580,23 @@
                 <div class="tab-pane fade pt-3" id="profile-settings">
 
                   <!-- Settings Form -->
-                  <form>
-
+                  <form action="{{ url_for('profile') }}" method="post">
+                  <input type="hidden" name="form_id" value="form1">
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
                       <div class="col-md-8 col-lg-9">
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="changesMade" checked>
-                          <label class="form-check-label" for="changesMade">
-                            Changes made to your account
+                          <input class="form-check-input" type="checkbox" id="newschemes" value="yes" name="notify" {% if user.notify == 'yes' %} checked {% else %} unchecked {% endif %}>
+
+                          <label class="form-check-label" for="newschemes">
+                            Newly Added Schemes Notification
                           </label>
                         </div>
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="newProducts" checked>
-                          <label class="form-check-label" for="newProducts">
-                            Information on new scholarships and schemes
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="proOffers">
-                          <label class="form-check-label" for="proOffers">
-                            Chat Notifications 
-                          </label>
-                        </div>
-                        <div class="form-check">
+                          
                           <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
                           <label class="form-check-label" for="securityNotify">
-                            Security alerts
+                            Otp Verification
                           </label>
                         </div>
                       </div>

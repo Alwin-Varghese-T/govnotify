@@ -25,8 +25,9 @@
   <!-- Template Main CSS File -->
   <link href="static/css/style.css" rel="stylesheet">
   <script src="static/js/anime.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
-
+  
 <body>
 
   <!-- ======= Header ======= -->
@@ -224,18 +225,8 @@
             </a>
           </li>
           <li>
-            <a href="components-accordion.html">
-              <i class="bi bi-circle"></i><span>Resume Builder</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-badges.html">
+            <a href="{{url_for('pdf')}}">
               <i class="bi bi-circle"></i><span>Img to Pdf</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-breadcrumbs.html">
-              <i class="bi bi-circle"></i><span>Img to Doc</span>
             </a>
           </li>
         </ul>
@@ -290,16 +281,16 @@
 
             <!-- Reports -->
             <div class="col-12">
-              <div class="card">
+              <div class="card" style="background-color:#E6E6FA;">
 
                 <div class="card-body">
                   <h5 class="card-title">Noticeboard <span>/Latest Added</span></h5>
                   <table class="table table-borderless datatable">
+                    
                     <thead>
                       <tr>
                         <th scope="col">Scheme detail</th>
                         <th scope="col">Link</th>
-                        <th scope="col">Status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -308,7 +299,6 @@
                         <tr>
                           <td><a href="{{ row.url}}" class="text-primary">{{row.title}}</a></td>
                           <td>{{ row.des}}</td>
-                          <td><span class="badge bg-success">Viewed</span></td>
                         </tr>
                         {% endfor %}
 
@@ -327,13 +317,19 @@
               <div class="card recent-sales overflow-auto">
                 <div class="card-body">
                   <h5 class="card-title">Schemes For You<span>| Today</span></h5>
+<script>
+   $("table tr").hide();
+$("table tr").each(function(index){
+	$(this).delay(index*500).show(1000);
+});
+</script>
 
-                  <table class="table table-borderless datatable">
+                  <table class="table table-borderless datatable"> 
+
                     <thead>
                       <tr>
                         <th scope="col">Scheme detail</th>
                         <th scope="col">Link</th>
-                        <th scope="col">Status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -342,7 +338,6 @@
                         <tr>
                           <td><a href="{{ row.link}}" class="text-primary">{{row.name}}</a></td>
                           <td>{{ row.desc}}</td>
-                          <td><span class="badge bg-success">Viewed</span></td>
                         </tr>
                         {% endfor %}
 
@@ -359,20 +354,6 @@
             <!-- Top Selling -->
             <div class="col-12">
               <div class="card top-selling overflow-auto">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
                 <div class="card-body pb-0">
                   <h5 class="card-title">Other Schemes<span>| Today</span></h5>
 
@@ -381,7 +362,6 @@
                       <tr>
                         <th scope="col">Scheme detail</th>
                         <th scope="col">Link</th>
-                        <th scope="col">Status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -390,7 +370,6 @@
                         <tr>
                           <td><a href="{{ row.link}}" class="text-primary">{{row.name}}</a></td>
                           <td>{{ row.desc}}</td>
-                          <td><span class="badge bg-success">Viewed</span></td>
                         </tr>
                         {% endfor %}
 
@@ -413,19 +392,6 @@
 
           <!-- News & Updates Traffic -->
           <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-
             <div class="card-body pb-0">
               <h5 class="card-title">News &amp; Updates <span>| Today</span></h5>
 

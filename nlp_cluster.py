@@ -2,7 +2,6 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
-from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pymysql.cursors
@@ -116,7 +115,7 @@ def search_nlp(search_element):
     results = cursor.fetchall()
 
     search_term = search_element
-    title_threshold = 10
+    title_threshold = 30
     desc_threshold = 60
 
     # Use rapidfuzz to match search term with title and description columns

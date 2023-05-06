@@ -5,199 +5,96 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Pages / Register NoticeBoard Template</title>
+  <title>Users / Profile - NoticeBoard Template</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="static/img/favicon.png" rel="icon">
-  <link href="static/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href="static/css/style.css" rel="stylesheet">
-
-
-
-  
-
-
-
+  <link href="assets/css/style.css" rel="stylesheet">
 </head>
 
 <body>
 
-  <main>
-    <div class="container">
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
 
-      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="#" class="logo d-flex align-items-center">
+        <img src="assets/img/logo.png" alt="">
+        <span class="d-none d-lg-block">NoticeBoard</span>
+      </a>
+    </div><!-- End Logo -->
+  </header><!-- End Header -->
 
-              <div class="d-flex justify-content-center py-4">
-                <a href="index.html" class="logo d-flex align-items-center w-auto">
-                  <img src="static/img/bird.png" alt="">
-                  <span class="d-none d-lg-block">NoticeBoard</span>
-                </a>
-              </div><!-- End Logo -->
+  <main id="main" class="main">
 
-              <div class="card mb-3">
+    <div class="pagetitle">
+      <h1>Complete Registration</h1>
+    </div><!-- End Page Title -->
 
-                <div class="card-body">
+    <section class="section profile">
+      <div class="row">
 
-                  <div class="pt-4 pb-2">
-                    <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
-                    <p class="text-center small">Enter your personal details to create account</p>
-                  </div>
+        <div class="col-xl-8">
 
-                  <form action="{{ url_for('register') }}" method="post" class="row g-3 needs-validation" >
-                    <div class="col-12">
-                      <label for="yourname" class="form-label">Your Name</label>
-                      <input type="text" name="username" class="form-control" id="yourname" required>
-                      <div class="invalid-feedback">Please, enter your name!</div>
-                    </div>
+          <div class="card">
+            <div class="card-body pt-3">
+           
 
 
-                    
-                    
-                    <div class="col-12">
-                      <label for="email" class="form-label">Your Email</label>
-                      <input type="email" name="email" class="form-control" id="email" required>
-
-
-                      
- <!--  OTTP Verification -->
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
- <script>
-
-  function generateOTP(button) {
-    // Retrieve the email input value
-    var email = document.getElementById("email").value;
-
-    // Validate the email field
-    if (!email) {
-      // Display an error message or handle the error as needed
-      return;
-    }
-
-    // Send AJAX request to Flask backend to generate OTP
-    axios.post('/generate_otp', {
-      email: email // Pass the email value in the request payload
-    })
-    .then(function (response) {
-      // Handle the response from the backend
-      var otp = response.data.otp; // Assuming the response contains the generated OTP
-      // Perform any necessary actions with the OTP (e.g., display it to the user)
-      console.log("OTP generated:", otp);
-
-      // Show the verification interface
-      document.getElementById("ifVerify").style.display = "block";
-    })
-    .catch(function (error) {
-      // Handle any errors that occurred during the request
-      console.error(error);
-    });
-  }
-
-  function verifyOTP(button) {
-    // Retrieve the OTP input value
-    var otpInput = document.getElementById("otpInput").value;
-    var email = document.getElementById("email").value;
-
-    // Validate the OTP field
-    if (!otpInput) {
-      // Display an error message or handle the error as needed
-      return;
-    }
-
-    // Send AJAX request to Flask backend to verify the OTP
-    axios.post('/verify_otp', {
-      otp: otpInput, // Pass the OTP value in the request payload
-      email: email
-    })
-    .then(function (response) {
-      // Handle the response from the backend
-      var isOTPValid = response.data.isValid; // Assuming the response indicates if the OTP is valid or not
-      // Perform any necessary actions based on the verification result
-      if (isOTPValid) {
-        console.log("OTP is valid!");
-        // Proceed with further actions
-      } else {
-        console.log("OTP is invalid!");
-        // Handle the invalid OTP case
-      }
-    })
-    .catch(function (error) {
-      // Handle any errors that occurred during the request
-      console.error(error);
-    });
-  }
-
-</script>
-
-
-
-                      
-                      
-                      <input type="button" value="verify" onclick="generateOTP(this);">
-
-                        <div id="ifVerify" style="display: none;">
-                          <div class="col-12">
-                            <label for="otp">Enter OTP:</label> 
-                            <input type="text" id="otpInput" name="otp">
-                            <input type="button" value="submit" onclick="verifyOTP(this);">
-                            <div class="invalid-feedback">Please enter a valid OTP!</div>
-                          </div>
-                        </div>
-<!-- End of OTP  -->
-
-
-                      
-                      <div class="invalid-feedback">Please enter a valid Email adddress!</div>
-                    </div>
-
-                    <div class="col-12">
-                      <label for="password" class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" id="password" required>
-                        <div class="invalid-feedback">Please type password.</div>
-                    </div>
-                    <div class="col-12">
-                      <label for="reTypeassword" class="form-label">Re-Type Password</label>
-                      <input type="password" name="reTypePassword" class="form-control" id="reTypePassword" required>
-                      <div class="invalid-feedback">Please enter correct password!</div>
-                    </div>
-                    <div class="col-12">
-                      <div class="gender">Gender : &nbsp;&nbsp;
-                      <input type="radio" name="gender"  id="male" value="male" required>male &nbsp;&nbsp;
-                      <input type="radio" name="gender"  id="female" value="female" required>female &nbsp;&nbsp;
-                      <input type="radio" name="gender"  id="trans" value="transgender" required>trans
-                      <div class="invalid-feedback">Please select any</div>
+                  <!-- Profile Edit Form -->
+                  <form>
+                    <div class="row mb-3">
+                      <div class="col-md-8 col-lg-9">
                       </div>
                     </div>
-                    <div class="col-12"  id="mycontainer">
-                      Age : &nbsp;
-            <select id="AgeDropdownId" name="AgeDropdown" class="AgeDropdown" required>
-                <option value="age below 5">0 - 5</option>
-              <option value="age below 15">6 - 15</option>
-              <option value="age below 30">15 - 30</option>
-              <option value="age below 50">31 - 50</option>
-			  <option value="age under 65">51 - 65</option>
-              <option value="65 and above">65 and above</option>
-            </select>
-                      <div class="invalid-feedback">Please select</div>
+
+                    <div class="row mb-3">
+                      <label for="gender" class="col-md-4 col-lg-3 col-form-label">Gender</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input type="radio" name="gender"  id="male" value="male" required>male &nbsp;&nbsp;
+                        <input type="radio" name="gender"  id="female" value="female" required>female &nbsp;&nbsp;
+                        <input type="radio" name="gender"  id="trans" value="transgender" required>trans
+                        <div class="invalid-feedback">Please select any</div>
+                      </div>
                     </div>
-                     <div class="col-12">
-                      Marital Status : 
-                          <select id="marriage" name="marriage" class="marriage" onchange="yesnoCheck(this);" required>
+
+                    <div class="row mb-3">
+                      <label for="AgeDropdown" class="col-md-4 col-lg-3 col-form-label">Age</label>
+                      <div class="col-md-8 col-lg-9">
+                        <select id="AgeDropdownId" name="AgeDropdown" class="AgeDropdown" required>
+                          <option value="age below 5">0 - 5</option>
+                        <option value="age below 15">6 - 15</option>
+                        <option value="age below 30">15 - 30</option>
+                        <option value="age below 50">31 - 50</option>
+                  <option value="age under 65">51 - 65</option>
+                        <option value="65 and above">65 and above</option>
+                      </select>
+                                <div class="invalid-feedback">Please select</div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="marriage" class="col-md-4 col-lg-3 col-form-label">Marital Status</label>
+                      <div class="col-md-8 col-lg-9">
+                        <select id="marriage" name="marriage" class="marriage" required>
                           <option value="N/A"></option>
                             <option value="Married">Married</option>
                             <option value="Unmarried">Unmarried</option>
@@ -206,54 +103,69 @@
                              <option value="Seperated">Seperated</option>
                             
                           </select><br>
-                       <div class="invalid-feedback">Please select</div><br>
-                  </div>
-                     <div class="col-12">
-                      <div class="seniority">Are you a senior citizen : &nbsp;&nbsp;
-                      <input type="radio" name="seniority"  id="yes" value="senior citizen" required>Yes &nbsp;&nbsp;
+                       <div class="invalid-feedback">Please select</div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="seniority" class="col-md-4 col-lg-3 col-form-label">Senior Citizen</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input type="radio" name="seniority"  id="yes" value="senior citizen" required>Yes &nbsp;&nbsp;
                       <input type="radio" name="seniority"  id="no" value="no" required>No
                       <div class="invalid-feedback">Please select any</div>
                       </div>
                     </div>
-                        <div class="col-12">
-                      You belong to : &nbsp;
-            <select id="belong" name="belong" class="belong" required>
-                <option value="general">General</option>
-              <option value="sc">SC</option>
-			  <option value="st">ST</option>
-              <option value="obc">OBC</option>
-			  <option value="oec">OEC</option>
-            </select>
+
+                    <div class="row mb-3">
+                      <label for="belong" class="col-md-4 col-lg-3 col-form-label">You belong to</label>
+                      <div class="col-md-8 col-lg-9">
+                        <select id="belong" name="belong" class="belong" required>
+                          <option value="general">General</option>
+                        <option value="sc">SC</option>
+                  <option value="st">ST</option>
+                        <option value="obc">OBC</option>
+                  <option value="oec">OEC</option>
+                      </select>
                       <div class="invalid-feedback">Please select</div>
-                    </div>
-                    <div class="col-12">
-                      <div class="differentlyabled">Are you differently abled : &nbsp;&nbsp;
-                      <input type="radio" name="differentlyabled"  id="yes" value="differently abled" required>Yes &nbsp;&nbsp;
-                      <input type="radio" name="differentlyabled"  id="no" value="no" required>No
-                      <div class="invalid-feedback">Please select any</div>
                       </div>
                     </div>
-                    <div class="col-12">
-                      <div class="bpl">Do you belong to BPL community : &nbsp;&nbsp;
-                      <input type="radio" name="bpl"  id="yes" value="bpl" required>Yes &nbsp;&nbsp;
-                      <input type="radio" name="bpl"  id="no" value="no" required>No
-                      <div class="invalid-feedback">Please select any</div>
+
+                    <div class="row mb-3">
+                      <label for="Differentlyabled" class="col-md-4 col-lg-3 col-form-label">Differently abled</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input type="radio" name="differentlyabled"  id="yes" value="differently abled" required>Yes &nbsp;&nbsp;
+                        <input type="radio" name="differentlyabled"  id="no" value="no" required>No
+                        <div class="invalid-feedback">Please select any</div>
                       </div>
                     </div>
-                    <div class="col-12">
-                      <div class="income">Your family income : &nbsp;&nbsp;
-                      <input type="radio" name="income"  id="1lakh" value="financial assistance" required>less than 1 lakh &nbsp;&nbsp;
-                      <input type="radio" name="income"  id="2.5lakh" value="2.5lakh" required>1 - 2.5 lakh
-                        &nbsp;&nbsp;
-                      <input type="radio" name="income"  id="5lakh" value="5lakh" required>2.5 - 5 lakh
-                        &nbsp;&nbsp;
-                      <input type="radio" name="income"  id="above5" value="above5" required>above 5
-                      <div class="invalid-feedback">Please select any</div>
+
+                    <div class="row mb-3">
+                      <label for="bpl" class="col-md-4 col-lg-3 col-form-label">Do you belong to BPL community</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input type="radio" name="bpl"  id="yes" value="bpl" required>Yes &nbsp;&nbsp;
+                        <input type="radio" name="bpl"  id="no" value="no" required>No
+                        <div class="invalid-feedback">Please select any</div>
                       </div>
                     </div>
-                      <div class="col-12">
-                      select category : 
-                          <select id="category" name="category" class="category" onchange="categoryCheck(this);"  required>
+
+                    <div class="row mb-3">
+                      <label for="income" class="col-md-4 col-lg-3 col-form-label">Family income</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input type="radio" name="income"  id="1lakh" value="financial assistance" required>less than 1 lakh &nbsp;&nbsp;
+                        <input type="radio" name="income"  id="2.5lakh" value="2.5lakh" required>1 - 2.5 lakh
+                          &nbsp;&nbsp;
+                        <input type="radio" name="income"  id="5lakh" value="5lakh" required>2.5 - 5 lakh
+                          &nbsp;&nbsp;
+                        <input type="radio" name="income"  id="above5" value="above5" required>above 5
+                        <div class="invalid-feedback">Please select any</div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="category" class="col-md-4 col-lg-3 col-form-label">Select Category</label>
+                      <div class="col-md-8 col-lg-9">
+                       
+                        <select id="category" name="category" class="category" onchange="categoryCheck(this);"  required>
                           <option value="N/A"></option>
                             <option value="agriculture">AGRICULTURE</option>
                             <option value="education">EDUCATION</option>
@@ -369,53 +281,62 @@
       });
     }
   }
-
-
-
-
-
-
-
-  
 </script>
 
+
+
+
+
+
+                      </div>
                     </div>
-                    <div class="col-12">
-                      <input type="checkbox" value="yes" name="notifications">Receive notifications
-                    </div></br>
+
+                    <div class="row mb-3">
+                      <label for="#" class="col-md-4 col-lg-3 col-form-label"> </label>
+                      <div class="col-md-8 col-lg-9">
+                        <input type="checkbox" value="yes" name="notifications">Receive notifications
+                      </div>
+                    </div>
+
                     {% if msg %}
                       <div class="alert alert-danger" role="alert">
                         {{ msg }}
                       </div>
                     {% endif %}
-                    
-                    <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Create Account</button>
+
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary">Save Changes</button>
                     </div>
                     <div class="col-12">
                       <p class="small mb-0">Already have an account? <a href="{{url_for('login')}}">Log in</a></p>
                     </div>
-                  </form>
+                  </form><!-- End Profile Edit Form -->
 
                 </div>
-              </div>
+
+              </div><!-- End Bordered Tabs -->
+
             </div>
           </div>
+
         </div>
+      </div>
+    </section>
 
-      </section>
-
-    </div>
   </main><!-- End #main -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
   <!-- Vendor JS Files -->
-  <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/chart.js/chart.min.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/quill/quill.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
 
   <!-- Template Main JS File -->
-  <script src="static/js/main.js"></script>
-
+  <script src="assets/js/main.js"></script>
 
 </body>
 

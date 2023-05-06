@@ -25,7 +25,32 @@
   <!-- Template Main CSS File -->
   <link href="static/css/style.css" rel="stylesheet">
 
+
+  <!-- Display Toast Message -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+
 <body>
+
+<!-- BLOCK TOAST MESSAGE -->
+
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        // Check the value of the logged_in variable
+        var Registered = {{ registered|lower }};  // Convert to lowercase (true or false)
+
+        // If logged_in is true, show the toast message
+        if (Registered) {
+            Toastify({
+                text: "Successfully Registered :)",
+                duration: 5000,  // Duration in milliseconds
+                gravity: "top",  // Position of the toast message
+                position: "center",
+            }).showToast();
+        }
+    </script>
+
+  <!-- END BLOCK -->
   
   <main>
     <div class="container">

@@ -19,6 +19,7 @@ bs4 = "^0.0.1"
 scikit-learn = "^1.2.2"
 pymysql-pool = "^0.4.3"
 rapidfuzz = "^3.0.0"
+DBUtils = "^3.0.3"
 
 [tool.poetry.dev-dependencies]
 debugpy = "^1.6.2"
