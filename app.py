@@ -332,8 +332,15 @@ def verify_otp():
 
 @app.route('/pdf')
 def pdf():
-  user = ""
-  return render_template('pdf.html', user=user)
+  if 'email' in session:
+    email = session['email']
+    with mysql.cursor() as cursor:
+      cursor.execute("select * from accounts  where email = %s", (email))
+      user = cursor.fetchone()
+
+    return render_template('pdf.html', user=user)
+  else:
+    return redirect(url_for('login'))
 
 
 #delete the links from latest_links table

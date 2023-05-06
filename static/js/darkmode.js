@@ -44,35 +44,28 @@ function morphTo(timeline, toggler) {
     .add(
       {
         targets: ".card",
-        backgroundColor: toggler ? "#f1f1f" : "#A9A9A9"
+        backgroundColor: toggler ? "#ffffff" : "#A9A9A9"
       },
       "-=700"
     )
     .add(
       {
         targets: "header",
-        backgroundColor: toggler ? "#f1f1f1" : "#333",
-        color: toggler ? "#012970" : "grey"
+        backgroundColor: toggler ? "#ffffff" : "#333",
       },
       "-=700"
     )
     .add(
       {
         targets: "aside",
-        backgroundColor: toggler ? "#f1f1f1" : "#333"
+        backgroundColor: toggler ? "#ffffff" : "#333"
       },
       "-=700"
     )
     .add(
       {
-        targets: "h1", 
-        color: toggler? "blue" : "grey"
-          }, "-=700"
-      )
-    .add(
-      {
         targets: "body",
-        backgroundColor: toggler ? "#f1f1f1" : "#333"
+        backgroundColor: toggler ? "#f6f9ff" : "#333"
       },
       "-=700"
     );
