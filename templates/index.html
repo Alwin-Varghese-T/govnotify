@@ -139,6 +139,16 @@
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
+             <li class="nav-item">
+        <a class="scrollto" href="#schemes">
+          <span style="filter: invert(50%);"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Schemes for you</span>
+        </a>
+      </li>
+       <li class="nav-item">
+        <a class="scrollto" href="#otherSchemes">
+          <span style="filter: invert(50%);"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Other Schemes</span>
+        </a>
+      </li>
             <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Tools</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -238,16 +248,11 @@
             </div><!-- End Reports -->
 
             <!-- Recent Sales -->
-            <div class="col-12">
+            <div class="col-12" id="schemes">
               <div class="card recent-sales overflow-auto">
                 <div class="card-body">
-                  <h5 class="card-title">Schemes For You<span>| Today</span></h5>
-<script>
-   $("table tr").hide();
-$("table tr").each(function(index){
-	$(this).delay(index*500).show(1000);
-});
-</script>
+                  <h5 class="card-title">Schemes For You</h5>
+
 
                   <table class="table table-borderless datatable"> 
 
@@ -277,10 +282,10 @@ $("table tr").each(function(index){
             </div><!-- End Recent Sales -->
 
             <!-- Top Selling -->
-            <div class="col-12">
+            <div class="col-12" id="otherSchemes">
               <div class="card top-selling overflow-auto">
                 <div class="card-body pb-0">
-                  <h5 class="card-title">Other Schemes<span>| Today</span></h5>
+                  <h5 class="card-title">Other Schemes</h5>
 
                   <table class="table table-borderless datatable">
                     <thead>
@@ -308,7 +313,6 @@ $("table tr").each(function(index){
 
               </div>
             </div><!-- End Top Selling -->
-
           </div>
         </div><!-- End Left side columns -->
 
@@ -372,6 +376,12 @@ $("table tr").each(function(index){
 
   <!-- Template Main JS File -->
   <script src="static/js/main.js"></script>
+        <script>
+   $("table tr:not(:first-child)").hide();
+$("table tr:not(:first-child)").each(function(index){
+	$(this).delay(index*500).show(1000);
+});
+</script>
 
 </body>
 

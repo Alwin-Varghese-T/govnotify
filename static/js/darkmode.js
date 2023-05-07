@@ -53,14 +53,14 @@ function morphTo(timeline, toggler) {
         targets: "header",
         backgroundColor: toggler ? "#ffffff" : "#333",
       },
-      "-=700"
+      "-=1200"
     )
     .add(
       {
         targets: "aside",
         backgroundColor: toggler ? "#ffffff" : "#333"
       },
-      "-=700"
+      "-=1200"
     )
     .add(
       {

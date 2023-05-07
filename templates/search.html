@@ -25,7 +25,7 @@
   <!-- Template Main CSS File -->
   <link href="static/css/style.css" rel="stylesheet">
    <script src="static/js/anime.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  
 
 </head>
 
@@ -198,24 +198,13 @@
 
     <section class="section dashboard">
       <div class="row">
-
-        <!-- Left side columns -->
-        <div class="col-lg-8">
-          <div class="row">
-
             <!-- Recent Sales -->
             <div class="col-12">
               <div class="card recent-sales overflow-auto">
                 <div class="card-body">
-                  <h5 class="card-title">Schemes <span>| Today</span></h5>
-                <script>
-                $("table tr").hide();
-                $("table tr").each(function(index){
-               	$(this).delay(index*500).show(1000);
-                });
-               </script>
-
+                  <h5 class="card-title">Matching Schemes</h5>
                   <table class="table table-borderless datatable">
+                   
                     <thead>
                       <tr>
                         <th scope="col">Scheme detail</th>
@@ -241,8 +230,6 @@
               </div>
             </div><!-- End Recent Sales -->
 
-          </div>
-        </div><!-- End Left side columns -->
       </div>
     </section>
 
@@ -260,7 +247,13 @@
 
   <!-- Template Main JS File -->
   <script src="static/js/main.js"></script>
-
+        <script src="static/js/rowanimate.min.js"></script>
+ <script>
+                    $("table tr:not(:first-child)").hide();
+                    $("table tr:not(:first-child)").each(function(index){
+	                  $(this).delay(index*500).show(1000);
+                    });
+                    </script>
 </body>
 
 </html>
