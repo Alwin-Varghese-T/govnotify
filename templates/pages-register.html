@@ -5,13 +5,13 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Pages / Register NoticeBoard Template</title>
+  <title>Pages / Register Notify</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="static/img/favicon.png" rel="icon">
-  <link href="static/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="static/img/bird.png" rel="icon">
+  <link href="static/img/bird.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -24,7 +24,7 @@
   <!-- Template Main CSS File -->
   <link href="static/css/style.css" rel="stylesheet">
 
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   
 
@@ -45,7 +45,7 @@
               <div class="d-flex justify-content-center py-4">
                 <a href="index.html" class="logo d-flex align-items-center w-auto">
                   <img src="static/img/bird.png" alt="">
-                  <span class="d-none d-lg-block">NoticeBoard</span>
+                  <span class="d-none d-lg-block">Notify</span>
                 </a>
               </div><!-- End Logo -->
 
@@ -74,7 +74,7 @@
 
 
                       
- <!--  OTTP Verification -->
+ <!--  OTTP Verification 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
  <script>
@@ -116,7 +116,19 @@
     // Validate the OTP field
     if (!otpInput) {
       // Display an error message or handle the error as needed
+      alert("no otp entered");
       return;
+    } else {
+
+    //Check if OTPs match
+    if (otpInput == otp) {
+        submitBtn.disabled = false;
+        alert("OTP verified!");
+    }
+    else {
+      submitBtn.disabled = true;
+        alert("Invalid OTP. Please try again.");
+    }
     }
 
     // Send AJAX request to Flask backend to verify the OTP
@@ -129,9 +141,11 @@
       var isOTPValid = response.data.isValid; // Assuming the response indicates if the OTP is valid or not
       // Perform any necessary actions based on the verification result
       if (isOTPValid) {
+        alert("verified");
         console.log("OTP is valid!");
         // Proceed with further actions
       } else {
+        alert("not verified");
         console.log("OTP is invalid!");
         // Handle the invalid OTP case
       }
@@ -155,10 +169,97 @@
                             <label for="otp">Enter OTP:</label> 
                             <input type="text" id="otpInput" name="otp">
                             <input type="button" value="submit" onclick="verifyOTP(this);">
-                            <div class="invalid-feedback">Please enter a valid OTP!</div>
                           </div>
                         </div>
 <!-- End of OTP  -->
+
+                      <input type="button" value="verify" onclick="generateOTP(this);">
+
+<div id="ifVerify" style="display: none;">
+  <div class="col-12">
+    <label for="otpInput">Enter OTP:</label>
+    <input type="text" id="otpInput" name="otpInput">
+    <input type="button" value="submit" onclick="verifyOTP(this);">
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+  var otp;  // Global variable to store the generated OTP
+
+  function generateOTP(button) {
+    // Retrieve the email input value
+    var email = document.getElementById("email").value;
+
+    // Validate the email field
+    if (!email) {
+      // Display an error message or handle the error as needed
+      return;
+    }
+
+    // Send AJAX request to Flask backend to generate OTP
+    axios.post('/generate_otp', {
+      email: email // Pass the email value in the request payload
+    })
+    .then(function (response) {
+      // Handle the response from the backend
+      otp = response.data.otp; // Assuming the response contains the generated OTP
+      // Perform any necessary actions with the OTP (e.g., display it to the user)
+      console.log("OTP generated:", otp);
+
+      // Show the verification interface
+      document.getElementById("ifVerify").style.display = "block";
+    })
+    .catch(function (error) {
+      // Handle any errors that occurred during the request
+      console.error(error);
+    });
+  }
+
+function verifyOTP(button) {
+  // Retrieve the OTP input value
+  var otpInput = document.getElementById("otpInput").value.trim();
+
+  // Validate the OTP field
+  if (!otpInput) {
+    // Display an error message or handle the error as needed
+    alert("No OTP entered");
+    return;
+  }
+
+  // Check if OTPs match
+  if (otpInput === otp.toString()) {
+    submitBtn.disabled = false;
+    swal("Email Verification", "Success", "success");
+  } else {
+    submitBtn.disabled = true;
+    swal("Email Verification", "Failed", "error");
+    return; // Exit the function if OTP is invalid
+  }
+
+  // Send AJAX request to Flask backend to verify the OTP
+  axios.post('/verify_otp', {
+    otp: otpInput // Pass the OTP value in the request payload
+  })
+  .then(function (response) {
+    // Handle the response from the backend
+    var isOTPValid = response.data.isValid; // Assuming the response indicates if the OTP is valid or not
+    // Perform any necessary actions based on the verification result
+    if (isOTPValid) {
+      console.log("OTP is valid!");
+      // Proceed with further actions
+    } else {
+      console.log("OTP is invalid!");
+      // Handle the invalid OTP case
+    }
+  })
+  .catch(function (error) {
+    // Handle any errors that occurred during the request
+    console.error(error);
+  });
+}
+</script>
 
 
                       
@@ -390,7 +491,7 @@
                     {% endif %}
                     
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                      <button class="btn btn-primary w-100" id="submitBtn" type="submit" disabled>Create Account</button>
                     </div>
                     <div class="col-12">
                       <p class="small mb-0">Already have an account? <a href="{{url_for('login')}}">Log in</a></p>
@@ -407,9 +508,6 @@
 
     </div>
   </main><!-- End #main -->
-
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
   <!-- Vendor JS Files -->
   <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 

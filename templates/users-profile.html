@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Users / Profile - NoticeBoard Template</title>
+  <title>Users / Profile - Notify</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -34,7 +34,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
         <img src="static/img/bird.png" alt="">
-        <span class="d-none d-lg-block" style="filter: invert(50%);">NoticeBoard</span>
+        <span class="d-none d-lg-block" style="filter: invert(50%);">Notify</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn" style="filter: invert(50%);"></i>
     </div><!-- End Logo -->
@@ -88,27 +88,6 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
             <li>
               <a class="dropdown-item d-flex align-items-center" href="{{url_for('logout')}}">
                 <i class="bi bi-box-arrow-right"></i>
@@ -164,19 +143,11 @@
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{url_for('register')}}">
-          <i class="bi bi-card-list"></i>
-          <span>Register</span>
+        <a class="nav-link collapsed" href="{{ url_for('logout') }}">
+         <i class="bi bi-box-arrow-right"></i>
+          <span>Sign Out</span>
         </a>
-      </li><!-- End Register Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{{url_for('login')}}">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>Login</span>
-        </a>
-      </li><!-- End Login Page Nav -->
-
+      </li><!-- End sign out Page Nav -->
     </ul>
 
   </aside><!-- End Sidebar-->
@@ -203,12 +174,6 @@
 
               <img src="static/img/user.png" alt="Profile" class="rounded-circle">
               <h2>{{ user.username }}</h2>
-              <div class="social-links mt-2">
-                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-              </div>
             </div>
           </div>
 
@@ -222,7 +187,7 @@
               <ul class="nav nav-tabs nav-tabs-bordered">
 
                 <li class="nav-item">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
                 </li>
 
                 <li class="nav-item">
@@ -505,13 +470,6 @@ select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="de
                   <form>
 
                     <div class="row mb-3">
-                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="password" type="password" class="form-control" id="currentPassword">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
                       <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                       <div class="col-md-8 col-lg-9">
                         <input name="newpassword" type="password" class="form-control" id="newPassword">
@@ -546,7 +504,7 @@ select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="de
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright" style="filter: invert(50%);">
-      &copy; Copyright <strong><span>NoticeBoard</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>Notify</span></strong>. All Rights Reserved
     </div>
   </footer><!-- End Footer -->
 

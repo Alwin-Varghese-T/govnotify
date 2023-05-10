@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/pdf-lib@1.4.0"></script>
     <script src="https://unpkg.com/downloadjs@1.4.7"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <title>Dashboard - NoticeBoard Template</title>
+  <title>Dashboard - Notify</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -39,7 +39,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/bird.png" alt="">
-        <span class="d-none d-lg-block" style="filter: invert(50%);">NoticeBoard</span>
+        <span class="d-none d-lg-block" style="filter: invert(50%);">Notify</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn" style="filter: invert(50%);"></i>
     </div><!-- End Logo -->
@@ -78,7 +78,6 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6>{{ user.username }}</h6>
-              <span>Student</span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -93,27 +92,6 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
             <li>
               <a class="dropdown-item d-flex align-items-center" href="#">
                 <i class="bi bi-box-arrow-right"></i>
@@ -169,18 +147,11 @@
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{url_for('register')}}">
-          <i class="bi bi-card-list"></i>
-          <span>Register</span>
+        <a class="nav-link collapsed" href="{{ url_for('logout') }}">
+         <i class="bi bi-box-arrow-right"></i>
+          <span>Sign Out</span>
         </a>
-      </li><!-- End Register Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{{url_for('login')}}">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>Login</span>
-        </a>
-      </li><!-- End Login Page Nav -->
+      </li><!-- End Sign out Page Nav -->
 
 
     </ul>
@@ -236,7 +207,7 @@
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright" style="filter: invert(50%);">
-      &copy; Copyright <strong><span>NoticeBoard</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>Notify</span></strong>. All Rights Reserved
     </div>
   </footer><!-- End Footer -->
 
