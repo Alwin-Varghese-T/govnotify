@@ -38,11 +38,11 @@
     <script>
         // Check the value of the logged_in variable
         var Registered = {{ registered|lower }};  // Convert to lowercase (true or false)
-
+        var Abc = "{{ abc }}";
         // If logged_in is true, show the toast message
         if (Registered) {
             Toastify({
-                text: "Successfully Registered :)",
+                text: Abc,
                 duration: 5000,  // Duration in milliseconds
                 gravity: "top",  // Position of the toast message
                 position: "center",

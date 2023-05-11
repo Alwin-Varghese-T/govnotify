@@ -437,7 +437,7 @@ select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="de
 
                   <!-- Settings Form -->
                   <form action="{{ url_for('profile') }}" method="post">
-                  <input type="hidden" name="form_id" value="form1">
+                  <input type="hidden" name="form_id" value="notification">
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
                       <div class="col-md-8 col-lg-9">
@@ -467,25 +467,43 @@ select : <input class="single-checkbox"type="checkbox" name="checkboxes"  id="de
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
-                  <form>
+                  <form action="{{ url_for('profile') }}" method="post">
+                  <input type="hidden" name="form_id" value="change_password">
 
                     <div class="row mb-3">
-                      <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                      <label for="password" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="newpassword" type="password" class="form-control" id="newPassword">
+                        <input name="password" type="password" class="form-control" id="password" required>
+                        <div class="invalid-feedback">Please enter new password!</div>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                      <label for="reTypePassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                        <input name="reTypePassword" type="password" class="form-control" id="reTypePassword" required>
+                        <div class="invalid-feedback">Please enter correct password!</div>
                       </div>
                     </div>
 
                     <div class="text-center">
                       <button type="submit" class="btn btn-primary">Change Password</button>
                     </div>
+                    <script>
+                       var password = document.getElementById("password")
+                        , reTypePassword = document.getElementById("reTypePassword");
+                      
+                      function validatePassword(){
+                        if(password.value != reTypePassword.value) {
+                          reTypePassword.setCustomValidity("Passwords Don't Match");
+                        } else {
+                          reTypePassword.setCustomValidity('');
+                        }
+                      }
+                      
+                      password.onchange = validatePassword;
+                      reTypePassword.onkeyup = validatePassword;
+                    </script>
                   </form><!-- End Change Password Form -->
 
                 </div>

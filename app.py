@@ -69,6 +69,14 @@ def login():
     remember = request.form.get('remember')
 
     with mysql.cursor() as cursor:
+      #Retrieving data form admin table
+      cursor.execute("select * from admin where username = %s and password = %s",(email,password))
+      admin = cursor.fetchone()
+      if admin:
+        session['loggedin']= True
+        session['admin'] =admin['username']
+        session.permanent = False
+        return redirect(url_for('admin'))
       # Retrieving account details from the database if the username and password match
       cursor.execute(
         'SELECT * FROM accounts WHERE email = %s AND password = %s ',
@@ -92,7 +100,25 @@ def login():
         return render_template('pages-login.html', msg=msg)
   return render_template('pages-login.html')  # Rendering the login page with the message variable
 
-
+#if user forgot his password
+@app.route("/forgotpass",methods=['GET', 'POST'])
+def forgotpass():
+  msg=""
+  if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
+    email = request.form['email']
+    password = request.form['password']
+    with mysql.cursor() as cursor:
+      cursor.execute('SELECT * FROM accounts WHERE email = %s',(email))
+      account = cursor.fetchone()
+      if account:
+          cursor.execute("UPDATE accounts SET password = %s where email = %s",(password,email))
+          registered = True
+          abc = "Successfully Changed Password ):"
+          return render_template('pages-login.html',registered=registered,abc=abc)
+      else:
+          msg='Sorry!! Email Is Not In Database :('
+          return render_template('forgotpass.html',msg=msg)
+  return render_template('forgotpass.html')     
 # Logout route to allow users to log out of the web application!
 @app.route('/logout')
 def logout():
@@ -150,7 +176,8 @@ def register():
            diff, ration, income, category, checkbox, notify))
 
         registered = True
-        return render_template('pages-login.html',registered=registered)
+        abc="Successfully Registered :)"
+        return render_template('pages-login.html',registered=registered,abc=abc)
   elif request.method == 'POST':  # If request method is POST but fields are empty
     msg = 'Please fill out the form!'
   return render_template(
@@ -195,13 +222,17 @@ def profile():
     with mysql.cursor() as cursor:
       #edit notification status
       form_id = request.form.get('form_id')
-      if request.method == 'POST' and form_id == 'form1' :
+      if request.method == 'POST' and form_id == 'notification' :
         if 'notify' in request.form:
             notify = request.form['notify']
         else:
             notify="No"
         cursor.execute("UPDATE accounts SET notify = %s where email = %s",(notify,email))  
-        
+      #change password  
+      if request.method == 'POST' and form_id == 'change_password':
+        newpassword = request.form['password']
+        cursor.execute("UPDATE accounts SET password = %s where email = %s",(newpassword,email))
+      
       #edit profile
       if request.method == 'POST' and 'username' in request.form:
        
@@ -240,32 +271,34 @@ def profile():
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
-  # to get id of button of a ajax request
-  button_id = request.form.get('button_id')
-  # to check the id and run the prediction function
-  if request.method == 'POST' and button_id == 'predict_button':
-    data1 = request.form.get('input_data')
-    predicted_output = predict(data1)
-    return jsonify({'predicted_output': predicted_output})
-  # to submit the form to the database
-  if request.method == 'POST' and 'name' in request.form and 'link' in request.form and 'description' in request.form and 'category' in request.form:
-    sname = request.form['name']
-    links = request.form['link']
-    descripton = request.form['description']
-    keywords = request.form['Keywords'] 
-    category = request.form['category']
-
-    with mysql.cursor() as cursor:
-      cursor.execute('INSERT INTO schemes values(%s, %s, %s, %s, %s)',
-                     (sname, descripton, keywords, links, category))
-      cursor.execute(
-        "select email from accounts where notify = yes and category =%s",
-        (category))
-      mail_address = cursor.fetchall()
-      bulkmail(mail_address)
-      cursor.execute('insert into latest_links(title,url,des,category) values(%s,%s,%s,%s)',(sname,links,descripton,category)) 
-  return render_template('admin.html')
-
+  if 'admin' in session:
+    # to get id of button of a ajax request
+    button_id = request.form.get('button_id')
+    # to check the id and run the prediction function
+    if request.method == 'POST' and button_id == 'predict_button':
+      data1 = request.form.get('input_data')
+      predicted_output = predict(data1)
+      return jsonify({'predicted_output': predicted_output})
+    # to submit the form to the database
+    if request.method == 'POST' and 'name' in request.form and 'link' in request.form and 'description' in request.form and 'category' in request.form:
+      sname = request.form['name']
+      links = request.form['link']
+      descripton = request.form['description']
+      keywords = request.form['Keywords'] 
+      category = request.form['category']
+  
+      with mysql.cursor() as cursor:
+        cursor.execute('INSERT INTO schemes values(%s, %s, %s, %s, %s)',
+                       (sname, descripton, keywords, links, category))
+        cursor.execute(
+          "select email from accounts where notify = yes and category =%s",
+          (category))
+        mail_address = cursor.fetchall()
+        bulkmail(mail_address,sname,descripton)
+        cursor.execute('insert into latest_links(title,url,des,category) values(%s,%s,%s,%s)',(sname,links,descripton,category)) 
+    return render_template('admin.html')
+  else:
+    return redirect(url_for('login'))
 
 
 
