@@ -28,6 +28,8 @@
 
   <!-- Display Toast Message -->
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body>
@@ -70,7 +72,7 @@
                     </div>
                      <div class="col-12">
                      <input type="button" value="generate otp" onclick="generateOTP(this);">
-                    <div id="ifVerify" style="display: none;">
+                    <div id="ifVerify">
                     </div>
                       <div class="col-12">
                         <label for="otpInput">Enter OTP:</label>
@@ -78,7 +80,6 @@
                         <input type="button" value="verify" onclick="verifyOTP(this);">
                       </div>
                     </div>
-                     </div>
                     
                     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
                     
@@ -157,13 +158,10 @@
                       });
                     }
                     </script>
-
                     <div class="col-12">
-                      
                       <label for="yourPassword" class="form-label">New Password</label>
                       <input type="password" name="password" class="form-control" id="password" required>
-                      <div class="invalid-feedback">Please enter your password!</div>
-                      
+                      <div class="invalid-feedback">Please enter your password!</div>     
                     </div>
                     {% if msg %}
                     <div class="alert alert-danger" role="alert">
