@@ -288,15 +288,21 @@ def admin():
       category = request.form['category']
       cat = category.lower()
       with mysql.cursor() as cursor:
-        cursor.execute('INSERT INTO schemes values(%s, %s, %s, %s, %s)',
-                       (sname, descripton, keywords, links, category))
-        cursor.execute(
-          "select email from accounts where notify = 'yes' and category = %s",
-          (cat))
-        mail_address = cursor.fetchall()
-        print(mail_address)
-        bulkmail(mail_address,sname,descripton)
-        cursor.execute('insert into latest_links(title,url,des,category) values(%s,%s,%s,%s)',(sname,links,descripton,category)) 
+        cursor.execute("select sname from schemes where sname = %s ",(sname))
+        check = cursor.fetchall()
+        if check:
+          msg = "scheme already add"
+          return render_template('admin.html',msg=msg)
+        else:
+          cursor.execute('INSERT INTO schemes values(%s, %s, %s, %s, %s)',
+                         (sname, descripton, keywords, links, category))
+          cursor.execute(
+            "select email from accounts where notify = 'yes' and category = %s",
+            (cat))
+          mail_address = cursor.fetchall()
+          print(mail_address)
+          bulkmail(mail_address,sname,descripton)
+          cursor.execute('insert into latest_links(title,url,des,category) values(%s,%s,%s,%s)',(sname,links,descripton,category)) 
     return render_template('admin.html')
   else:
     return redirect(url_for('login'))
