@@ -7,11 +7,41 @@ from email.mime.multipart import MIMEMultipart
 from smtplib import SMTPRecipientsRefused
 
 
-# Connect to SMTP server and send email
-smtp_server = 'us2.smtp.mailhostbox.com'
-smtp_port = 587
-smtp_username = os.getenv('email')
-smtp_password = os.getenv('epsd')
+servers = [
+      {
+          'hostname': 'us2.smtp.mailhostbox.com',
+          'port': 587,
+          'username': os.getenv('email'),
+          'password': os.getenv('epsd')
+      },
+      {
+          'hostname': 'smtp.mystc.tech',
+          'port': 587,
+          'username': os.getenv('email'),
+          'password': os.getenv('epsd')
+      },
+      {
+          'hostname': 'smtp-relay.sendinblue.com',
+          'port': 587,
+          'username': os.getenv('email'),
+          'password': os.getenv('epsd3')
+      },
+      {
+          'hostname': 'smtp.sendgrid.net',
+          'port': 587,
+          'username': 'apikey',
+          'password': os.getenv('epsd1')
+      },
+      {
+          'hostname': 'smtp.postmarkapp.com',
+          'port': 2525,
+          'username': os.getenv('epsd2'),
+          'password': os.getenv('epsd2')
+      }
+  ]
+
+
+
 
 
 
@@ -144,14 +174,16 @@ def bulkmail(mail_address,sname,descripton):
     msg.attach(html_part)
     
     
-    with smtplib.SMTP(smtp_server, smtp_port) as server:
-        server.starttls()
-        server.login(smtp_username, smtp_password)
+    for server in servers:
+      try:
+        smtp_server = smtplib.SMTP(server['hostname'], server['port'])
+        smtp_server.starttls()
+        smtp_server.login(server['username'], server['password'])
         for recipient in receiver:
             try:
               msg['To'] = recipient
               
-              server.sendmail(sender, recipient, msg.as_string())
+              smtp_server.sendmail(sender, recipient, msg.as_string())
               print("Email sent successfully")
             except SMTPRecipientsRefused as e:  
               error_message = str(e)
@@ -161,8 +193,14 @@ def bulkmail(mail_address,sname,descripton):
                 raise
             except Exception as e:
               print(f"Failed to send email to {recipient} - {str(e)}")  
-
-
+        smtp_server.quit()
+        print("Email sent successfully using", server['hostname'])
+        break  # Exit the loop if email is sent successfully
+      except smtplib.SMTPException as e:
+        print("Error sending email using", server['hostname'], ":", str(e))
+        print("Attempting to send using the next server")
+    else:
+        print("Email sending failed for all servers")
 
 
 def generate(email):
@@ -254,10 +292,18 @@ def generate(email):
     msg['To'] = receiver
     msg['Subject'] = subject
 
-    with smtplib.SMTP(smtp_server, smtp_port) as server:
-        server.starttls()
-        server.login(smtp_username, smtp_password)
-        server.sendmail(sender, receiver, msg.as_string())
-
-    print(otp)
+    for server in servers:
+      try:
+        smtp_server = smtplib.SMTP(server['hostname'], server['port'])
+        smtp_server.starttls()
+        smtp_server.login(server['username'], server['password'])
+        smtp_server.sendmail(sender, receiver, msg.as_string())
+        smtp_server.quit()
+        print("Email sent successfully using", server['hostname'])
+        break  # Exit the loop if email is sent successfully
+      except smtplib.SMTPException as e:
+        print("Error sending email using", server['hostname'], ":", str(e))
+        print("Attempting to send using the next server")
+    else:
+        print("Email sending failed for all servers")    
     return otp
