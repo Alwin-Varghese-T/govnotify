@@ -4,6 +4,7 @@ import secrets
 import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from smtplib import SMTPRecipientsRefused
 
 
 # Connect to SMTP server and send email
@@ -17,7 +18,11 @@ smtp_password = os.getenv('epsd')
 def bulkmail(mail_address,sname,descripton):
     # Define email contents
     sender = os.getenv('email')
+    
+    
+   
     receiver = [email['email'] for email in mail_address]
+    
     subject = 'New Scheme Available'
     #body = 'Body of the email'
     
@@ -143,8 +148,21 @@ def bulkmail(mail_address,sname,descripton):
         server.starttls()
         server.login(smtp_username, smtp_password)
         for recipient in receiver:
-            msg['To'] = recipient
-            server.sendmail(sender, recipient, msg.as_string())
+            try:
+              msg['To'] = recipient
+              
+              server.sendmail(sender, recipient, msg.as_string())
+              print("Email sent successfully")
+            except SMTPRecipientsRefused as e:  
+              error_message = str(e)
+              if recipient in error_message:
+                print(f"Failed to send email to {recipient} -Invalid email address")
+              else:
+                raise
+            except Exception as e:
+              print(f"Failed to send email to {recipient} - {str(e)}")  
+
+
 
 
 def generate(email):

@@ -286,14 +286,15 @@ def admin():
       descripton = request.form['description']
       keywords = request.form['Keywords'] 
       category = request.form['category']
-  
+      cat = category.lower()
       with mysql.cursor() as cursor:
         cursor.execute('INSERT INTO schemes values(%s, %s, %s, %s, %s)',
                        (sname, descripton, keywords, links, category))
         cursor.execute(
-          "select email from accounts where notify = yes and category =%s",
-          (category))
+          "select email from accounts where notify = 'yes' and category = %s",
+          (cat))
         mail_address = cursor.fetchall()
+        print(mail_address)
         bulkmail(mail_address,sname,descripton)
         cursor.execute('insert into latest_links(title,url,des,category) values(%s,%s,%s,%s)',(sname,links,descripton,category)) 
     return render_template('admin.html')
