@@ -76,7 +76,7 @@ def get_relevant_links(links, profile_text):
     cosine_similarities = cosine_similarity(tfidf_matrix, tfidf_vectorizer.transform([preprocessed_profile])).flatten()
 
     # Create a list of relevant links with their scores
-    relevant_links = [{'name': link['sname'], 'link': link['links'], 'desc': link['descripton'], 'score': score} for link, score in zip(links, cosine_similarities) if score > -1]
+    relevant_links = [{'name': link['sname'], 'link': link['links'], 'desc': link['descripton'], 'score': score} for link, score in zip(links, cosine_similarities) if score > 0.1]
 
     # Sort the relevant links based on their cosine similarity score in descending order
     relevant_links = sorted(relevant_links, key=lambda x: x['score'], reverse=True)
