@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 def scraper():
   # Make a request to the website
-  response = requests.get('https://www.india.gov.in/news_feeds?rand=?')
+  response = requests.get('https://www.india.gov.in/news_feeds?rand?')
 
       # Parse the HTML content using BeautifulSoup
   soup = BeautifulSoup(response.content, 'html.parser')
